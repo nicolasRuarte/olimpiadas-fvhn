@@ -1,0 +1,20 @@
+{
+  "name": "olimpiadas-fvhn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicolasRuarte/olimpiadas-fvhn.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nicolasRuarte/olimpiadas-fvhn/issues"
+  },
+  "homepage": "https://github.com/nicolasRuarte/olimpiadas-fvhn#readme"
+}
