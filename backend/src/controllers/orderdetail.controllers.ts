@@ -1,0 +1,17 @@
+import { Request, Response } from "express";
+
+export function createOrderDetail(req: Request, res: Response) {
+    res.send("Detalle del pedido creado");
+}
+
+export function getOrderDetail(req: Request, res: Response) {
+    res.send("Detalle del pedido devuelto");
+}
+
+export function updateOrderDetail(req: Request, res: Response) {
+    res.send("Detalle del pedido actualizado");
+}
+
+export function deleteOrderDetail(req: Request, res: Response) {
+    res.send("Detalle del pedido borrado");
+}
