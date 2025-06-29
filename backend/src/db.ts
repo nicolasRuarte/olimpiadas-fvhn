@@ -1,7 +1,9 @@
 import { DataSource } from "typeorm";
-import { User } from "./entities/User.ts";
-import { Order } from "./entities/Order.ts";
-import { OrderDetail } from "./entities/OrderDetail.ts";
+import { User } from "./entities/User";
+import { Order } from "./entities/Order";
+import { OrderDetail } from "./entities/OrderDetail";
+import { Rating } from "./entities/Rating";
+import { Service } from "./entities/Service";
 
 export const AppDataSource = new DataSource({
     type: "postgres",
@@ -10,7 +12,7 @@ export const AppDataSource = new DataSource({
     password: "postgres",
     port: 5432,
     database: "pagina_vuelos",
-    entities: [ User, Order, OrderDetail ],
+    entities: [ User, Order, OrderDetail, Service, Rating ],
     logging: true,
     synchronize: true
 });

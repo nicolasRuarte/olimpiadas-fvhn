@@ -1,6 +1,6 @@
 import "reflect-metadata";
-import app from "./app.ts";
-import { AppDataSource } from "./db.ts";
+import app from "./app";
+import { AppDataSource } from "./db";
 
 async function main(){
     try {
