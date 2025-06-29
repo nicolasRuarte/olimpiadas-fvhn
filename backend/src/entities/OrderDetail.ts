@@ -1,5 +1,6 @@
-import { Column, Entity, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, OneToMany, ManyToOne } from "typeorm";
+import { Column, Entity, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, OneToMany, ManyToOne, ManyToMany } from "typeorm";
 import { User } from "./User";
+import { Service } from "./Service";
 
 @Entity()
 export class OrderDetail extends BaseEntity {
@@ -14,5 +15,8 @@ export class OrderDetail extends BaseEntity {
 
     @ManyToOne(() => User, (user) => user.orderDetails)
     user: User;
+
+    @ManyToMany(() => Service, (service) => service.orderDetails)
+    items: Service[];
 
 }
