@@ -1,6 +1,7 @@
 import { Column, Entity, BaseEntity, PrimaryColumn, OneToOne, JoinColumn, OneToMany } from "typeorm";
-import { Order } from "./Order.ts";
-import { OrderDetail } from "./OrderDetail.ts";
+import { Order } from "./Order";
+import { OrderDetail } from "./OrderDetail";
+import { Rating } from "./Rating";
 
 @Entity()
 export class User extends BaseEntity {
@@ -28,4 +29,7 @@ export class User extends BaseEntity {
 
     @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.user)
     orderDetails: OrderDetail[];
+
+    @OneToMany(() => Rating, (rating) => rating.user)
+    ratings: Rating[]
 }

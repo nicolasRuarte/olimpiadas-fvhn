@@ -1,7 +1,15 @@
-import { Column, BaseEntity, Entity, PrimaryColumn, OneToMany } from "typeorm";
+import { BaseEntity, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "./User";
+import { Service } from "./Service";
 
 @Entity()
 export class Rating extends BaseEntity {
-    @Column()
-    rating: number;
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @ManyToOne(() => User, (user: User) => user.ratings)
+    user: User;
+
+    @ManyToOne(() => Service, (service: Service) => service.ratings)
+    service: Service;
 }

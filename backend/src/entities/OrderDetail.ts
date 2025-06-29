@@ -1,5 +1,5 @@
 import { Column, Entity, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, OneToMany, ManyToOne } from "typeorm";
-import { User } from "./User.ts";
+import { User } from "./User";
 
 @Entity()
 export class OrderDetail extends BaseEntity {
