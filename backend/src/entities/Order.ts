@@ -5,13 +5,12 @@ import { Service } from "./Service";
 @Entity()
 export class Order extends BaseEntity {
     @PrimaryColumn()
-    @OneToOne(() => User, (user) => user.order)
     id: string;
 
     @ManyToMany(() => Service, (service) => service.orders)
     @JoinTable()
     items: Service[];
 
-    @Column()
+    @Column({ default: 0.0 })
     total_price: number;
 }
