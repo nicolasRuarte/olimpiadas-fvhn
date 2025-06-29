@@ -1,5 +1,5 @@
-import { Column, Entity, BaseEntity, PrimaryColumn, PrimaryGeneratedColumn, OneToOne, JoinColumn } from "typeorm";
-import { User } from "./User.ts";
+import { Column, Entity, BaseEntity, PrimaryColumn, OneToOne } from "typeorm";
+import { User } from "./User";
 
 @Entity()
 export class Order extends BaseEntity {
