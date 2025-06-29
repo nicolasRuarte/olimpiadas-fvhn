@@ -23,7 +23,7 @@ export class User extends BaseEntity {
     @Column()
     phone_number: string;
 
-    @OneToOne(() => Order, (order) => order.dni)
+    @OneToOne(() => Order, (order) => order.id)
     @JoinColumn()
     order: Order;
 
