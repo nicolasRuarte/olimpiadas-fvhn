@@ -10,13 +10,12 @@ export class OrderDetail extends BaseEntity {
     @CreateDateColumn()
     emittedDate: Date;
      
-    @Column()
-    total_price: number;
-
     @ManyToOne(() => User, (user) => user.orderDetails)
     user: User;
 
     @ManyToMany(() => Service, (service) => service.orderDetails)
     items: Service[];
 
+    @Column({ default: 0.0 })
+    total_price: number;
 }
