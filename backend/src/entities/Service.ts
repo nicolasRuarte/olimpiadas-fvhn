@@ -15,7 +15,7 @@ export class Service extends BaseEntity {
     @Column()
     description: string;
 
-    @Column()
+    @Column({ default: 0.0 })
     price: number;
 
     @OneToMany(() => Rating, (rating) => rating.service)
