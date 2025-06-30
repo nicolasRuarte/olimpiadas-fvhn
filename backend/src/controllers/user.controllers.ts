@@ -39,7 +39,7 @@ export async function createUser(req: Request, res: Response) {
     
 }
 
-export function getUser(req: Request, res: Response) {
+export function readUser(req: Request, res: Response) {
     res.send("Usuario devuelto");
 }
 
