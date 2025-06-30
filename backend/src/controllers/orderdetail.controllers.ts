@@ -4,7 +4,7 @@ export function createOrderDetail(req: Request, res: Response) {
     res.send("Detalle del pedido creado");
 }
 
-export function getOrderDetail(req: Request, res: Response) {
+export function readOrderDetail(req: Request, res: Response) {
     res.send("Detalle del pedido devuelto");
 }
 

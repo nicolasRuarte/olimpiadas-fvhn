@@ -4,7 +4,7 @@ export function createRating(req: Request, res: Response) {
     res.send("Rating creado");
 }
 
-export function getRating(req: Request, res: Response) {
+export function readRating(req: Request, res: Response) {
     res.send("Rating devuelto");
 }
 
