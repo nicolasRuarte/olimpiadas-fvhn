@@ -1,4 +1,4 @@
-import { Column, BaseEntity, Entity, PrimaryColumn, OneToMany, ManyToMany } from "typeorm";
+import { Column, BaseEntity, Entity, OneToMany, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Rating } from "./Rating";
 import { Order } from "./Order";
 import { OrderDetail } from "./OrderDetail";
@@ -6,7 +6,7 @@ import { OrderDetail } from "./OrderDetail";
 
 @Entity()
 export class Service extends BaseEntity {
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
