@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Service } from "../entities/Service";
 import { AppDataSource } from "../db";
+import { validateNumberId } from "../validation";
 
 export async function createService(req: Request, res: Response) {
     const { name, description, price } = req.body;
@@ -24,8 +25,13 @@ export async function createService(req: Request, res: Response) {
 // De momento solo lee por ID
 // Si ID vale "-1" se devuelven todos los valores de la tabla Service
 export async function readService(req: Request, res: Response) {
-    const selectAllFlag = "-1";
-    const selectedId = req.params.id || selectAllFlag;
+    const selectAllFlag = -1;
+    const selectedId = parseInt(req.params.id) || selectAllFlag;
+    if (!validateNumberId(selectedId)) {
+        res.send("Por favor ingrese un ID de servicio válido");
+        return;
+    }
+
     const dataManager = AppDataSource.manager;
 
     try {
@@ -37,7 +43,7 @@ export async function readService(req: Request, res: Response) {
             return;
         }
 
-        serviceFound = await dataManager.findOne(Service, { where: { id: parseInt(selectedId) } })
+        serviceFound = await dataManager.findOne(Service, { where: { id: selectedId } })
         if (serviceFound === null){
             res.send("El servicio solicitado no existe");
             return;
