@@ -2,10 +2,16 @@ import { Request, Response } from "express";
 import { User } from "../entities/User";
 import { Order } from "../entities/Order";
 import { AppDataSource } from "../db";
+import { validateStringId } from "../validation";
 
 
 export async function createUser(req: Request, res: Response) {
     const { dni, surname, names, email, password, phone_number } = req.body;
+
+    if (!validateStringId(dni)) {
+        res.send("Por favor elija un DNI válido");
+        return;
+    }
 
     if (await User.findOne({ where: { dni: dni }}) !== null) {
         res.send("Usuario ya existe");
