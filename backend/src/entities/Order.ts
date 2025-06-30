@@ -1,5 +1,4 @@
 import { Column, Entity, BaseEntity, PrimaryColumn, OneToOne, ManyToMany, JoinTable } from "typeorm";
-import { User } from "./User";
 import { Service } from "./Service";
 
 @Entity()
@@ -7,7 +6,7 @@ export class Order extends BaseEntity {
     @PrimaryColumn()
     id: string;
 
-    @ManyToMany(() => Service, (service) => service.orders)
+    @ManyToMany(() => Service)
     @JoinTable()
     items: Service[];
 
