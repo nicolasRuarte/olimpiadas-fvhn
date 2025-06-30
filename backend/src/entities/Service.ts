@@ -21,9 +21,6 @@ export class Service extends BaseEntity {
     @OneToMany(() => Rating, (rating) => rating.service)
     ratings: Rating[];
 
-    @ManyToMany(() => Order, (order) => order.items)
-    orders: Order[];
-
     @ManyToMany(() => OrderDetail, (orderDetail) => orderDetail.items)
     orderDetails: OrderDetail[];
 }
