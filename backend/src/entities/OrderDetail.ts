@@ -1,4 +1,5 @@
-import { Column, Entity, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, OneToMany, ManyToOne, ManyToMany } from "typeorm";
+import { Column, 
+    Entity, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, ManyToMany, JoinTable } from "typeorm";
 import { User } from "./User";
 import { Service } from "./Service";
 
@@ -13,9 +14,10 @@ export class OrderDetail extends BaseEntity {
     @ManyToOne(() => User, (user) => user.orderDetails)
     user: User;
 
-    @ManyToMany(() => Service, (service) => service.orderDetails)
+    @ManyToMany(() => Service)
+    @JoinTable()
     items: Service[];
 
-    @Column({ default: 0.0 })
+    @Column()
     total_price: number;
 }
