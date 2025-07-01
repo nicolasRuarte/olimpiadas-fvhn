@@ -12,7 +12,6 @@ export async function createUser(req: Request, res: Response) {
         res.send("Por favor elija un DNI válido");
         return;
     }
-
     if (await User.findOne({ where: { dni: dni }}) !== null) {
         res.send("Usuario ya existe");
         return;
