@@ -4,10 +4,13 @@ Lista de funcionalidades y fixes que hay que hacer
 
 [x] Funcionalidad CRUD para Usuarios (enfocarse en crear)
 [x] Funcionalidad CRUD para Servicios (enfocarse en crear y actualizar)
-[x] Funcionalidad carrito LISTO
-[ ] Funcionalidad de Rating 
+[x] Funcionalidad carrito
 [ ] Funcionalidad de detalles de compra
 [ ] Autenticación
+[ ] Agregar validaciones de formulario de nuevo usuario
+[ ] Agregar historial global de pedidos
+[ ] Agregar historial de pedidos por usuario
+[ ] Funcionalidad de Rating
 
 ## Frontend
 
