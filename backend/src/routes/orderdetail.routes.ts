@@ -3,9 +3,9 @@ import { createOrderDetail, readOrderDetail, updateOrderDetail, deleteOrderDetai
 
 const router = Router()
 
-router.post("/OrderDetail", createOrderDetail);
-router.get("/OrderDetail", readOrderDetail);
-router.put("/OrderDetail", updateOrderDetail);
-router.delete("/OrderDetail", deleteOrderDetail);
+router.post("/orderdetail", createOrderDetail);
+router.get("/orderdetail/:id", readOrderDetail);
+router.patch("/orderdetail", updateOrderDetail);
+router.delete("/orderdetail", deleteOrderDetail);
 
 export default router

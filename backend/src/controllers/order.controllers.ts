@@ -4,10 +4,6 @@ import { AppDataSource } from "../db";
 import { validateNumberId, validateStringId } from "../validation";
 import { Order } from "../entities/Order";
 
-export async function createOrder(req: Request, res: Response) {
-    res.send("Pedido creado");
-}
-
 export async function readOrder(req: Request, res: Response) {
     const selectedId = req.params.id;
 
@@ -31,7 +27,7 @@ export async function readOrder(req: Request, res: Response) {
 
 }
 
-export async function updateOrder(req: Request, res: Response) {
+export async function updateOrderItems(req: Request, res: Response) {
     const orderId = req.params.id;
     const serviceId: number = parseInt(req.query.sId as string);
 
@@ -53,52 +49,62 @@ export async function updateOrder(req: Request, res: Response) {
             throw new Error("ID de servicio no existe");
         }
 
-        console.log(order)
-        console.log(serviceToAdd)
         if (order.items === undefined) {
             order.items = [ serviceToAdd ];
         } else {
             order.items.push(serviceToAdd);
         }
 
-        res.send(order);
         await manager.save(order)
+        res.send(order);
     } catch (error) {
         console.error(error);
         return;
     }
 }
 
-export async function deleteOrder(req: Request, res: Response) {
-    const selectedId = req.params.id;
-    const serviceId: number = parseInt(req.query.sId as string);
-
-    if (!validateStringId(selectedId) || !validateNumberId(serviceId)) {
+export async function deleteOrderItems(req: Request, res: Response) {
+    const selectAllItemsFlag = -1;
+    const orderId = req.params.id;
+    const serviceIdToDelete: number = parseInt(req.query.sId as string) || selectAllItemsFlag;
+    if (!validateStringId(orderId) || !validateNumberId(serviceIdToDelete)) {
         res.send("Por favor elija un ID de orden o ID de servicio válido");
         return;
     }
 
     const manager = AppDataSource.manager;
+
     try {
-        const order = await manager.findOne(Order, { where: { id: selectedId }, relations: { items: true } });
+        let order = await manager.findOne(Order, { where: { id: orderId }, relations: { items: true } });
         if (order === null) {
-            res.send("No se puede borrar porque la orden no existe");
+            console.error("Id de orden para borrar retornó null");
+            throw new Error("Error de borrado");
+        }
+
+        console.log(orderId);
+        if (serviceIdToDelete === selectAllItemsFlag) {
+            // Borra todos los elementos del array
+            console.log("Entró");
+            order.items = order.items.filter((item) => { return item.id === -1 });
+            await manager.save(order);
+            res.send(order);
             return;
         }
 
-        console.log("Antes: ", order.items)
         // item[0] es index e item[1] es el valor
-        for (const item of order.items.entries()) {
-            if (item[1].id === serviceId) {
-                order.items.splice(item[0], 1)
+        const index = 0;
+        const value = 1;
+        for (const entry of order.items.entries()) {
+            if (entry[value].id === serviceIdToDelete) {
+                order.items.splice(entry[index], 1)
                 break;
             }
         }
-        console.log("Después: ", order.items)
-
-        res.send(order);
+ 
         await manager.save(order);
-    } catch (error) {
-        console.error(error);
-    }
+        res.send(order);
+     } catch (error) {
+         console.error(error);
+         res.send("Error de borrado");
+     }
 }
