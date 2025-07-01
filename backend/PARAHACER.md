@@ -13,18 +13,10 @@ Lista de funcionalidades y fixes que hay que hacer
 [ ] Agregar funcionalidad de pagos con herramientas de terceros
 [ ] Funcionalidad de Rating
 [ ] Agregar validaciones de formulario de nuevo usuario (dejar para después, seguramente usamos librería)
+[ ] Agregar funcionalidad de generar PDF de detalle de orden
 
 ## Fixes
 [ ] Arreglar error de no poder agregar un producto dos veces seguidas
 
-## Frontend
-
-Usar Bootstrap
-
-[ ] Crear navbar
-[ ] Crear footer
-[ ] Crear Presentación
-[ ] Crear display de paquetes para usuario común
-[ ] Crear display de paquetes para usuario admin
-[ ] Crear página de formulario para registrarse
-[ ] Crear cuadros de diálogo que muestran información detallada de los paquetes
+## Testing
+[ ] Testear valibot
