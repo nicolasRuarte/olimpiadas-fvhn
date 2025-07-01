@@ -4,7 +4,7 @@ import { createOrderDetail, readOrderDetail, updateOrderDetail, deleteOrderDetai
 const router = Router()
 
 router.post("/orderdetail", createOrderDetail);
-router.get("/orderdetail/:id", readOrderDetail);
+router.get("/orderdetail/:id", readOrderDetail); // Devolver todos los OrderDetail solo funciona si pasamos -1 como id
 router.patch("/orderdetail", updateOrderDetail);
 router.delete("/orderdetail", deleteOrderDetail);
 

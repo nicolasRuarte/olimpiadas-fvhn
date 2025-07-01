@@ -23,6 +23,9 @@ export class User extends BaseEntity {
     @Column()
     phone_number: string;
 
+    @Column({ default: "client" })
+    role: string;
+
     @OneToOne(() => Order)
     @JoinColumn()
     order: Order;
