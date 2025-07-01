@@ -15,6 +15,9 @@ Lista de funcionalidades y fixes que hay que hacer
 [ ] Funcionalidad de Rating
 [ ] Agregar validaciones de formulario de nuevo usuario (dejar para después, seguramente usamos librería)
 
+## Fixes
+[ ] Arreglar error de no poder agregar un producto dos veces seguidas
+
 ## Frontend
 
 [ ] Crear navbar
