@@ -1,10 +1,9 @@
 import { Router } from "express";
-import { createOrder, readOrder, updateOrder, deleteOrder } from "../controllers/order.controllers";
+import { readOrder, updateOrder, deleteOrder } from "../controllers/order.controllers";
 
 const router = Router()
 
 // :id refiere a la ID de la orden, no del servicio
-router.post("/order", createOrder);
 router.get("/order/:id", readOrder);
 router.patch("/order/:id/add", updateOrder); // Acepta ID de servicio como parámetro de query (sId=)
 router.delete("/order/:id/delete", deleteOrder); // Acepta ID de servicio como parámetro query (sId=)
