@@ -7,12 +7,13 @@ Lista de funcionalidades y fixes que hay que hacer
 [x] Funcionalidad carrito
 [x] Funcionalidad de detalles de compra
 [x] Agregar historial global de pedidos
-[x] Agregar funcionalidad de hasheo en las contraseñas HACIENDO
-[ ] Autenticación HACIENDO 
+[x] Agregar funcionalidad de hasheo en las contraseñas 
+[x] Agregar validaciones de formulario de nuevo usuario
+[x] Funcionalidad de autenticación
+[ ] Funcionalidad de sesión HACIENDO
 [ ] Agregar historial de pedidos por usuario
 [ ] Agregar funcionalidad de pagos con herramientas de terceros
 [x] Funcionalidad de Rating
-[x] Agregar validaciones de formulario de nuevo usuario
 [ ] Agregar funcionalidad de generar PDF de detalle de orden
 
 ## Fixes
