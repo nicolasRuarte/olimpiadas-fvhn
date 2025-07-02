@@ -2,6 +2,10 @@ import { Column,
     Entity, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, ManyToMany, JoinTable } from "typeorm";
 import { User } from "./User";
 import { Service } from "./Service";
+import {
+    IsDate,
+    IsNumber
+} from "class-validator";
 
 @Entity()
 export class OrderDetail extends BaseEntity {
@@ -9,6 +13,7 @@ export class OrderDetail extends BaseEntity {
     order_number: number;
 
     @CreateDateColumn()
+    @IsDate()
     emittedDate: Date;
      
     @ManyToOne(() => User, (user) => user.orderDetails)
@@ -19,5 +24,6 @@ export class OrderDetail extends BaseEntity {
     items: Service[];
 
     @Column()
+    @IsNumber()
     total_price: number;
 }
