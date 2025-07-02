@@ -24,8 +24,6 @@ export async function createUser(req: Request, res: Response) {
 
     try {
         loginData = validateUserData(loginData);
-        console.log(typeof loginData);
-        console.log(loginData);
         
         const newUser = new User;
         newUser.dni = loginData.dni;
@@ -34,13 +32,13 @@ export async function createUser(req: Request, res: Response) {
         newUser.email = loginData.email;
         newUser.password = await bcrypt.hash(loginData.password, SALT_ROUNDS);
         newUser.phone_number = loginData.phone_number;
+        newUser.role = "admin";
 
         const newOrder = new Order;
         newOrder.id = loginData.dni;
         newUser.order = newOrder;
         await manager.save(newOrder);
 
-        console.log(`Creando usuario ${newUser} con orden ${newOrder}`);
         await manager.save(newUser);
 
         res.send("Usuario creado");
@@ -51,14 +49,39 @@ export async function createUser(req: Request, res: Response) {
     
 }
 
-export function readUser(req: Request, res: Response) {
-    res.send("Usuario devuelto");
+export async function readUsers(req: Request, res: Response) {
+    const manager = AppDataSource.manager;
+
+    const result = await manager.find(User);
+
+    res.send(result);
 }
 
-export function updateUser(req: Request, res: Response) {
+export async function updateUser(req: Request, res: Response) {
     res.send("Usuario actualizado");
 }
 
-export function deleteUser(req: Request, res: Response) {
+export async function deleteUser(req: Request, res: Response) {
     res.send("Usuario borrado");
+}
+
+export async function logInUser(req: Request, res: Response) {
+    const { dni, email, password } = req.body;
+
+    try {
+        const manager = AppDataSource.manager;
+
+        const userToLogIn = await manager.findOne(User, { where: [ { dni: dni }, { email: email } ] });
+        if (userToLogIn === null) {
+            throw new Error("Usuario no existe");
+        }
+
+        const isPasswordCorrect = await bcrypt.compare(password, userToLogIn?.password);
+        if (!isPasswordCorrect) throw new Error("La contraseña o el usuario son incorrectos");
+
+        const  { names, surname, role } = userToLogIn;
+        res.send({ names, surname, role });
+    } catch (error) {
+        console.error(error);
+    }
 }
