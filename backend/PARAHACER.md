@@ -10,11 +10,11 @@ Lista de funcionalidades y fixes que hay que hacer
 [x] Agregar funcionalidad de hasheo en las contraseñas 
 [x] Agregar validaciones de formulario de nuevo usuario
 [x] Funcionalidad de autenticación
-[ ] Funcionalidad de sesión HACIENDO
-[ ] Agregar historial de pedidos por usuario
-[ ] Agregar funcionalidad de pagos con herramientas de terceros
+[x] Funcionalidad de sesión 
 [x] Funcionalidad de Rating
+[ ] Agregar funcionalidad de pagos con herramientas de terceros HACIENDO
 [ ] Agregar funcionalidad de generar PDF de detalle de orden
+[ ] Agregar historial de pedidos por usuario
 
 ## Fixes
 
