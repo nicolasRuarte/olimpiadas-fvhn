@@ -4,7 +4,9 @@ import { Order } from "../entities/Order";
 import { AppDataSource } from "../db";
 import { validateStringId, validateUserData } from "../validation";
 import bcrypt from "bcrypt";
-import { SALT_ROUNDS } from "../config";
+import jwt from "jsonwebtoken";
+import { SALT_ROUNDS, JWT_SECRET } from "../config";
+import cookieParser from "cookie-parser";
 
 
 export async function createUser(req: Request, res: Response) {
@@ -41,7 +43,7 @@ export async function createUser(req: Request, res: Response) {
 
         await manager.save(newUser);
 
-        res.send("Usuario creado");
+        res.send({ newUser, newOrder});
     } catch (error) {
         console.error(error);
         res.send("Error al crear usuario");
@@ -58,7 +60,19 @@ export async function readUsers(req: Request, res: Response) {
 }
 
 export async function updateUser(req: Request, res: Response) {
-    res.send("Usuario actualizado");
+    try {
+        const token = req.cookies.access_token;
+        if (token === undefined || token === undefined) {
+            throw new Error("Acceso denegado");
+        }
+
+        console.log("Buen día");
+    } catch (error) {
+        console.error(error);
+        res.status(403).send("Acceso denegado");
+        
+    }
+
 }
 
 export async function deleteUser(req: Request, res: Response) {
@@ -72,15 +86,25 @@ export async function logInUser(req: Request, res: Response) {
         const manager = AppDataSource.manager;
 
         const userToLogIn = await manager.findOne(User, { where: [ { dni: dni }, { email: email } ] });
-        if (userToLogIn === null) {
-            throw new Error("Usuario no existe");
-        }
+        if (userToLogIn === null) throw new Error("Usuario no existe");
 
         const isPasswordCorrect = await bcrypt.compare(password, userToLogIn?.password);
         if (!isPasswordCorrect) throw new Error("La contraseña o el usuario son incorrectos");
 
-        const  { names, surname, role } = userToLogIn;
-        res.send({ names, surname, role });
+        const role: string = userToLogIn.role;
+        const token = jwt.sign(
+            { dni, role },
+            JWT_SECRET,
+            {
+                expiresIn: "24h"
+            });
+
+        const twentyFourHoursInSeconds = 1000 * 60 * 60 * 24;
+        res.cookie("access_token", token, {
+            httpOnly: true,
+            sameSite: "strict",
+            maxAge: twentyFourHoursInSeconds
+        }).send({ dni, role, token });
     } catch (error) {
         console.error(error);
     }
