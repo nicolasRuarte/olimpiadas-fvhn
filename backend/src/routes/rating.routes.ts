@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { createRating, readRating, updateRating, deleteRating } from "../controllers/rating.controllers";
+import { createRating, readRatings, updateRating, deleteRating } from "../controllers/rating.controllers";
 
 const router = Router()
 
-router.post("/Rating", createRating);
-router.get("/Rating", readRating);
-router.put("/Rating", updateRating);
-router.delete("/Rating", deleteRating);
+// URL para hacer rating es /rating?uId=(id de usuario)&sId=(id de servicio)&r=(rating)
+router.post("/rating", createRating);
+router.get("/rating", readRatings);
+router.put("/rating", updateRating);
+router.delete("/rating", deleteRating);
 
 export default router
