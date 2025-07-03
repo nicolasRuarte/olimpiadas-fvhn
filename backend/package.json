@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsnd --rs --respawn src/index.ts",
-    "build": "npm install; tsc",
+    "build": "npm install; t,sc",
     "start": "node dist/index.js"
   },
   "repository": {

@@ -4,15 +4,16 @@ import { Order } from "./entities/Order";
 import { OrderDetail } from "./entities/OrderDetail";
 import { Rating } from "./entities/Rating";
 import { Service } from "./entities/Service";
+import { DATABASE_NAME, DB_PORT, HOST, PASSWORD, USERNAME,  } from "./dbconfig"
 
 export const AppDataSource = new DataSource({
     type: "postgres",
-    host: "localhost",
-    username: "postgres",
-    password: "postgres",
-    port: 5432,
-    database: "pagina_vuelos",
+    host: HOST,
+    username: USERNAME,
+    password: PASSWORD,
+    port: DB_PORT,
+    database: DATABASE_NAME,
     entities: [ User, Order, OrderDetail, Service, Rating ],
     logging: true,
-    synchronize: true
+    synchronize: false
 });
