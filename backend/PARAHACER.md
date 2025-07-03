@@ -26,6 +26,7 @@ Lista de funcionalidades y fixes que hay que hacer
 
 [ ] Arreglar error de no poder agregar un producto dos veces seguidas
 [ ] Cambiar las partes del código donde usé el tipo any
+[ ] Asegurarme de que todas las funciones devuelvan JSON
 
 ## Testing
 
