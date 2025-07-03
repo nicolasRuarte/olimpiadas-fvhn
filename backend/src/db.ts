@@ -11,9 +11,9 @@ export const AppDataSource = new DataSource({
     host: HOST,
     username: USERNAME,
     password: PASSWORD,
-    port: DB_PORT,
+    port: (<number>DB_PORT),
     database: DATABASE_NAME,
     entities: [ User, Order, OrderDetail, Service, Rating ],
     logging: true,
-    synchronize: false
+    synchronize: true 
 });
