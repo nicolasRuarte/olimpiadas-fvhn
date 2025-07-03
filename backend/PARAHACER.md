@@ -12,13 +12,15 @@ Lista de funcionalidades y fixes que hay que hacer
 [x] Funcionalidad de autenticación
 [x] Funcionalidad de sesión 
 [x] Funcionalidad de Rating
-[ ] Agregar funcionalidad de pagos con herramientas de terceros HACIENDO
+[x] Agregar historial de pedidos por usuario
+[ ] Agregar funcionalidad de pedidos pendientes HACIENDO
+[ ] Agregar funcionalidad de pagos con herramientas de terceros 
 [ ] Agregar funcionalidad de generar PDF de detalle de orden
-[ ] Agregar historial de pedidos por usuario
 
 ## Fixes
 
 [ ] Arreglar error de no poder agregar un producto dos veces seguidas
+[ ] Cambiar las partes del código donde usé el tipo any
 
 ## Testing
 
