@@ -17,8 +17,10 @@ Lista de funcionalidades y fixes que hay que hacer
 [x] Agregar funcionalidad de ver todos los pedidos pendientes 
 [x] Agregar funcionalidad de ver todos los pedidos aceptados
 [x] Agregar funcionalidad de ver todos los pedidos anulados
-[ ] Agregar funcionalidad de pagos con herramientas de terceros HACIENDO
-[ ] Agregar funcionalidad de generar PDF de detalle de orden
+[x] Crear servidor en Render para desplegar
+[ ] Agregar funcionalidad de pagos con Mercado Pago HACIENDO
+[ ] Conectar backend con el frontend
+[ ] (No llego) Agregar funcionalidad de generar PDF de detalle de orden
 
 ## Fixes
 
