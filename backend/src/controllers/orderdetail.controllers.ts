@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../db";
 import { OrderDetail } from "../entities/OrderDetail";
+import { User } from "../entities/User";
 import { validateNumberId, validateStringId } from "../validation";
 import { deleteOrderItems } from "./order.controllers";
 
@@ -31,6 +32,18 @@ export async function createOrderDetail(req: Request, res: Response) {
 
         await manager.save(newOrderDetail);
         console.log("Detalle de orden creado");
+
+        // Usamos orderId para sacar la id de usuario porque son la misma
+        const user = await manager.findOne(User, { where: { dni: orderId }, relations: { orderDetails: true } });
+        if ( user === null ) throw new Error("Usuario no existe");
+
+        if (user.orderDetails === undefined) {
+            user.orderDetails = [ newOrderDetail ];
+        } else {
+            user.orderDetails.push(newOrderDetail);
+        }
+
+        await manager.save(user);
 
         req.params.id = orderId;
         deleteOrderItems(req, res)
