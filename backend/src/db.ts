@@ -4,7 +4,7 @@ import { Order } from "./entities/Order";
 import { OrderDetail } from "./entities/OrderDetail";
 import { Rating } from "./entities/Rating";
 import { Service } from "./entities/Service";
-import { DATABASE_NAME, DB_PORT, DATABASE_URL, HOST, PASSWORD, USERNAME,  } from "./dbconfig"
+import { DATABASE_NAME, DB_PORT, DATABASE_URL, HOST, PASSWORD, USERNAME } from "./dbconfig";
 
 export const AppDataSource = new DataSource({
     type: "postgres",
