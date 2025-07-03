@@ -13,7 +13,8 @@ Lista de funcionalidades y fixes que hay que hacer
 [x] Funcionalidad de sesión 
 [x] Funcionalidad de Rating
 [x] Agregar historial de pedidos por usuario
-[ ] Agregar funcionalidad de pedidos pendientes HACIENDO
+[x] Agregar funcionalidad de pedidos pendientes
+[ ] Agregar funcionalidad de ver todos los pedidos pendientes HACIENDO
 [ ] Agregar funcionalidad de pagos con herramientas de terceros 
 [ ] Agregar funcionalidad de generar PDF de detalle de orden
 
