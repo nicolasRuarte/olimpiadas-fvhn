@@ -6,9 +6,8 @@ import { validateStringId, validateUserData } from "../validation";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { SALT_ROUNDS, JWT_SECRET } from "../config";
-import cookieParser from "cookie-parser";
 
-
+// CRUD OPERATIONS -----------------------------------------
 export async function createUser(req: Request, res: Response) {
     let loginData = req.body;
 
@@ -34,14 +33,13 @@ export async function createUser(req: Request, res: Response) {
         newUser.email = loginData.email;
         newUser.password = await bcrypt.hash(loginData.password, SALT_ROUNDS);
         newUser.phone_number = loginData.phone_number;
-        newUser.role = "admin";
+        await manager.save(newUser);
 
         const newOrder = new Order;
         newOrder.id = loginData.dni;
         newUser.order = newOrder;
         await manager.save(newOrder);
 
-        await manager.save(newUser);
 
         res.send({ newUser, newOrder});
     } catch (error) {
@@ -54,7 +52,10 @@ export async function createUser(req: Request, res: Response) {
 export async function readUsers(req: Request, res: Response) {
     const manager = AppDataSource.manager;
 
-    const result = await manager.find(User);
+    const result = await manager.find(User, 
+                                      { relations: { orderDetails: true },
+                                          select: { dni: true, names: true, surname: true, email: true },
+                                          order: { dni: "ASC" } });
 
     res.send(result);
 }
@@ -79,6 +80,7 @@ export async function deleteUser(req: Request, res: Response) {
     res.send("Usuario borrado");
 }
 
+// EXTRAS ----------------------------------------------------
 export async function logInUser(req: Request, res: Response) {
     const { dni, email, password } = req.body;
 
@@ -105,6 +107,30 @@ export async function logInUser(req: Request, res: Response) {
             sameSite: "strict",
             maxAge: twentyFourHoursInSeconds
         }).send({ dni, role, token });
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export async function getAllPurchases(req: Request, res: Response) {
+
+    try {
+        const token = req.cookies.access_token;
+        if (token === undefined || token === null) {
+            throw new Error("Acceso denegado");
+        }
+
+        const data = jwt.verify(token, JWT_SECRET);
+
+        const manager = AppDataSource.manager;
+
+        // Si se puede eliminar los any
+        const user = await manager.findOne(User, { where: { dni: (<any>data).dni }, relations: { orderDetails: true } });
+        if (user === null) {
+            throw new Error("Usuario no existe");
+        }
+
+        res.send(user.orderDetails);
     } catch (error) {
         console.error(error);
     }
