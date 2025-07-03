@@ -26,4 +26,7 @@ export class OrderDetail extends BaseEntity {
     @Column()
     @IsNumber()
     total_price: number;
+
+    @Column({ default: "pending" })
+    status: string;
 }

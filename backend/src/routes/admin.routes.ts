@@ -1,8 +1,10 @@
 import { Router } from "express";
-import { readAdmin } from "../controllers/admin.controllers";
+import { readAdmin, getAllSales, changeOrderDetailStatus } from "../controllers/admin.controllers";
 
 const router = Router();
 
 router.get("/admin", readAdmin);
+router.get("/admin/sells", getAllSales);
+router.patch("/admin/change-order-status", changeOrderDetailStatus);
 
 export default router;
