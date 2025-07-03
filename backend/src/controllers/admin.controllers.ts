@@ -31,8 +31,18 @@ export async function getAllSales(req: Request, res: Response) {
     }
 }
 
-export async function getAllPendingOrders(req: Request, res: Response) {
+export async function getAllOrders(req: Request, res: Response) {
     try {
+        // Opción puede ser "pending", "accepted" o "anulled". Default es pending
+        const option = req.body.option || "pending";
+        if (option !== "pending" || option !== "accepted" || option !== "annulled") {
+            throw new Error("Opción seleccionada no existe");
+        }
+        const manager = AppDataSource.manager;
+
+        const pendingOrders = await manager.find(OrderDetail, { where: { status: option } });
+
+        res.send(pendingOrders);
         console.log("Obteniendo todas las órdenes pendientes");
     } catch (error) {
         console.error(error);

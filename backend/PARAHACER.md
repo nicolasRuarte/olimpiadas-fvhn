@@ -14,8 +14,10 @@ Lista de funcionalidades y fixes que hay que hacer
 [x] Funcionalidad de Rating
 [x] Agregar historial de pedidos por usuario
 [x] Agregar funcionalidad de pedidos pendientes
-[ ] Agregar funcionalidad de ver todos los pedidos pendientes HACIENDO
-[ ] Agregar funcionalidad de pagos con herramientas de terceros 
+[x] Agregar funcionalidad de ver todos los pedidos pendientes 
+[x] Agregar funcionalidad de ver todos los pedidos aceptados
+[x] Agregar funcionalidad de ver todos los pedidos anulados
+[ ] Agregar funcionalidad de pagos con herramientas de terceros HACIENDO
 [ ] Agregar funcionalidad de generar PDF de detalle de orden
 
 ## Fixes
@@ -25,4 +27,4 @@ Lista de funcionalidades y fixes que hay que hacer
 
 ## Testing
 
-[ ] Testear valibot
+[x] Testear valibot
