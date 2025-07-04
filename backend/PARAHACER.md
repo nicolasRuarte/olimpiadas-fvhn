@@ -14,15 +14,20 @@ Lista de funcionalidades y fixes que hay que hacer
 [x] Funcionalidad de Rating
 [x] Agregar historial de pedidos por usuario
 [x] Agregar funcionalidad de pedidos pendientes
-[ ] Agregar funcionalidad de ver todos los pedidos pendientes HACIENDO
-[ ] Agregar funcionalidad de pagos con herramientas de terceros 
-[ ] Agregar funcionalidad de generar PDF de detalle de orden
+[x] Agregar funcionalidad de ver todos los pedidos pendientes 
+[x] Agregar funcionalidad de ver todos los pedidos aceptados
+[x] Agregar funcionalidad de ver todos los pedidos anulados
+[x] Crear servidor en Render para desplegar
+[ ] Agregar funcionalidad de pagos con Mercado Pago HACIENDO
+[ ] Conectar backend con el frontend
+[ ] (No llego) Agregar funcionalidad de generar PDF de detalle de orden
 
 ## Fixes
 
 [ ] Arreglar error de no poder agregar un producto dos veces seguidas
 [ ] Cambiar las partes del código donde usé el tipo any
+[ ] Asegurarme de que todas las funciones devuelvan JSON
 
 ## Testing
 
-[ ] Testear valibot
+[x] Testear valibot
