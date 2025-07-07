@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrito de Viajes</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+  
+  <!-- Bootstrap Icons (para el ícono de maleta/carrito) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(to right, #dfe9f3, #ffffff);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .tabla-carrito {
+      margin-top: 50px;
+      margin-bottom: 50px;
+    }
+
+    table th, table td {
+      vertical-align: middle;
+      padding: 1.2rem;
+    }
+
+    footer {
+      margin-top: auto;
+      background-color: #0d6efd;
+      color: white;
+      padding: 1.5rem 1rem;
+      text-align: center;
+    }
+
+    .badge {
+      font-size: 0.9rem;
+      padding: 0.5em 1em;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR con logo y carrito (maleta) -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
+    <div class="container">
+      <img src="logocompletoMF.svg" alt="logo" height="40" />
+      <a class="navbar-brand ms-2" href="#">VuelaMás</a>
+
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <!-- Ícono de carrito (maleta) -->
+            <a class="nav-link active" href="#">
+              <i class="bi bi-suitcase-lg-fill"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Cerrar sesión</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- SECCIÓN CARRITO CON BUSCADOR -->
+  <div class="container tabla-carrito">
+    <h2 class="mb-4 text-center">Tus Reservas</h2>
+
+    <!-- Campo de búsqueda -->
+    <div class="mb-4">
+      <input type="text" id="buscador" class="form-control" placeholder="Buscar por destino, fecha, estado, DNI, etc." />
+    </div>
+
+    <!-- Tabla de reservas -->
+    <div class="table-responsive">
+      <table class="table table-striped table-hover shadow rounded-4 overflow-hidden">
+        <thead class="table-primary text-center">
+          <tr>
+            <th>ID Reserva</th>
+            <th>Fecha</th>
+            <th>DNI</th>
+            <th>Destino / Paquete</th>
+            <th>Total</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-body">
+          <!-- Aquí el JS insertará las filas automáticamente -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 VuelaMás. Todos los derechos reservados.</p>
+    <p><small>Inspirando viajes desde Córdoba, Argentina </small></p>
+  </footer>
+
+  <!-- SCRIPT para rellenar tabla y buscar -->
+  <script>
+    // Datos simulados (como si vinieran de un usuario logueado)
+    const reservas = [
+      {
+        id: "#0001",
+        fecha: "03/07/2025",
+        dni: "40235678",
+        destino: "Caribe 7 días",
+        total: "$450.000",
+        estado: "Pendiente"
+      },
+      {
+        id: "#0002",
+        fecha: "01/07/2025",
+        dni: "40890123",
+        destino: "Bariloche 3 días",
+        total: "$120.000",
+        estado: "Aceptado"
+      },
+      {
+        id: "#0003",
+        fecha: "30/06/2025",
+        dni: "42111999",
+        destino: "Mar del Plata 5 noches",
+        total: "$200.000",
+        estado: "Anulado"
+      }
+    ];
+
+    // Referencia al <tbody>
+    const tablaBody = document.getElementById("tabla-body");
+
+    // Función para mostrar todas las reservas
+    function mostrarReservas(lista) {
+      // acac limpiamos el cuerpo de la tabla
+      tablaBody.innerHTML = "";
+
+      // Recorremos cada reserva y creamos la fila
+      lista.forEach(res => {
+        const fila = document.createElement("tr");
+
+        // Definimos el color del estado
+        let estadoColor = "";
+        if (res.estado === "Pendiente") estadoColor = "warning text-dark";
+        else if (res.estado === "Aceptado") estadoColor = "success";
+        else estadoColor = "danger";
+
+        // Insertamos la fila con los datos
+        fila.innerHTML = `
+          <td>${res.id}</td>
+          <td>${res.fecha}</td>
+          <td>${res.dni}</td>
+          <td>${res.destino}</td>
+          <td>${res.total}</td>
+          <td><span class="badge bg-${estadoColor}">${res.estado}</span></td>
+        `;
+
+        // Agregamos la fila a la tabla
+        tablaBody.appendChild(fila);
+      });
+    }
+
+    // Mostramos las reservas al cargar la página
+    mostrarReservas(reservas);
+
+    // Buscador: filtra en tiempo real
+    const inputBuscador = document.getElementById("buscador");
+    inputBuscador.addEventListener("input", function () {
+      const texto = this.value.toLowerCase();
+      const filtrado = reservas.filter(res =>
+        Object.values(res).some(valor =>
+          valor.toLowerCase().includes(texto)
+        )
+      );
+      mostrarReservas(filtrado);
+    });
+  </script>
+
+</body>
+</html>
