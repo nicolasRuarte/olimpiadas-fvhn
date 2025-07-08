@@ -1,6 +1,6 @@
-Lista de funcionalidades y fixes que hay que hacer
+Lista de tareas que hay que realizar en el backend
 
-## Backend
+# Backend
 
 [x] Funcionalidad CRUD para Usuarios (enfocarse en crear)
 [x] Funcionalidad CRUD para Servicios (enfocarse en crear y actualizar)
@@ -19,8 +19,9 @@ Lista de funcionalidades y fixes que hay que hacer
 [x] Agregar funcionalidad de ver todos los pedidos anulados
 [x] Crear servidor en Render para desplegar
 [ ] Agregar funcionalidad de pagos con Mercado Pago HACIENDO
+[ ] Agregar funcionalidad de generar PDF de detalle de orden
 [ ] Conectar backend con el frontend
-[ ] (No llego) Agregar funcionalidad de generar PDF de detalle de orden
+[ ] Agregar módulo de creación de mensaje de errores
 
 ## Fixes
 
@@ -31,3 +32,6 @@ Lista de funcionalidades y fixes que hay que hacer
 ## Testing
 
 [x] Testear valibot
+
+## Si es posible agregar
+[ ] Cacheo con Redis
