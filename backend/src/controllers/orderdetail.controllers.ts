@@ -46,9 +46,9 @@ export async function createOrderDetail(req: Request, res: Response) {
         await manager.save(user);
 
         req.params.id = orderId;
-        deleteOrderItems(req, res)
-        console.log("Elementos de carrito borrados");
+        await deleteOrderItems(req, res)
 
+        res.status(201).send(newOrderDetail);
     } catch (error) {
         console.error(error);
     }
@@ -70,21 +70,19 @@ export async function readOrderDetail(req: Request, res: Response) {
 
         if (selectedId === selectAllFlag) {
             orderDetailFound = await dataManager.find(OrderDetail, { order: { order_number: "ASC" }});
-            console.log("Devolviendo todos los detalles de orden registrados");
             res.send(orderDetailFound);
+            console.log("Devolviendo todos los detalles de orden registrados");
             return;
         }
 
         orderDetailFound = await dataManager.findOne(OrderDetail, { where: { order_number: selectedId } })
-        if (orderDetailFound === null){
-            throw new Error("El número de orden solicitado no existe");
-        } 
+        if (orderDetailFound === null) throw new Error("El número de orden solicitado no existe");
 
-        res.send(orderDetailFound);
+        res.status(200).send(orderDetailFound);
         console.log("Devolviendo detalle de orden");
     } catch (error) {
         console.error(error);
-        res.send("Error");
+        res.status(400).send();
     }
 }
 
