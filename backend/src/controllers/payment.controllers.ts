@@ -35,8 +35,9 @@ export async function createPayment(req: Request, res: Response) {
         }
 
         const result = await order.create({ body});
-        res.send(result);
+        res.status(200).send(result);
     } catch (error) {
         console.error(error);
+        res.status(400).send();
     }
 }
