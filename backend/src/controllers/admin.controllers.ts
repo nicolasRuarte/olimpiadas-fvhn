@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config";
 import { AppDataSource } from "../db";
-import { OrderDetail } from "../entities/OrderDetail";
+import { OrderDetail } from "@entities/OrderDetail";
 
 export async function readAdmin(req: Request, res: Response) {
     try {

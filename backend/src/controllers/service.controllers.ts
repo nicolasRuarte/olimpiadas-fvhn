@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { Service } from "../entities/Service";
+import { Service } from "@entities/Service";
 import { AppDataSource } from "../db";
-import { validateNumberId } from "../validation";
+import { validateNumberId } from "@functionality/validation";
 
 export async function createService(req: Request, res: Response) {
     const { name, description, price } = req.body;

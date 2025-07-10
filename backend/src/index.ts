@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import "module-alias/register";
 import app from "./app";
 import { AppDataSource } from "./db";
 import { PORT } from "./config";

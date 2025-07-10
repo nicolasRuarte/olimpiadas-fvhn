@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Service } from "../entities/Service";
 import { AppDataSource } from "../db";
-import { validateNumberId, validateStringId } from "../validation";
+import { validateNumberId, validateStringId } from "@functionality/validation";
 import { Order } from "../entities/Order";
 
 export async function readOrder(req: Request, res: Response) {

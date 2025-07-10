@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createService, readService, updateService, deleteService } from "../controllers/service.controllers";
+import { createService, readService, updateService, deleteService } from "@controllers/service.controllers";
 
 const router = Router()
 
