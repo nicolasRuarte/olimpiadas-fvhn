@@ -12,6 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderDetail = void 0;
 const typeorm_1 = require("typeorm");
 const User_1 = require("./User");
+const Service_1 = require("./Service");
+const class_validator_1 = require("class-validator");
 let OrderDetail = class OrderDetail extends typeorm_1.BaseEntity {
 };
 exports.OrderDetail = OrderDetail;
@@ -21,16 +23,27 @@ __decorate([
 ], OrderDetail.prototype, "order_number", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
+    (0, class_validator_1.IsDate)(),
     __metadata("design:type", Date)
 ], OrderDetail.prototype, "emittedDate", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], OrderDetail.prototype, "total_price", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.orderDetails),
     __metadata("design:type", User_1.User)
 ], OrderDetail.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.ManyToMany)(() => Service_1.Service),
+    (0, typeorm_1.JoinTable)(),
+    __metadata("design:type", Array)
+], OrderDetail.prototype, "items", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], OrderDetail.prototype, "total_price", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: "pending" }),
+    __metadata("design:type", String)
+], OrderDetail.prototype, "status", void 0);
 exports.OrderDetail = OrderDetail = __decorate([
     (0, typeorm_1.Entity)()
 ], OrderDetail);

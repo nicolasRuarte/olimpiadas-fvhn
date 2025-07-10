@@ -15,6 +15,7 @@ export async function createPayment(req: Request, res: Response) {
                 },
                 items: [
                     {
+                        id: "1",
                         title: "Nombre de producto",
                         quantity: 1,
                         unit_price: 100
