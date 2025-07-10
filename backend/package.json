@@ -8,6 +8,11 @@
     "build": "npm install; tsc",
     "start": "node dist/index.js"
   },
+  "_moduleAliases": {
+    "@controllers": "dist/controllers",
+    "@entities": "dist/entities",
+    "@routes": "dist/routes"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nicolasRuarte/olimpiadas-fvhn.git"
@@ -39,6 +44,7 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mercadopago": "^2.8.0",
+    "module-alias": "^2.2.3",
     "morgan": "^1.10.0",
     "pg": "^8.16.3",
     "reflect-metadata": "^0.2.2",

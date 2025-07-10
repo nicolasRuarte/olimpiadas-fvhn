@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../db";
-import { Rating } from "../entities/Rating";
-import { Service } from "../entities/Service";
-import { validateNumberId, validateStringId } from "../validation";
-import { User } from "../entities/User";
+import { Rating } from "@entities/Rating";
+import { Service } from "@entities/Service";
+import { validateNumberId, validateStringId } from "@functionality/validation";
+import { User } from "@entities/User";
 
 export async function createRating(req: Request, res: Response) {
     let sId = req.query.sId as string;

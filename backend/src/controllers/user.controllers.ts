@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { User } from "../entities/User";
-import { Order } from "../entities/Order";
+import { User } from "@entities/User";
+import { Order } from "@entities/Order";
 import { AppDataSource } from "../db";
-import { validateStringId, validateUserData } from "../validation";
+import { validateStringId, validateUserData } from "@functionality/validation";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { SALT_ROUNDS, JWT_SECRET } from "../config";
@@ -21,7 +21,6 @@ export async function createUser(req: Request, res: Response) {
     }
 
     const manager = AppDataSource.manager;
-
 
     try {
         loginData = validateUserData(loginData);

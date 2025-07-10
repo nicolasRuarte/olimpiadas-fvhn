@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../db";
-import { OrderDetail } from "../entities/OrderDetail";
-import { User } from "../entities/User";
-import { validateNumberId, validateStringId } from "../validation";
+import { OrderDetail } from "@entities/OrderDetail";
+import { User } from "@entities/User";
+import { validateNumberId, validateStringId } from "@functionality/validation";
 import { deleteOrderItems } from "./order.controllers";
 
 // Pasando valor any momentáneamente. Cambiar después

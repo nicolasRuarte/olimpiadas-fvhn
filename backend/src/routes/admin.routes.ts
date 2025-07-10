@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { readAdmin, getAllSales, changeOrderDetailStatus, getAllOrders } from "../controllers/admin.controllers";
+import { readAdmin, getAllSales, changeOrderDetailStatus, getAllOrders } from "@controllers/admin.controllers";
 
 const router = Router();
 
