@@ -8,7 +8,7 @@ import orderDetailRoutes from "@routes/orderdetail.routes";
 import ratingRoutes from "@routes/rating.routes";
 import adminRoutes from "@routes/admin.routes";
 import cookieParser from "cookie-parser";
-import paymentRoutes from "./routes/payment.routes";
+import paymentRoutes from "@routes/payment.routes";
 
 const app = express();
 
