@@ -28,6 +28,7 @@ Lista de tareas que hay que realizar en el backend
 [ ] Arreglar error de no poder agregar un producto dos veces seguidas
 [ ] Cambiar las partes del código donde usé el tipo any
 [ ] Asegurarme de que todas las funciones devuelvan JSON
+[ ] Refactorizar para usar repositorios en lugar del DataManager
 
 ## Testing
 
@@ -35,3 +36,4 @@ Lista de tareas que hay que realizar en el backend
 
 ## Si es posible agregar
 [ ] Cacheo con Redis
+[ ] Página de datos "interesantes" (paquete más vendido, usuario con más compras, etc)
