@@ -13,8 +13,8 @@
     "@controllers": "dist/controllers",
     "@entities": "dist/entities",
     "@routes": "dist/routes",
-    "@root": "src/",
-    "@functionality": "src/functionality"
+    "@root": "dist/",
+    "@functionality": "dist/functionality"
   },
   "repository": {
     "type": "git",
