@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { User } from "@entities/User";
 import { Order } from "@entities/Order";
-import { AppDataSource } from "../db";
+import { AppDataSource } from "@root/db";
 import { validateStringId, validateUserData } from "@functionality/validation";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { SALT_ROUNDS, JWT_SECRET } from "../config";
+import { SALT_ROUNDS, JWT_SECRET } from "@root/config";
 
 // CRUD OPERATIONS -----------------------------------------
 export async function createUser(req: Request, res: Response) {
@@ -50,9 +50,9 @@ export async function createUser(req: Request, res: Response) {
 }
 
 export async function readUsers(req: Request, res: Response) {
-    const manager = AppDataSource.manager;
-
     try {
+        const manager = AppDataSource.manager;
+
         const result = await manager.find(User, 
                                         { relations: { orderDetails: true },
                                             select: { dni: true, names: true, surname: true, email: true },
