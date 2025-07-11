@@ -19,9 +19,6 @@ function createPayment(req, res) {
         try {
             const result = yield preference.create({
                 body: {
-                    back_urls: {
-                        success: "http://localhost:3000",
-                    },
                     items: [
                         {
                             id: "1",
@@ -32,9 +29,11 @@ function createPayment(req, res) {
                     ],
                 }
             });
+            console.log("Hecho el pago con Mercado Pago");
             res.send(result);
         }
         catch (error) {
+            console.error(error);
         }
     });
 }

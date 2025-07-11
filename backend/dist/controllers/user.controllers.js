@@ -20,11 +20,11 @@ exports.logInUser = logInUser;
 exports.getAllPurchases = getAllPurchases;
 const User_1 = require("@entities/User");
 const Order_1 = require("@entities/Order");
-const db_1 = require("../db");
+const db_1 = require("@root/db");
 const validation_1 = require("@functionality/validation");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const config_1 = require("../config");
+const config_1 = require("@root/config");
 // CRUD OPERATIONS -----------------------------------------
 function createUser(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -63,8 +63,8 @@ function createUser(req, res) {
 }
 function readUsers(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const manager = db_1.AppDataSource.manager;
         try {
+            const manager = db_1.AppDataSource.manager;
             const result = yield manager.find(User_1.User, { relations: { orderDetails: true },
                 select: { dni: true, names: true, surname: true, email: true },
                 order: { dni: "ASC" } });
