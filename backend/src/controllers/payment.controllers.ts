@@ -10,22 +10,25 @@ export async function createPayment(req: Request, res: Response) {
     try {
         const result = await preference.create({
             body: {
-                back_urls: {
-                    success: "http://localhost:3000",
-                },
                 items: [
                     {
                         id: "1",
                         title: "Nombre de producto",
                         quantity: 1,
-                        unit_price: 100
+                        unit_price: 1
                     }
                 ],
             }
         })
 
+        console.log("Hecho el pago con Mercado Pago");
         res.send(result);
     } catch (error) {
-        
+        console.error(error);
+        res.status(400).send();
     }
+}
+
+export async function renderPaymentPage(req: Request, res: Response) {
+    res.render("test-mp.html");   
 }

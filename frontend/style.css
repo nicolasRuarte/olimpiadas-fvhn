@@ -25,3 +25,12 @@
     font-weight: bold;
     text-align: center;
 }
+
+.footer {
+    background-color: hsl(207, 93%, 88%) !important;
+}
+
+.bi {
+    font-size: 2rem;
+    color: hsl(236, 76%, 15%);
+}
