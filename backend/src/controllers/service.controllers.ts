@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { Service } from "../entities/Service";
+import { Service } from "@entities/Service";
 import { AppDataSource } from "../db";
-import { validateNumberId } from "../validation";
+import { validateNumberId } from "@functionality/validation";
 
 export async function createService(req: Request, res: Response) {
     const { name, description, price } = req.body;
@@ -15,10 +15,10 @@ export async function createService(req: Request, res: Response) {
 
     try {
         await dataManager.save(newService);
-        res.send("Servicio creado");
+        res.status(200).send(newService);
     } catch (error) {
         console.error(error);
-        res.send("Error al crear servicio");
+        res.status(400).send("Error");
     }
 }
 
@@ -28,7 +28,7 @@ export async function readService(req: Request, res: Response) {
     const selectAllFlag = -1;
     const selectedId = parseInt(req.params.id) || selectAllFlag;
     if (!validateNumberId(selectedId)) {
-        res.send("Por favor ingrese un ID de servicio válido");
+        res.status(400).send("Por favor ingrese un ID de servicio válido");
         return;
     }
 
@@ -39,20 +39,17 @@ export async function readService(req: Request, res: Response) {
 
         if (selectedId === selectAllFlag) {
             serviceFound = await dataManager.find(Service, { order: { id: "ASC" }});
-            res.send(serviceFound);
+            res.status(200).send(serviceFound);
             return;
         }
 
         serviceFound = await dataManager.findOne(Service, { where: { id: selectedId } })
-        if (serviceFound === null){
-            res.send("El servicio solicitado no existe");
-            return;
-        } 
+        if (serviceFound === null) throw new Error("El servicio solictado no existe");
 
-        res.send(serviceFound);
+        res.status(200).send(serviceFound);
     } catch (error) {
         console.error(error);
-        res.send("Error al leer servicio/s");
+        res.status(400).send("Error al leer servicio/s");
     }
 }
 
@@ -60,7 +57,7 @@ export async function updateService(req: Request, res: Response) {
     const selectedId = parseInt(req.params.id);
     const updateParameters = req.body;
     if (selectedId === undefined || typeof selectedId !== "number") {
-        res.send("Por favor solicite un ID válido");
+        res.status(400).send("Por favor solicite un ID válido");
         return;
     }
 
@@ -68,17 +65,17 @@ export async function updateService(req: Request, res: Response) {
 
     try {
         await dataManager.update(Service, { id: selectedId }, updateParameters)
-        res.send("Servicio actualizado");
+        res.status(200).send("Servicio actualizado");
     } catch (error) {
         console.error(error);
-        res.send("Error al actualizar");
+        res.status(400).send();
     }
 }
 
 export async function deleteService(req: Request, res: Response) {
     const selectedId = parseInt(req.params.id);
     if (selectedId === undefined || selectedId === null || typeof selectedId !== "number") {
-        res.send("Por favor solicite un ID válido");
+        res.status(400).send("Por favor solicite un ID válido");
         return;
     }
 
@@ -87,9 +84,9 @@ export async function deleteService(req: Request, res: Response) {
     try {
         await dataManager.delete(Service, { id: selectedId })
 
-        res.send("Servicio borrado");
+        res.status(200).send("Servicio borrado");
     } catch (error) {
         console.error(error);
-        res.send("Error al borrar");
+        res.status(400).send("Error al borrar");
     }
 }

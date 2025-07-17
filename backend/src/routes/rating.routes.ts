@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createRating, readRatings, updateRating, deleteRating } from "../controllers/rating.controllers";
+import { createRating, readRatings, updateRating, deleteRating } from "@controllers/rating.controllers";
 
 const router = Router()
 

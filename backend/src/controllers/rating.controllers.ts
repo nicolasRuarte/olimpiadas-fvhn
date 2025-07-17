@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../db";
-import { Rating } from "../entities/Rating";
-import { Service } from "../entities/Service";
-import { validateNumberId, validateStringId } from "../validation";
-import { User } from "../entities/User";
+import { Rating } from "@entities/Rating";
+import { Service } from "@entities/Service";
+import { validateNumberId, validateStringId } from "@functionality/validation";
+import { User } from "@entities/User";
 
 export async function createRating(req: Request, res: Response) {
     let sId = req.query.sId as string;
@@ -19,8 +19,6 @@ export async function createRating(req: Request, res: Response) {
         return;
     }
 
-
-
     const manager = AppDataSource.manager;
 
     try {
@@ -30,9 +28,7 @@ export async function createRating(req: Request, res: Response) {
 
         const serviceRated = await manager.findOne(Service, { where: { id: serviceId }, relations: { ratings: true } });
         // findOne() retorna null si no lo encuentra
-        if (serviceRated === null) {
-            throw new Error("El servicio que se quiere calificar no existe");
-        }
+        if (serviceRated === null) throw new Error("El servicio que se quiere calificar no existe");
 
         if (serviceRated.ratings === undefined) {
             serviceRated.ratings = [ newRating ];
@@ -45,9 +41,7 @@ export async function createRating(req: Request, res: Response) {
 
         const user = await manager.findOne(User, { where: { dni: userDni }, relations: { ratings: true } });
         // findOne() retorna null si no lo encuentra
-        if (user === null) {
-            throw new Error("El usuario que ingresa la calificación no existe");
-        }
+        if (user === null) throw new Error("El usuario que ingresa la calificación no existe");
 
         if (user.ratings === undefined) {
             user.ratings = [ newRating ];
@@ -57,18 +51,26 @@ export async function createRating(req: Request, res: Response) {
 
         await manager.save(user);
 
-        res.send({ serviceRated: serviceRated.name, ratingUser: user.names, rating: newRating });
+        res.status(200).send({ serviceRated: serviceRated.name, ratingUser: user.names, rating: newRating });
     } catch (error) {
         console.error(error);
+        res.status(400).send();
     }
 }
 
 export async function readRatings(req: Request, res: Response) {
     const manager = AppDataSource.manager;
 
-    const ratings = await manager.find(Rating, { relations: { user: true, service: true }})
+    try {
+        const ratings = await manager.find(Rating, { relations: { user: true, service: true }})
 
-    res.send(ratings);
+        res.status(200).send(ratings);
+    } catch (error) {
+        console.error(error);
+        res.status(400).send();       
+    }
+
+
 }
 
 export async function updateRating(req: Request, res: Response) {

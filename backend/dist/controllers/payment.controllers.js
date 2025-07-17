@@ -8,26 +8,33 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-require("reflect-metadata");
-require("module-alias/register");
-const app_1 = __importDefault(require("@root/app"));
-const db_1 = require("@root/db");
+exports.createPayment = createPayment;
+const mercadopago_1 = require("mercadopago");
 const config_1 = require("@root/config");
-function main() {
+const client = new mercadopago_1.MercadoPagoConfig({ accessToken: config_1.MERCADOPAGO_ACCESS_TOKEN });
+function createPayment(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        const preference = new mercadopago_1.Preference(client);
         try {
-            yield db_1.AppDataSource.initialize();
-            console.log("Database intialized");
-            app_1.default.listen(config_1.PORT || 4000);
-            console.log("Server up on port ", config_1.PORT);
+            const result = yield preference.create({
+                body: {
+                    items: [
+                        {
+                            id: "1",
+                            title: "Nombre de producto",
+                            quantity: 1,
+                            unit_price: 100
+                        }
+                    ],
+                }
+            });
+            console.log("Hecho el pago con Mercado Pago");
+            res.send(result);
         }
         catch (error) {
             console.error(error);
+            res.status(400).send();
         }
     });
 }
-main();

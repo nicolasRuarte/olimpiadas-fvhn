@@ -14,35 +14,49 @@ const typeorm_1 = require("typeorm");
 const Order_1 = require("./Order");
 const OrderDetail_1 = require("./OrderDetail");
 const Rating_1 = require("./Rating");
+const class_validator_1 = require("class-validator");
 let User = class User extends typeorm_1.BaseEntity {
 };
 exports.User = User;
 __decorate([
     (0, typeorm_1.PrimaryColumn)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], User.prototype, "dni", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], User.prototype, "surname", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], User.prototype, "names", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+    (0, class_validator_1.IsEmail)(),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MinLength)(8),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.Length)(8),
     __metadata("design:type", String)
 ], User.prototype, "phone_number", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => Order_1.Order, (order) => order.dni),
+    (0, typeorm_1.Column)({ default: "client" }),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], User.prototype, "role", void 0);
+__decorate([
+    (0, typeorm_1.OneToOne)(() => Order_1.Order),
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", Order_1.Order)
 ], User.prototype, "order", void 0);
