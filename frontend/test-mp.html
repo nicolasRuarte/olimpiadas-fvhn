@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagar con Mercado Pago</title>
+</head>
+<body>
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+    <script>
+        const publicKey = "APP_USR-01dbfc49-0435-4af9-a970-daec3680a949";
+        const preferenceId = "1219752495-c0643f10-c174-441d-8f59-a132c1999adc";
+
+        const mp = new MercadoPago(publicKey);
+
+        const bricksBuilder = mp.bricks();
+        const renderWalletBrick = async (bricksBuilder) => {
+            await bricksBuilder.create("wallet", "walletBrick_container", {
+                initialization: {
+                    preferenceId: preferenceId
+                }
+            });
+        };
+
+        renderWalletBrick(bricksBuilder);
+    </script>
+
+    <div id="walletBrick_container"></div>
+
+</body>
+</html>

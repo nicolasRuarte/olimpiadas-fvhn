@@ -26,11 +26,11 @@ function createService(req, res) {
         const dataManager = db_1.AppDataSource.manager;
         try {
             yield dataManager.save(newService);
-            res.status(200).send("Servicio creado");
+            res.status(200).send(newService);
         }
         catch (error) {
             console.error(error);
-            res.status(400).send("Error al crear servicio");
+            res.status(400).send("Error");
         }
     });
 }
