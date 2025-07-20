@@ -3,27 +3,41 @@ import { Service } from "@entities/Service";
 import { AppDataSource } from "../db";
 import { validateNumberId } from "@functionality/validation";
 
-export async function createService(req: Request, res: Response) {
-    const { name, description, price } = req.body;
+const serviceRepository = AppDataSource.getRepository(Service);
+
+export async function createServiceOnServer(serviceData: Service) {
+    const { name, description, price } = serviceData;
 
     const newService = new Service;
     newService.name = name;
     newService.description = description;
     newService.price = price;
 
-    const dataManager = AppDataSource.manager;
+    serviceRepository.save(newService);
 
+    return newService;
+}
+
+export async function createService(req: Request, res: Response) {
     try {
-        await dataManager.save(newService);
-        res.status(200).send(newService);
+        const newService = await createServiceOnServer(req.body);
+        res.status(201).send(newService);
     } catch (error) {
         console.error(error);
         res.status(400).send("Error");
     }
 }
 
-// De momento solo lee por ID
 // Si ID vale "-1" se devuelven todos los valores de la tabla Service
+export async function readServiceFromServer(id: number) {
+    const selectAllFlag = -1;
+
+    if (id === selectAllFlag) {
+        return await serviceRepository.find();
+    }
+    return await serviceRepository.findOneBy({ id: id });
+}
+
 export async function readService(req: Request, res: Response) {
     const selectAllFlag = -1;
     const selectedId = parseInt(req.params.id) || selectAllFlag;
@@ -32,27 +46,22 @@ export async function readService(req: Request, res: Response) {
         return;
     }
 
-    const dataManager = AppDataSource.manager;
-
     try {
-        let serviceFound;
-
-        if (selectedId === selectAllFlag) {
-            serviceFound = await dataManager.find(Service, { order: { id: "ASC" }});
-            res.status(200).send(serviceFound);
-            return;
-        }
-
-        serviceFound = await dataManager.findOne(Service, { where: { id: selectedId } })
-        if (serviceFound === null) throw new Error("El servicio solictado no existe");
-
-        res.status(200).send(serviceFound);
+        const foundService = await readServiceFromServer(selectedId);
+        res.status(200).send(foundService);
     } catch (error) {
         console.error(error);
         res.status(400).send("Error al leer servicio/s");
     }
 }
 
+export async function updateServiceOnServer(id: number, updateParameters: Service) {
+    if (serviceRepository.findOneBy({ id: id }) === null) throw new Error("Service does not exist");
+
+    return await serviceRepository.update({ id: id }, updateParameters);
+}
+
+// Update parameters es un objeto que incluye los nombres de la propiedad a cambiar y el valor al que se la quiere actualizar
 export async function updateService(req: Request, res: Response) {
     const selectedId = parseInt(req.params.id);
     const updateParameters = req.body;
@@ -61,15 +70,17 @@ export async function updateService(req: Request, res: Response) {
         return;
     }
 
-    const  dataManager = AppDataSource.manager;
-
     try {
-        await dataManager.update(Service, { id: selectedId }, updateParameters)
-        res.status(200).send("Servicio actualizado");
+        const updatedService = await updateServiceOnServer(selectedId, updateParameters);
+        res.status(200).send(updatedService);
     } catch (error) {
         console.error(error);
-        res.status(400).send();
+        res.status(400).send("Error al actualizar servicio");
     }
+}
+
+export async function deleteServiceOnServer(id: number) {
+    return await serviceRepository.delete({ id: id });
 }
 
 export async function deleteService(req: Request, res: Response) {
@@ -79,12 +90,9 @@ export async function deleteService(req: Request, res: Response) {
         return;
     }
 
-    const dataManager = AppDataSource.manager;
-
     try {
-        await dataManager.delete(Service, { id: selectedId })
-
-        res.status(200).send("Servicio borrado");
+        const deleteResult = await deleteServiceOnServer(selectedId);
+        res.status(200).send(deleteResult);
     } catch (error) {
         console.error(error);
         res.status(400).send("Error al borrar");
