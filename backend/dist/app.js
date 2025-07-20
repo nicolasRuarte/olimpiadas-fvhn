@@ -15,6 +15,7 @@ const admin_routes_1 = __importDefault(require("@routes/admin.routes"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const payment_routes_1 = __importDefault(require("@routes/payment.routes"));
 const app = (0, express_1.default)();
+app.set("view", "@frontend");
 app.use((0, morgan_1.default)("dev"));
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());

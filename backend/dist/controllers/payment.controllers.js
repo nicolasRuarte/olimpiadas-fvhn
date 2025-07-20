@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createPayment = createPayment;
+exports.renderPaymentPage = renderPaymentPage;
 const mercadopago_1 = require("mercadopago");
 const config_1 = require("@root/config");
 const client = new mercadopago_1.MercadoPagoConfig({ accessToken: config_1.MERCADOPAGO_ACCESS_TOKEN });
@@ -24,7 +25,7 @@ function createPayment(req, res) {
                             id: "1",
                             title: "Nombre de producto",
                             quantity: 1,
-                            unit_price: 100
+                            unit_price: 1
                         }
                     ],
                 }
@@ -36,5 +37,10 @@ function createPayment(req, res) {
             console.error(error);
             res.status(400).send();
         }
+    });
+}
+function renderPaymentPage(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        res.render("test-mp.html");
     });
 }

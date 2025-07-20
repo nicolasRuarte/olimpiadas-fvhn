@@ -5,4 +5,8 @@ archivos/estructura-pagina.svg
 node_modules/
 *.env
 *config.*
+<<<<<<< HEAD
 *dbconfig.*
+=======
+dbconfig.*
+>>>>>>> temp
