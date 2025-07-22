@@ -1,0 +1,59 @@
+#modal-cancun
+{
+
+line-height: 2rem;
+}
+ .card-text
+ {
+    line-height: 1.5rem;
+ }
+
+ #block
+ {
+animation: appear linear;
+animation-timeline: view();
+animation-range: entry 0% cover 40%;
+ }
+
+ #block:hover{
+
+    transform: translateY(-10px);
+  
+    transition: 0.5s;
+ }
+ #navbarNav
+ {
+   background-color: #1e53a7;
+ }
+
+ #nav
+ {
+   color: white;
+   position: relative;
+   margin: 0 20px;
+   display: inline-block;
+   text-transform: uppercase;
+ }
+
+ #nav::after
+ {
+ content: '';
+ height: 3px;
+ width: 0;
+ background: #62dcf5;
+ position: absolute;
+ left: 0;
+ bottom: 0;
+ transition: 0.5s;
+ }
+#nav:hover::after
+ {
+ width: 100%;
+
+ }
+ #logonav
+ {
+
+   max-height: 70px;
+   
+ }

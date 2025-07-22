@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     .hero-banner {
@@ -30,33 +31,58 @@
       font-weight: bold;
       text-align: center;
     }
+
+
+
   </style>
+
+  <style> @keyframes appear{
+from{
+  opacity: 0;
+  scale: 0.5;
+
+}
+to{
+opacity: 1;
+scale: 1;
+}
+
+} 
+</style>
 </head>
 <body>
 
 <!-- Navbar original tuyo -->
-<nav class="navbar navbar-expand-sm bg-body-tertiary">
-  <div class="container-fluid">
-    <img src="logocompletoMF.svg" alt="Bootstrap" height="40">
-    <a class="navbar-brand" href="#"></a>
+<header class="navbar navbar-expand-sm " id="navbarNav"  >
+  <div class="container-fluid" id="navbarNav">
+   <nav class="navbar " data-bs-theme="dark" >
+  <div class="container-fluid" >
+    <a class="navbar-brand" href="#" >
+      <img src="logocompletoMF.svg"alt="Logo"  class="img-fluid" id="logonav"  >
+      VuelaMás
+    </a>
+  </div>
+</nav>
+
+    <a class="navbar-brand" href="#" ></a>
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
+    <div class="collapse navbar-collapse"  >
+      <ul class="navbar-nav ms-auto" ">
         <li class="nav-item">
-          <a class="nav-link" href="#">Inicio de sesión</a>
+          <a class="nav-link" href="Inicio_Sesión.html" id="nav">Inicio de sesión</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Registrarse</a>
+          <a class="nav-link" href="registro.html" id="nav">Registrarse</a>
         </li>
       </ul>
     </div>
   </div>
-</nav>
+</header>
 
 <!-- Imagen banner ancha -->
 <div class="hero-banner">
@@ -67,20 +93,930 @@
 </div>
 
 <!-- Cajas debajo -->
-<div class="container mt-4">
-  <div class="row text-center">
-    <div class="col-md-4 mb-4">
-      <div class="border p-3 rounded">Caja 1</div>
-    </div>
-    <div class="col-md-4 mb-4">
-      <div class="border p-3 rounded">Caja 2</div>
-    </div>
-    <div class="col-md-4 mb-4">
-      <div class="border p-3 rounded">Caja 3</div>
+
+
+
+
+
+<div class="view">
+<div class="container py-5">
+
+  <div class="row">
+  <!-- paquete Rio de Janeiro -->
+<div class="col-12  col-md-6 col-xxl-3  pt-3 pb-3" id="block">
+
+  <div class="card h-100 " >
+  <img src="RIOJANEIRO.jpeg" class="card-img-top h-100" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Vuelos a Rio de Janeiro</h5>
+    <p class="card-text" >Saliendo desde Buenos Aires <br> <i class="fa-solid fa-location-dot"></i> Buenos Aires <i class="fa-sharp-duotone fa-solid fa-arrow-right"></i> Rio de Janeiro <br> A partir de $1.561.921</p>
+     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paquete1" id="button">
+  Más información
+</button>
+  </div>
+</div>
+</div>
+    <!--  paquete  Bayahibe  -->
+<div class="col-12  col-md-6 col-xxl-3 pt-3 pb-3 " id="block">
+
+  <div class="card h-100 " >
+  <img src="BAYAHIBE.jpg" class="card-img-top h-100" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Vuelos a Bayahibe </h5>
+    <p class="card-text" >Saliendo desde Buenos Aires <br> <i class="fa-solid fa-location-dot"></i> Buenos Aires <i class="fa-sharp-duotone fa-solid fa-arrow-right"></i> Bayahibe <br> A partir de $2.461.843</p>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paquete2" id="button">
+  Más información
+</button>
+  </div>
+</div>
+</div>
+    <!--  paquete Bariloche-->
+<div class="col-12  col-md-6 col-xxl-3  pt-3 pb-3" id="block">
+
+  <div class="card  h-100" >
+  <img src="BARILOCHEavif.avif" class="card-img-top h-100" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Vuelos a Bariloche</h5>
+    <p class="card-text" >Saliendo desde Buenos Aires <br> <i class="fa-solid fa-location-dot"></i> Buenos Aires <i class="fa-sharp-duotone fa-solid fa-arrow-right"></i> Bariloche <br> A partir de $1.418.539</p>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paquete3" id="button">
+  Más información
+</button>
+  </div>
+</div>
+</div>
+    <!--  paquete Ushuaia -->
+<div class="col-12  col-md-6 col-xxl-3  pt-3 pb-3" id="block">
+
+  <div class="card h-100" >
+  <img src="USHUAIA.webp" class="card-img-top h-100" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Vuelos a Ushuaia</h5>
+    <p class="card-text" >Saliendo desde Buenos Aires <br> <i class="fa-solid fa-location-dot"></i> Buenos Aires <i class="fa-sharp-duotone fa-solid fa-arrow-right"></i> Ushuaia <br> A partir de $1.316.380</p>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paquete4" id="button">
+  Más información
+</button>
+  </div>
+</div>
+</div>
+
+                                               <!--  paquete Mendoza -->
+<div class="col-12  col-md-6 col-xxl-3  pt-3 pb-3" id="block">
+
+  <div class="card h-100" >
+  <img src="MENDOZA.webp" class="card-img-top h-100" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Vuelos a Mendoza</h5>
+    <p class="card-text" >Saliendo desde Buenos Aires <br> <i class="fa-solid fa-location-dot"></i> Buenos Aires <i class="fa-sharp-duotone fa-solid fa-arrow-right"></i> Mendoza <br> A partir de $816.072</p>
+     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paquete5" id="button">
+  Más información
+</button>
+  </div>
+</div>
+</div>
+    <!--  paquete Puerto Madryn -->
+<div class="col-12  col-md-6 col-xxl-3  pt-3 pb-3" id="block">
+
+  <div class="card h-100" >
+  <img src="MADRYN.jpg" class="card-img-top h-100" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Vuelos a Puerto Madryn</h5>
+<p class="card-text" >Saliendo desde Buenos Aires <br> <i class="fa-solid fa-location-dot"></i> Buenos Aires <i class="fa-sharp-duotone fa-solid fa-arrow-right"></i> Puerto Madryn <br> A partir de $1.073.362</p>
+     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paquete6" id="button">
+  Más información
+</button>
+  </div>
+</div>
+</div>
+    <!--  paquete cancun -->
+<div class="col-12  col-md-6 col-xxl-3  pt-3 pb-3" id="block">
+
+  <div class="card h-100" >
+  <img src="CANCUN.webp" class="card-img-top h-100" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Vuelos a Cancún</h5>
+    <p class="card-text" >Saliendo desde Buenos Aires <br> <i class="fa-solid fa-location-dot"></i> Buenos Aires <i class="fa-sharp-duotone fa-solid fa-arrow-right"></i> Cancún <br> A partir de $4.710.645</p>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paquete7" id="button">
+  Más información
+</button>
+
+  </div>
+</div>
+</div>
+    <!--  paquete El Calafate -->
+
+<div class="col-12 col-md-6 col-xxl-3 pt-3 pb-3" id="block">
+
+  <div class="card h-100" >
+  <img src="CALAFATE.jpg" class="card-img-top h-100" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Vuelos a El Calafate</h5>
+    <p class="card-text" >Saliendo desde Buenos Aires <br> <i class="fa-solid fa-location-dot"></i> Buenos Aires <i class="fa-sharp-duotone fa-solid fa-arrow-right"></i> El Calafate <br> A partir de $1.071.384</p>
+     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paquete8" id="button">
+  Más información
+</button>
+  </div>
+</div>
+</div>
+
+    <!--  paquete Salta -->
+<div class="col-12 col-md-6 col-xxl-3 pt-3 pb-3" id="block">
+
+  <div class="card h-100" >
+  <img src="SALTA.jpg" class="card-img-top h-100" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Vuelos a Salta</h5>
+    <p class="card-text" >Saliendo desde Buenos Aires <br> <i class="fa-solid fa-location-dot"></i> Buenos Aires <i class="fa-sharp-duotone fa-solid fa-arrow-right"></i> Salta <br> A partir de $801.329</p>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paquete9" id="button">
+  Más información
+</button>
+  </div>
+</div>
+</div>
+
+    <!--  paquete Mar del Plata -->
+<div class="col-12 col-md-6 col-xxl-3 pt-3 pb-3 " id="block">
+
+  <div class="card h-100" >
+  <img src="MARDELPLATA.jpg" class="card-img-top h-100" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Vuelos a Mar del Plata</h5>
+<p class="card-text" >Saliendo desde Buenos Aires <br> <i class="fa-solid fa-location-dot"></i> Buenos Aires <i class="fa-sharp-duotone fa-solid fa-arrow-right"></i> Mar del Plata <br> A partir de $831.037</p>
+     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paquete10" id="button">
+  Más información
+</button>
+  </div>
+</div>
+</div>
+ </div>
+  
+
+ <!--  modal cancun -->
+<div class="modal fade" id="paquete7" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" >
+      
+      <div class="modal-header ">
+        
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Paquete Cancún</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+         <h5 class="text-center"><strong>Paquete a Cancún verano 2026  </strong> </h5>
+        
+         <div class="row">
+
+          <div class="  col-lg-6">
+            <div class="pt-3  ">
+<img src="CANCUNMODAL.jpg" class="img-fluid rounded  h-100" alt="..." ">
+         </div> 
+</div>
+
+<div class=" col-lg-6 " id="modal-cancun">
+         
+<i class="fa-solid fa-location-dot"></i> Buenos Aires <i class="fa-sharp-duotone fa-solid fa-arrow-right"></i> Cancún <br>
+
+ <i class="fa-solid fa-person "></i>  2 pasajeros, 1 habitación <br>
+
+
+<i class="fa-brands fa-avianex"></i> 1 escala BUE (Sky Airline) <br>
+
+ <i class="fa-solid fa-hotel"></i> Hotel Caribe Internacional Cancún <br>
+ 
+
+<b>El precio incluye</b> <br>
+<div class="p" style="color: grey; ">
+
+Pasaje aéreo <br>
+
+Traslados de llegada y salida <br>
+
+8 noches de alojamiento con régimen todo incluído <br>
+
+Asistencia al viajero y seguro de cancelación <br>
+</div>
+</div>
+ </div>
+<div class="pb-2 pt-2">
+<select class="form-select"  >
+  <option selected>Métodos de pago</option>
+  <option value="1">Tarjeta de crédito</option>
+  <option value="2">Tarjeta de débito</option>
+  <option value="3">Transferencia/Depósito</option>
+</select>
+</div>
+  
+<div>
+<select class="form-select" aria-label="Default select example">
+  <option selected>Fechas y precios</option>
+  <option value="1">Enero de 2026 a partir de $5.008.172</option>
+  <option value="2">Febrero de 2026 a partir de $5.162.018</option>
+  <option value="3">Marzo de 2026 a partir de $4.710.645</option>
+</select>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        
+        <a class="btn btn-primary" href="Carrito.html" role="button" id="button">Comprar</a>
+      </div>
     </div>
   </div>
 </div>
 
+<!--  modal rio de janeiro -->
+<div class="modal fade" id="paquete1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" >
+      
+      <div class="modal-header ">
+        
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Paquete Rio de Janeiro</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+         <h5 class="text-center"><strong>Paquete a Rio de Janeiro verano 2026  </strong> </h5>
+        
+         <div class="row">
+
+          <div class="  col-lg-6">
+            <div class="pt-3  ">
+<img src="RIOJANEIRO2.jpg" class="img-fluid rounded h-100 " alt="..." ">
+         </div> 
+</div>
+
+<div class=" col-lg-6 " id="modal-cancun">
+         
+<i class="fa-solid fa-location-dot"></i> Buenos Aires <i class="fa-sharp-duotone fa-solid fa-arrow-right"></i> Rio de Janeiro <br>
+
+ <i class="fa-solid fa-person "></i>  2 pasajeros, 1 habitación <br>
+
+
+<i class="fa-brands fa-avianex"></i> 1 escala BUE (Sky Airline) <br>
+
+ <i class="fa-solid fa-hotel"></i> Arraial Do Cabo <br>
+ 
+
+<b>El precio incluye</b> <br>
+<div class="p" style="color: grey; ">
+
+Pasaje aéreo <br>
+
+Traslados de llegada y salida <br>
+
+8 noches de alojamiento con régimen todo incluído <br>
+
+Asistencia al viajero y seguro de cancelación <br>
+</div>
+</div>
+ </div>
+<div class="pb-2 pt-2">
+<select class="form-select"  >
+  <option selected>Métodos de pago</option>
+  <option value="1">Tarjeta de crédito</option>
+  <option value="2">Tarjeta de débito</option>
+  <option value="3">Transferencia/Depósito</option>
+  <option value="3">Cuota Simple</option>
+</select>
+</div>
+  
+<div>
+<select class="form-select" aria-label="Default select example">
+  <option selected>Fechas y precios</option>
+  <option value="1">Enero de 2026 a partir de $1.862.107</option>
+  <option value="2">Febrero de 2026 a partir de $2.110.217</option>
+  <option value="3">Marzo de 2026 a partir de $1.561.921</option>
+</select>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        
+        <a class="btn btn-primary" href="Carrito.html" role="button" id="button">Comprar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  modal  bayahibe -->
+<div class="modal fade" id="paquete2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" >
+      
+      <div class="modal-header ">
+        
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Paquete Bayahibe</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+         <h5 class="text-center"><strong>Paquete a Bayahibe verano 2026  </strong> </h5>
+        
+         <div class="row">
+
+          <div class="  col-lg-6">
+            <div class="pt-3  ">
+<img src="BAYAHIBE2.jpg" class="img-fluid rounded h-100 " alt="..." ">
+         </div> 
+</div>
+
+<div class=" col-lg-6 " id="modal-cancun">
+         
+<i class="fa-solid fa-location-dot"></i> Buenos Aires <i class="fa-sharp-duotone fa-solid fa-arrow-right"></i> Bayahibe <br>
+
+ <i class="fa-solid fa-person "></i>  2 pasajeros, 1 habitación <br>
+
+
+<i class="fa-brands fa-avianex"></i> 1 escala BUE (Sky Airline) <br>
+
+ <i class="fa-solid fa-hotel"></i> Hotel HM Alma De Bayahibe  <br>
+ 
+
+<b>El precio incluye</b> <br>
+<div class="p" style="color: grey; ">
+
+Pasaje aéreo <br>
+
+Traslados de llegada y salida <br>
+
+7 noches de alojamiento con régimen todo incluído <br>
+
+Asistencia al viajero y seguro de cancelación <br>
+</div>
+</div>
+ </div>
+<div class="pb-2 pt-2">
+<select class="form-select"  >
+  <option selected>Métodos de pago</option>
+  <option value="1">Tarjeta de crédito</option>
+  <option value="2">Tarjeta de débito</option>
+  <option value="3">Transferencia/Depósito</option>
+  <option value="3">Cuota Simple</option>
+</select>
+</div>
+  
+<div>
+<select class="form-select" aria-label="Default select example">
+  <option selected>Fechas y precios</option>
+  <option value="1">Enero de 2026 a partir de $2.736.196</option>
+  <option value="2">Febrero de 2026 a partir de $3.207.832</option>
+  <option value="3">Marzo de 2026 a partir de $2.461.843</option>
+</select>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        
+        <a class="btn btn-primary" href="Carrito.html" role="button" id="button">Comprar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  modal  bariloche -->
+<div class="modal fade" id="paquete3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" >
+      
+      <div class="modal-header ">
+        
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Paquete Bariloche</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+         <h5 class="text-center"><strong>Paquete a Bariloche agosto </strong> </h5>
+        
+         <div class="row">
+
+          <div class="  col-lg-6">
+            <div class="pt-3  ">
+<img src="BARILOCHE2.webp" class="img-fluid rounded h-100 " alt="..." ">
+         </div> 
+</div>
+
+<div class=" col-lg-6 " id="modal-cancun">
+         
+<i class="fa-solid fa-location-dot"></i> Buenos Aires <i class="fa-sharp-duotone fa-solid fa-arrow-right"></i> San Carlos de Bariloche <br>
+
+ <i class="fa-solid fa-person "></i>  2 pasajeros, 1 habitación <br>
+
+
+<i class="fa-brands fa-avianex"></i> Directo AEP (Aerolíneas Argentinas) <br>
+
+ <i class="fa-solid fa-hotel"></i> CONCORDE  <br>
+ 
+
+<b>El precio incluye</b> <br>
+<div class="p" style="color: grey; ">
+
+Pasaje aéreo <br>
+
+Traslados de llegada y salida <br>
+
+Alojamiento con desayuno <br>
+
+Asistencia al viajero  <br>
+</div>
+</div>
+ </div>
+<div class="pb-2 pt-2">
+<select class="form-select"  >
+  <option selected>Métodos de pago</option>
+  <option value="1">Tarjeta de crédito</option>
+  <option value="2">Tarjeta de débito</option>
+  <option value="3">Transferencia/Depósito</option>
+  <option value="3">Cuota Simple</option>
+</select>
+</div>
+  
+<div>
+<select class="form-select" aria-label="Default select example">
+  <option selected>Fechas y precios</option>
+  <option value="1">Agosto de 2025 a partir de $1.418.539</option>
+  
+</select>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        
+        <a class="btn btn-primary" href="Carrito.html" role="button" id="button">Comprar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  modal  ushuaia -->
+<div class="modal fade" id="paquete4" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" >
+      
+      <div class="modal-header ">
+        
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Paquete Ushuaia</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+         <h5 class="text-center"><strong>Paquete a Ushuaia </strong> </h5>
+        
+         <div class="row">
+
+          <div class="  col-lg-6">
+            <div class="pt-3  ">
+<img src="USHUAIA2.webp" class="img-fluid rounded  h-100" alt="..." ">
+         </div> 
+</div>
+
+<div class=" col-lg-6 " id="modal-cancun">
+         
+<i class="fa-solid fa-location-dot"></i> Buenos Aires <i class="fa-sharp-duotone fa-solid fa-arrow-right"></i> Ushuaia <br>
+
+ <i class="fa-solid fa-person "></i>  2 pasajeros, 1 habitación <br>
+
+
+<i class="fa-brands fa-avianex"></i> Directo AEP (Aerolíneas Argentinas) <br>
+
+ <i class="fa-solid fa-hotel"></i> Hotel Ushuaiano  <br>
+ 
+
+<b>El precio incluye</b> <br>
+<div class="p" style="color: grey; ">
+
+Pasaje aéreo <br>
+
+Traslados de llegada y salida <br>
+
+3 noches de alojamiento con desayuno <br>
+
+Asistencia al viajero  <br>
+</div>
+</div>
+ </div>
+<div class="pb-2 pt-2">
+<select class="form-select"  >
+  <option selected>Métodos de pago</option>
+  <option value="1">Tarjeta de crédito</option>
+  <option value="2">Tarjeta de débito</option>
+  <option value="3">Transferencia/Depósito</option>
+  <option value="3">Cuota Simple</option>
+</select>
+</div>
+  
+<div>
+<select class="form-select" aria-label="Default select example">
+  <option selected>Fechas y precios</option>
+  <option value="1">Agosto de 2025 $1.316.380</option>
+    <option value="1">Septiembre de 2025 $1.191.408</option>
+      <option value="1">Noviembre de 2025 $1.273.837</option>
+  
+</select>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        
+        <a class="btn btn-primary" href="Carrito.html" role="button" id="button">Comprar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  modal  mendoza -->
+<div class="modal fade" id="paquete5" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" >
+      
+      <div class="modal-header ">
+        
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Paquete Mendoza</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+         <h5 class="text-center"><strong>Paquete a Mendoza </strong> </h5>
+        
+         <div class="row">
+
+          <div class="  col-lg-6">
+            <div class="pt-3  ">
+<img src="MENDOZA2.jpg" class="img-fluid rounded  h-100" alt="..." ">
+         </div> 
+</div>
+
+<div class=" col-lg-6 " id="modal-cancun">
+         
+<i class="fa-solid fa-location-dot"></i> Buenos Aires <i class="fa-sharp-duotone fa-solid fa-arrow-right"></i> Mendoza <br>
+
+ <i class="fa-solid fa-person "></i>  2 pasajeros, 1 habitación <br>
+
+
+<i class="fa-brands fa-avianex"></i> Directo AEP (Aerolíneas Argentinas) <br>
+
+ <i class="fa-solid fa-hotel"></i> CORDON DEL PLATA  <br>
+ 
+
+<b>El precio incluye</b> <br>
+<div class="p" style="color: grey; ">
+
+Pasaje aéreo <br>
+
+Traslados de llegada y salida <br>
+
+4 noches de alojamiento con desayuno <br>
+
+Asistencia al viajero  <br>
+</div>
+</div>
+ </div>
+<div class="pb-2 pt-2">
+<select class="form-select"  >
+  <option selected>Métodos de pago</option>
+  <option value="1">Tarjeta de crédito</option>
+  <option value="2">Tarjeta de débito</option>
+  <option value="3">Transferencia/Depósito</option>
+  <option value="3">Cuota Simple</option>
+</select>
+</div>
+  
+<div>
+<select class="form-select" aria-label="Default select example">
+  <option selected>Fechas y precios</option>
+  <option value="1">Agosto de 2025 $816.072</option>
+    <option value="1">Septiembre de 2025 $816.072</option>
+      <option value="1">Octubre de 2025 $816.072</option>
+  
+</select>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        
+        <a class="btn btn-primary" href="Carrito.html" role="button" id="button">Comprar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  modal  madryn -->
+<div class="modal fade" id="paquete6" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" >
+      
+      <div class="modal-header ">
+        
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Paquete Puerto Madryn </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+         <h5 class="text-center"><strong>Paquete a Puerto Madryn </strong> </h5>
+        
+         <div class="row">
+
+          <div class="  col-lg-6">
+            <div class="pt-3  ">
+<img src="PUERTO2.webp" class="img-fluid rounded  h-100" alt="..." ">
+         </div> 
+</div>
+
+<div class=" col-lg-6 " id="modal-cancun">
+         
+<i class="fa-solid fa-location-dot"></i> Buenos Aires <i class="fa-sharp-duotone fa-solid fa-arrow-right"></i> Puerto Madryn <br>
+
+ <i class="fa-solid fa-person "></i>  2 pasajeros, 1 habitación <br>
+
+
+<i class="fa-brands fa-avianex"></i> Directo AEP (Aerolíneas Argentinas) <br>
+
+ <i class="fa-solid fa-hotel"></i> La Posada de Madryn <br>
+ 
+
+<b>El precio incluye</b> <br>
+<div class="p" style="color: grey; ">
+
+Pasaje aéreo <br>
+
+Traslados de llegada y salida <br>
+
+3 noches de alojamiento con desayuno <br>
+
+Asistencia al viajero  <br>
+</div>
+</div>
+ </div>
+<div class="pb-2 pt-2">
+<select class="form-select"  >
+  <option selected>Métodos de pago</option>
+  <option value="1">Tarjeta de crédito</option>
+  <option value="2">Tarjeta de débito</option>
+  <option value="3">Transferencia/Depósito</option>
+  <option value="3">Cuota Simple</option>
+</select>
+</div>
+  
+<div>
+<select class="form-select" aria-label="Default select example">
+  <option selected>Fechas y precios</option>
+  <option value="1">Agosto de 2025 $1.073.362</option>
+    <option value="1">Septiembre de 2025 $1.073.362</option>
+      <option value="1">Octubre de 2025 $1.073.362</option>
+  
+</select>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        
+        <a class="btn btn-primary" href="Carrito.html" role="button" id="button">Comprar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  modal  calafate -->
+<div class="modal fade" id="paquete8" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" >
+      
+      <div class="modal-header ">
+        
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Paquete El Calafate </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+         <h5 class="text-center"><strong>Paquete a El Calafate </strong> </h5>
+        
+         <div class="row">
+
+          <div class="  col-lg-6">
+            <div class="pt-5 h-100 ">
+<img src="CALAFATE2.jpg" class="img-fluid rounded  " alt="..." ">
+         </div> 
+</div>
+
+<div class=" col-lg-6 " id="modal-cancun">
+         
+<i class="fa-solid fa-location-dot"></i> Buenos Aires <i class="fa-sharp-duotone fa-solid fa-arrow-right"></i> El Calafate <br>
+
+ <i class="fa-solid fa-person "></i>  2 pasajeros, 1 habitación <br>
+
+
+<i class="fa-brands fa-avianex"></i> Directo AEP (Aerolíneas Argentinas) <br>
+
+ <i class="fa-solid fa-hotel"></i> Bahía Redonda <br>
+ 
+
+<b>El precio incluye</b> <br>
+<div class="p" style="color: grey; ">
+
+Pasaje aéreo <br>
+
+Traslados de llegada y salida <br>
+
+3 noches de alojamiento con desayuno <br>
+
+Asistencia al viajero  <br>
+</div>
+</div>
+ </div>
+<div class="pb-2 pt-2">
+<select class="form-select"  >
+  <option selected>Métodos de pago</option>
+  <option value="1">Tarjeta de crédito</option>
+  <option value="2">Tarjeta de débito</option>
+  <option value="3">Transferencia/Depósito</option>
+  <option value="3">Cuota Simple</option>
+</select>
+</div>
+  
+<div>
+<select class="form-select" aria-label="Default select example">
+  <option selected>Fechas y precios</option>
+  <option value="1">Octubre de 2025 $1.071.384</option>
+    <option value="1">Noviembre de 2025 $1.192.502</option>
+      <option value="1">Enero de 2026 $1.334.208</option>
+  
+</select>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        
+        <a class="btn btn-primary" href="Carrito.html" role="button" id="button">Comprar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  modal  salta -->
+<div class="modal fade" id="paquete9" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" >
+      
+      <div class="modal-header ">
+        
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Paquete Salta </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+         <h5 class="text-center"><strong>Paquete a Salta</strong> </h5>
+        
+         <div class="row">
+
+          <div class="  col-lg-6">
+            <div class="pt-4  ">
+<img src="SALTA2.webp" class=" img-fluid rounded h-100 " alt="..." ">
+         </div> 
+</div>
+
+<div class=" col-lg-6 " id="modal-cancun">
+         
+<i class="fa-solid fa-location-dot"></i> Buenos Aires <i class="fa-sharp-duotone fa-solid fa-arrow-right"></i> Salta <br>
+
+ <i class="fa-solid fa-person "></i>  2 pasajeros, 1 habitación <br>
+
+
+<i class="fa-brands fa-avianex"></i> Directo AEP (Aerolíneas Argentinas) <br>
+
+ <i class="fa-solid fa-hotel"></i> Amerian Salta   <br>
+ 
+
+<b>El precio incluye</b> <br>
+<div class="p" style="color: grey; ">
+
+Pasaje aéreo <br>
+
+Traslados de llegada y salida <br>
+
+3 noches de alojamiento con desayuno <br>
+
+Asistencia al viajero  <br>
+</div>
+</div>
+ </div>
+<div class="pb-2 pt-2">
+<select class="form-select"  >
+  <option selected>Métodos de pago</option>
+  <option value="1">Tarjeta de crédito</option>
+  <option value="2">Tarjeta de débito</option>
+  <option value="3">Transferencia/Depósito</option>
+  <option value="3">Cuota Simple</option>
+</select>
+</div>
+  
+<div>
+<select class="form-select" aria-label="Default select example">
+  <option selected>Fechas y precios</option>
+  <option value="1">Agosto de 2025 $801.329</option>
+    <option value="1">Septiembre de 2025 $801.329</option>
+      <option value="1">Octubre de 2025 $801.329</option>
+  
+</select>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        
+        <a class="btn btn-primary" href="Carrito.html" role="button" id="button">Comprar</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!--  modal  mar del plata -->
+<div class="modal fade" id="paquete10" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" >
+      
+      <div class="modal-header ">
+        
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Paquete Mar del Plata </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+         <h5 class="text-center"><strong>Paquete a Mar del Plata</strong> </h5>
+        
+         <div class="row">
+
+          <div class="  col-lg-6">
+            <div class="pt-3 h100  ">
+<img src="MARDEL2.webp" class="img-fluid rounded  " alt="..." ">
+         </div> 
+</div>
+
+<div class=" col-lg-6 " id="modal-cancun">
+         
+<i class="fa-solid fa-location-dot"></i> Buenos Aires <i class="fa-sharp-duotone fa-solid fa-arrow-right"></i> Mar del Plata <br>
+
+ <i class="fa-solid fa-person "></i>  2 pasajeros, 1 habitación <br>
+
+
+<i class="fa-brands fa-avianex"></i> Directo AEP (Aerolíneas Argentinas) <br>
+
+ <i class="fa-solid fa-hotel"></i> Hotel Mar Del Plata   <br>
+ 
+
+<b>El precio incluye</b> <br>
+<div class="p" style="color: grey; ">
+
+Pasaje aéreo <br>
+
+Traslados de llegada y salida <br>
+
+3 noches de alojamiento con desayuno <br>
+
+Asistencia al viajero  <br>
+</div>
+</div>
+ </div>
+<div class="pb-2 pt-2">
+<select class="form-select"  >
+  <option selected>Métodos de pago</option>
+  <option value="1">Tarjeta de crédito</option>
+  <option value="2">Tarjeta de débito</option>
+  <option value="3">Transferencia/Depósito</option>
+  <option value="3">Cuota Simple</option>
+</select>
+</div>
+  
+<div>
+<select class="form-select" aria-label="Default select example">
+  <option selected>Fechas y precios</option>
+  <option value="1">Agosto de 2025 $831.037</option>
+    <option value="1">Octubre de 2025 $912.483</option>
+      <option value="1">Noviembre de 2025 $912.483</option>
+  
+</select>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        
+        <a class="btn btn-primary" href="Carrito.html" role="button" id="button">Comprar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="  text-dark "> 
+<div class="container-fluid py-5">
+<div class="row  text-center text-md-start">
+<div class="col">
+ 
+    <img src="logocompletoMF.svg" class="rounded mx-auto d-block" alt="logo-footer" height="110" width="180">
+<hr class="mb-5">
+   <div class="col text-center">
+    <h5 class="text-uppercase mb-4 font-weight-bold text-primary">Contacto</h5>
+    <p>
+      <li class="fas fa-envelope me-3"></li> prueba@gmail.com
+    
+      <li class="fas fa-phone me-3"></li> +666666
+
+    </p>
+    <hr class="mb-5">
+   </div>
+
+</div>
+</div>
+</div>
+</footer>
+  
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
