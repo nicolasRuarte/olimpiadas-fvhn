@@ -1,68 +1,78 @@
 import { Request, Response } from "express";
 import { User } from "@entities/User";
 import { Order } from "@entities/Order";
-import { AppDataSource } from "@root/db";
 import { validateStringId, validateUserData } from "@functionality/validation";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { SALT_ROUNDS, JWT_SECRET } from "@root/config";
+import { createErrorMessage } from "@functionality/errorMessages";
+
+const userRepository = User.getRepository();
+const orderRepository = Order.getRepository();
+
+async function saveUser(userData: User) {
+
+    const newUser = new User;
+    newUser.dni = userData.dni;
+    newUser.surname = userData.surname;
+    newUser.names = userData.names;
+    newUser.email = userData.email;
+    newUser.password = await bcrypt.hash(userData.password, SALT_ROUNDS);
+    newUser.phone_number = userData.phone_number;
+
+    await userRepository.save(newUser);
+    
+    const newOrder = new Order;
+    newOrder.id = userData.dni;
+    orderRepository.save(newOrder);
+
+    newUser.order = newOrder;
+    userRepository.save(newUser);
+
+    return { newUser, newOrder };
+}
 
 // CRUD OPERATIONS -----------------------------------------
 export async function createUser(req: Request, res: Response) {
-    let loginData = req.body;
-
-    if (!validateStringId(loginData.dni)) {
-        res.send("Por favor elija un DNI válido");
-        return;
-    }
-    if (await User.findOne({ where: { dni: loginData.dni }}) !== null) {
-        res.send("Usuario ya existe");
-        return;
-    }
-
-    const manager = AppDataSource.manager;
+    let userData = req.body;
 
     try {
-        loginData = validateUserData(loginData);
-        
-        const newUser = new User;
-        newUser.dni = loginData.dni;
-        newUser.surname = loginData.surname;
-        newUser.names = loginData.names;
-        newUser.email = loginData.email;
-        newUser.password = await bcrypt.hash(loginData.password, SALT_ROUNDS);
-        newUser.phone_number = loginData.phone_number;
-        await manager.save(newUser);
+        if (!validateStringId(userData.dni)) {
+            throw new Error("invalid-id")
+        }
+        if (await User.findOne({ where: { dni: userData.dni }}) !== null) {
+            throw new Error("not-found");
+        }
 
-        const newOrder = new Order;
-        newOrder.id = loginData.dni;
-        newUser.order = newOrder;
-        await manager.save(newOrder);
+        userData = validateUserData(userData);
+        const newUser = await saveUser(userData);
 
-
-        res.status(201).send({ newUser, newOrder});
         console.log("Creando nuevo usuario");
+        res.status(201).send(newUser);
     } catch (error) {
         console.error(error);
-        res.status(400).send("Error al crear usuario");
+        res.status(400).send(createErrorMessage(error as string));
     }
     
 }
 
+async function getUser(dni: string) {
+    const user = await userRepository.findOneBy( { dni: dni } );
+
+    return user;
+}
+
 export async function readUsers(req: Request, res: Response) {
+    const { dni } = req.body;
+
     try {
-        const manager = AppDataSource.manager;
+        const user = getUser(dni);
 
-        const result = await manager.find(User, 
-                                        { relations: { orderDetails: true },
-                                            select: { dni: true, names: true, surname: true, email: true },
-                                            order: { dni: "ASC" } });
-
-        res.status(200).send(result);
-        console.log("Leyendo usuario");
+        console.log("Devolviendo usuario");
+        res.status(200).send(user);
     } catch (error) {
         console.error(error);
-        res.status(400).send();
+        res.status(400).send(createErrorMessage(error as string));
     }
 }
 
@@ -75,7 +85,6 @@ export async function updateUser(req: Request, res: Response) {
         console.error(error);
         res.status(403).send("Acceso denegado");
     }
-
 }
 
 export async function deleteUser(req: Request, res: Response) {
@@ -87,10 +96,8 @@ export async function logInUser(req: Request, res: Response) {
     const { dni, email, password } = req.body;
 
     try {
-        const manager = AppDataSource.manager;
-
-        const userToLogIn = await manager.findOne(User, { where: [ { dni: dni }, { email: email } ] });
-        if (userToLogIn === null) throw new Error("Usuario no existe");
+        const userToLogIn = await userRepository.findOne({ where: [ { dni: dni }, { email: email } ] });
+        if (userToLogIn === null) throw new Error("not-found");
 
         const isPasswordCorrect = await bcrypt.compare(password, userToLogIn?.password);
         if (!isPasswordCorrect) throw new Error("La contraseña o el usuario son incorrectos");
@@ -112,30 +119,29 @@ export async function logInUser(req: Request, res: Response) {
         .send({ dni, role, token });
 
         console.log("Loggeando usuario");
+        res.status(200).send({ message: "Usuario loggeado con éxito" });
     } catch (error) {
         console.error(error);
-        res.status(400).send();
+        res.status(400).send(createErrorMessage(error as string));
     }
 }
 
 export async function getAllPurchases(req: Request, res: Response) {
-
     try {
         const token = req.cookies.access_token;
-        if (token === undefined || token === null) throw new Error("Acceso denegado");
+        if (token === undefined || token === null) throw new Error("access-denied");
 
         const data = jwt.verify(token, JWT_SECRET);
 
-        const manager = AppDataSource.manager;
 
         // Si se puede eliminar los any
-        const user = await manager.findOne(User, { where: { dni: (<any>data).dni }, relations: { orderDetails: true } });
-        if (user === null) throw new Error("Usuario no existe");
+        const user = await userRepository.findOne({ where: { dni: (<any>data).dni }, relations: { orderDetails: true } });
+        if (user === null) throw new Error("not-found");
 
         res.status(200).send(user.orderDetails);
         console.log("Devolviendo todas las compras del usuario");
     } catch (error) {
         console.error(error);
-        res.status(400).send();
+        res.send(createErrorMessage(error as string));
     }
 }
