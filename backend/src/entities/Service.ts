@@ -5,6 +5,7 @@ import {
     IsInt,
     IsString,
 } from "class-validator";
+import { Item } from "./Item";
 
 
 @Entity()
@@ -26,4 +27,7 @@ export class Service extends BaseEntity {
 
     @OneToMany(() => Rating, (rating) => rating.service)
     ratings: Rating[];
+
+    @OneToMany(() => Item, (items) => items.service)
+    items: Item[];
 }

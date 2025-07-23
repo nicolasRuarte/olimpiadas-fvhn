@@ -1,8 +1,8 @@
-import {  Entity, BaseEntity, PrimaryColumn, ManyToMany, JoinTable } from "typeorm";
-import { Service } from "./Service";
+import {  Entity, BaseEntity, PrimaryColumn, OneToMany } from "typeorm";
 import {
     IsString
 } from "class-validator";
+import { Item } from "./Item";
 
 @Entity()
 export class Order extends BaseEntity {
@@ -10,7 +10,6 @@ export class Order extends BaseEntity {
     @IsString()
     id: string;
 
-    @ManyToMany(() => Service)
-    @JoinTable()
-    items: Service[];
+    @OneToMany(() => Item, (item) => item.order)
+    items: Item[];
 }
