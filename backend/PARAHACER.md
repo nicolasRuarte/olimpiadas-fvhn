@@ -25,12 +25,13 @@ Lista de tareas que hay que realizar en el backend
 
 ## Fixes
 
+[x] URGENTE Sacar las claves de APIs del repositorio de GitHub (quién fue el gil)
+[x] Asegurarme de que todas las funciones devuelvan JSON
 [ ] Arreglar error de no poder agregar un producto dos veces seguidas
 [ ] Cambiar las partes del código donde usé el tipo any
-[ ] Asegurarme de que todas las funciones devuelvan JSON
 [ ] Refactorizar para usar repositorios en lugar del DataManager
 [ ] Refactorizar para independizar las funciones de los controladores de request y response
-[ ] URGENTE Sacar las claves de APIs del repositorio de GitHub (quién fue el gil)
+[ ] Refactorizar para que todos los parámetros de las funciones los reciba a través del body en formato JSON
 
 ## Testing
 
