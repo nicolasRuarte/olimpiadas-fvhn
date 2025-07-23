@@ -1,12 +1,11 @@
 import { Router } from "express";
 import { readOrder, updateOrderItems, deleteOrderItems } from "@controllers/order.controllers";
 
-const router = Router()
+const router = Router();
 
-// :id refiere a la ID de la orden, no del servicio
-router.get("/order/:id", readOrder);
-router.patch("/order/:id/add", updateOrderItems); // Acepta ID de servicio como parámetro de query (sId=)
-router.delete("/order/:id/delete", deleteOrderItems); // Acepta ID de servicio como parámetro query (sId=)
+router.get("/order", readOrder);
+router.post("/order", updateOrderItems); 
+router.delete("/order", deleteOrderItems); 
 
 
-export default router
+export default router;
