@@ -12,7 +12,7 @@ import paymentRoutes from "@routes/payment.routes";
 
 const app = express();
 
-app.set("view", "@frontend")
+app.use(express.static("@frontend"));
 
 app.use(morgan("dev"));
 app.use(cors());
