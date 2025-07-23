@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Service } from "@entities/Service";
 import { AppDataSource } from "../db";
 import { validateNumberId } from "@functionality/validation";
+import { createErrorMessage } from "@functionality/errorMessages";
 
 const serviceRepository = AppDataSource.getRepository(Service);
 
@@ -24,7 +25,7 @@ export async function createService(req: Request, res: Response) {
         res.status(201).send(newService);
     } catch (error) {
         console.error(error);
-        res.status(400).send("Error");
+        res.status(400).send(createErrorMessage(error as string));
     }
 }
 
@@ -41,17 +42,18 @@ export async function readServiceFromServer(id: number) {
 export async function readService(req: Request, res: Response) {
     const selectAllFlag = -1;
     const selectedId = parseInt(req.params.id) || selectAllFlag;
-    if (!validateNumberId(selectedId)) {
-        res.status(400).send("Por favor ingrese un ID de servicio válido");
-        return;
-    }
 
     try {
+        if (!validateNumberId(selectedId)) {
+            throw new Error("invalid-id");
+        }
+
         const foundService = await readServiceFromServer(selectedId);
+
         res.status(200).send(foundService);
     } catch (error) {
         console.error(error);
-        res.status(400).send("Error al leer servicio/s");
+        res.status(400).send(createErrorMessage(error as string));
     }
 }
 

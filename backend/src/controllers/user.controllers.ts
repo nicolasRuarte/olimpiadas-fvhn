@@ -6,9 +6,10 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { SALT_ROUNDS, JWT_SECRET } from "@root/config";
 import { createErrorMessage } from "@functionality/errorMessages";
+import { AppDataSource } from "@root/db";
 
-const userRepository = User.getRepository();
-const orderRepository = Order.getRepository();
+const userRepository = AppDataSource.getRepository(User);
+const orderRepository = AppDataSource.getRepository(Order);
 
 async function saveUser(userData: User) {
 
@@ -24,6 +25,7 @@ async function saveUser(userData: User) {
     
     const newOrder = new Order;
     newOrder.id = userData.dni;
+    console.log(orderRepository);
     orderRepository.save(newOrder);
 
     newUser.order = newOrder;
