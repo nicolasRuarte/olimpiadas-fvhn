@@ -8,3 +8,4 @@ node_modules/
 *dbconfig.*
 archivos/paquetes.docx
 sample*.json
+*dist/
