@@ -9,3 +9,4 @@ node_modules/
 archivos/paquetes.docx
 sample*.json
 *dist/
+*paquetes*.docx
