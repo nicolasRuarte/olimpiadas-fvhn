@@ -1,34 +1,38 @@
 import { Request, Response } from "express";
 import { MercadoPagoConfig, Preference } from "mercadopago";
 import { MERCADOPAGO_ACCESS_TOKEN } from "@root/config";
+import { Service } from "@entities/Service";
+import { Items } from "mercadopago/dist/clients/commonTypes";
 
 const client = new MercadoPagoConfig({ accessToken: MERCADOPAGO_ACCESS_TOKEN });
 
-export async function createPayment(req: Request, res: Response) {
+export async function createPreference(serviceData: Items[]) {
+    console.log("SERVICE DATA: ", serviceData);
     const preference = new Preference(client);
 
-    try {
-        const result = await preference.create({
-            body: {
-                items: [
-                    {
-                        id: "1",
-                        title: "Nombre de producto",
-                        quantity: 1,
-                        unit_price: 1
-                    }
-                ],
-            }
-        })
+    const result = await preference.create({
+        body: {
+            items: serviceData,
+        }
+    });
+    console.log(result);
 
-        console.log("Hecho el pago con Mercado Pago");
-        res.send(result);
+    return result;
+}
+
+export async function createPayment(req: Request, res: Response) {
+    try {
+        console.log("Body: ", req.body);
+        const result = await createPreference(req.body);
+
+        console.log(`RESULT ID: ${result.id}`)
+        res.status(200).send({ preferenceId: result.id, url: result.init_point });
     } catch (error) {
         console.error(error);
-        res.status(400).send();
+        res.status(400).send({message: "Error al crear el pago" });
     }
 }
 
 export async function renderPaymentPage(req: Request, res: Response) {
-    res.render("test-mp.html");   
+    res.status(200).render("test-mp");
 }

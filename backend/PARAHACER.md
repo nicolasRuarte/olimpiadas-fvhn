@@ -18,10 +18,11 @@ Lista de tareas que hay que realizar en el backend
 [x] Agregar funcionalidad de ver todos los pedidos aceptados
 [x] Agregar funcionalidad de ver todos los pedidos anulados
 [x] Crear servidor en Render para desplegar
-[ ] Agregar funcionalidad de pagos con Mercado Pago HACIENDO
-[ ] Agregar funcionalidad de generar PDF de detalle de orden
+[x] Agregar módulo de creación de mensaje de errores
+[x] Agregar funcionalidad básica de pagos con Mercado Pago 
 [ ] Conectar backend con el frontend
-[ ] Agregar módulo de creación de mensaje de errores
+[ ] Agregar funcionalidad de generar PDF de detalle de orden
+[ ] Agregar funcionalidad para que al agregar un producto que ya se encuentra en el carrito, que se sume +1 a la propiedad quantity del item que está en dicho carrito
 
 ## Fixes
 

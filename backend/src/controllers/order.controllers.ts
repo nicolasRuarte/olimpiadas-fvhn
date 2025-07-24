@@ -68,7 +68,7 @@ export async function updateOrderItems(req: Request, res: Response) {
 }
 
 // Por propósitos de debuggeo, la función devuelve la orden luego de haber borrado sus elementos
-async function deleteItems(id: string, serviceId: number) {
+export async function deleteItems(id: string, serviceId: number) {
     const selectAllItemsFlag = -1;
     const order = await orderRepository.findOne({ where: { id: id }, relations: { items: true } });
 
