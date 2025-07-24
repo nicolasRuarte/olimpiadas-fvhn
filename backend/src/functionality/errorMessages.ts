@@ -7,9 +7,11 @@ export function createErrorMessage(errorType: string){
             return { message: "El objeto solicitado no existe", statusCode: 404 };
         
         case "access-denied":
-            return { message: "Acceso no autorizado. Por favor inicie sesión", statusCode: 401 }
+            return { message: "Acceso no autorizado. Por favor inicie sesión", statusCode: 401 };
             
+        case "empty-body":
+            return { message: "El cuerpo de la request no poseía ningún valor", statusCode: 400 };
         default:
-            return { message: errorType, statusCode: 400 }
+            return { message: errorType, statusCode: 400 };
     }
 }
