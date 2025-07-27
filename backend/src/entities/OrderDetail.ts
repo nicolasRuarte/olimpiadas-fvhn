@@ -1,14 +1,14 @@
 import { Column, 
     Entity, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, ManyToMany, JoinTable } from "typeorm";
-import { User } from "./User";
-import { Service } from "./Service";
+import User from "./User";
+import Service from "./Service";
 import {
     IsDate,
     IsNumber
 } from "class-validator";
 
 @Entity()
-export class OrderDetail extends BaseEntity {
+export default class OrderDetail extends BaseEntity {
     @PrimaryGeneratedColumn()
     order_number: number;
 

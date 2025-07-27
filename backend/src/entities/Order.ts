@@ -2,10 +2,10 @@ import {  Entity, BaseEntity, PrimaryColumn, OneToMany } from "typeorm";
 import {
     IsString
 } from "class-validator";
-import { Item } from "./Item";
+import Item from "./Item";
 
 @Entity()
-export class Order extends BaseEntity {
+export default class Order extends BaseEntity {
     @PrimaryColumn()
     @IsString()
     id: string;

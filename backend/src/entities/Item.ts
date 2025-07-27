@@ -1,9 +1,9 @@
 import { BaseEntity,  Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
-import { Service } from "./Service";
-import { Order } from "./Order";
+import Service from "./Service";
+import Order from "./Order";
 
 @Entity()
-export class Item extends BaseEntity {
+export default class Item extends BaseEntity {
     @PrimaryColumn("string")
     orderId: string;
 

@@ -1,7 +1,7 @@
 import { Column, Entity, BaseEntity, PrimaryColumn, OneToOne, JoinColumn, OneToMany } from "typeorm";
-import { Order } from "./Order";
-import { OrderDetail } from "./OrderDetail";
-import { Rating } from "./Rating";
+import Order from "./Order";
+import OrderDetail from "./OrderDetail";
+import Rating from "./Rating";
 import { IsInt,
     IsString,
     MinLength,
@@ -10,7 +10,7 @@ import { IsInt,
 } from "class-validator";
 
 @Entity()
-export class User extends BaseEntity {
+export default class User extends BaseEntity {
     @PrimaryColumn()
     @IsString()
     dni: string;

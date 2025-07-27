@@ -1,6 +1,6 @@
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
-import { User } from "./User";
-import { Service } from "./Service";
+import User from "./User";
+import Service from "./Service";
 import {
     IsInt,
     Max,
@@ -8,7 +8,7 @@ import {
 } from "class-validator";
 
 @Entity()
-export class Rating extends BaseEntity {
+export default class Rating extends BaseEntity {
     @PrimaryColumn()
     userDni: string
 
