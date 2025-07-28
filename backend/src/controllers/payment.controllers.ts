@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { MercadoPagoConfig, Preference } from "mercadopago";
 import { MERCADOPAGO_ACCESS_TOKEN } from "@root/config";
-import { Service } from "@entities/Service";
+import Service from "@entities/Service";
 import { Items } from "mercadopago/dist/clients/commonTypes";
 
 const client = new MercadoPagoConfig({ accessToken: MERCADOPAGO_ACCESS_TOKEN });
