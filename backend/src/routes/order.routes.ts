@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { readOrder, updateOrderItems, deleteOrderItems } from "@controllers/order.controllers";
+import { readOrderController, updateOrderItemsController, deleteOrderItems } from "@controllers/order.controllers";
 
 const router = Router();
 
-router.get("/order", readOrder);
-router.post("/order", updateOrderItems); 
+router.get("/order", readOrderController);
+router.post("/order", updateOrderItemsController); 
 router.delete("/order", deleteOrderItems); 
 
 

@@ -1,23 +1,21 @@
 import { Router } from "express";
-import { createUser, 
-    readUsers,
-    updateUser,
-    deleteUser,
-    logInUser,
-    getAllPurchases
+import { createUserController, 
+    readUsersController,
+    updateUserController,
+    deleteUserController,
 } from "@controllers/user.controllers";
 
 const router = Router()
 
-router.post("/user", createUser);
-router.get("/user", readUsers);
-router.put("/user", updateUser);
-router.delete("/user", deleteUser);
+router.post("/user", createUserController);
+router.get("/user", readUsersController);
+router.put("/user", updateUserController);
+router.delete("/user", deleteUserController);
 
 // Obtiene el ID mediante JSON en el body
-router.get("/user/purchases", getAllPurchases);
+//router.get("/user/purchases", getAllPurchases);
 
 //router.get("/user/login", );
-router.post("/user/login", logInUser)
+//router.post("/user/login", logInUser)
 
 export default router
