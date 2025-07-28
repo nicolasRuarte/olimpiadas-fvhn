@@ -1,10 +1,10 @@
 import { DataSource } from "typeorm";
-import { User } from "@entities/User";
-import { Order } from "@entities/Order";
-import { OrderDetail } from "@entities/OrderDetail";
-import { Rating } from "@entities/Rating";
-import { Service } from "@entities/Service";
-import { Item } from "@entities/Item";
+import User from "@entities/User";
+import Order from "@entities/Order";
+import OrderDetail from "@entities/OrderDetail";
+import Rating from "@entities/Rating";
+import Service from "@entities/Service";
+import Item from "@entities/Item";
 import { DB_NAME, DB_PORT, DB_URL, HOST, PASSWORD, USERNAME } from "./dbconfig";
 
 export const AppDataSource = new DataSource({
