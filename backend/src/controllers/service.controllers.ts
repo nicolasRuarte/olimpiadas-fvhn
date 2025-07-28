@@ -8,7 +8,7 @@ import {
     deleteServiceService
 } from "@services/service.services";
 
-export async function createService(req: Request, res: Response) {
+export async function createServiceController(req: Request, res: Response) {
     try {
         const newService = await createServiceService(req.body);
 
@@ -21,7 +21,7 @@ export async function createService(req: Request, res: Response) {
 }
 
 
-export async function readService(req: Request, res: Response) {
+export async function readServiceControlller(req: Request, res: Response) {
     const selectAllFlag = -1;
     const { id } = req.body;
 
@@ -40,7 +40,7 @@ export async function readService(req: Request, res: Response) {
 }
 
 // Update parameters es un objeto que incluye los nombres de la propiedad a cambiar y el valor al que se la quiere actualizar
-export async function updateService(req: Request, res: Response) {
+export async function updateServiceController(req: Request, res: Response) {
     const updateParameters = req.body;
 
     try {
@@ -55,7 +55,7 @@ export async function updateService(req: Request, res: Response) {
 }
 
 
-export async function deleteService(req: Request, res: Response) {
+export async function deleteServiceController(req: Request, res: Response) {
     const { id } = req.body;
 
     try {

@@ -8,7 +8,7 @@ import {
     deleteRatingService
 } from "@services/rating.services";
 
-export async function createRating(req: Request, res: Response) {
+export async function createRatingController(req: Request, res: Response) {
     const { serviceId, userDni } = req.body;
 
     try {
@@ -22,7 +22,7 @@ export async function createRating(req: Request, res: Response) {
     }
 }
 
-export async function readRatings(req: Request, res: Response) {
+export async function readRatingsController(req: Request, res: Response) {
     try {
         const ratings = await readAllRatingsService();
 
@@ -34,7 +34,7 @@ export async function readRatings(req: Request, res: Response) {
     }
 }
 
-export async function updateRating(req: Request, res: Response) {
+export async function updateRatingController(req: Request, res: Response) {
     try {
         const result = await updateRatingService(req.body);
 

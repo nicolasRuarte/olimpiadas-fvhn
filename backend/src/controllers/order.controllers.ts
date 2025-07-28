@@ -10,7 +10,7 @@ import {
 
 
 
-export async function readOrder(req: Request, res: Response) {
+export async function readOrderController(req: Request, res: Response) {
     const { id } = req.body;
 
     try {
@@ -25,7 +25,7 @@ export async function readOrder(req: Request, res: Response) {
 }
 
 
-export async function updateOrderItems(req: Request, res: Response) {
+export async function updateOrderItemsController(req: Request, res: Response) {
     const { id, items } = req.body;
 
     try {

@@ -6,7 +6,7 @@ import {
     readOrderDetailByOrderNumberService
 } from "@services/orderdetail.services";
 
-export async function createOrderDetail(req: Request, res: Response) {
+export async function createOrderDetailController(req: Request, res: Response) {
     const { orderId, items } = req.body; 
 
     try {
@@ -20,7 +20,7 @@ export async function createOrderDetail(req: Request, res: Response) {
     }
 }
 
-export async function readOrderDetail(req: Request, res: Response) {
+export async function readOrderDetailController(req: Request, res: Response) {
     const selectAllFlag = -1;
     const { id } = req.body;
 

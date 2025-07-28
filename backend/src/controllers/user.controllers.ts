@@ -43,7 +43,7 @@ export async function readUsersController(req: Request, res: Response) {
     }
 }
 
-export async function updateUser(req: Request, res: Response) {
+export async function updateUserController(req: Request, res: Response) {
     const { dni } = req.body;
     try {
         const result = deleteUserService(dni);
@@ -56,6 +56,6 @@ export async function updateUser(req: Request, res: Response) {
     }
 }
 
-export async function deleteUser(req: Request, res: Response) {
+export async function deleteUserController(req: Request, res: Response) {
     res.send("Usuario borrado");
 }
