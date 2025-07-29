@@ -18,7 +18,7 @@ export async function createRatingController(req: Request, res: Response) {
         res.status(200).send(newRating);
     } catch (error) {
         console.error(error);
-        res.status(400).send(createErrorMessage(error as string));
+        res.status(400).send(createErrorMessage(error as Error));
     }
 }
 
@@ -30,7 +30,7 @@ export async function readRatingsController(req: Request, res: Response) {
         res.status(200).send(ratings);
     } catch (error) {
         console.error(error);
-        res.status(400).send(createErrorMessage(error as string));
+        res.status(400).send(createErrorMessage(error as Error));
     }
 }
 
@@ -42,7 +42,7 @@ export async function updateRatingController(req: Request, res: Response) {
         res.send(result);
     } catch(error) {
         console.error(error);
-        res.send(createErrorMessage(error as string));
+        res.send(createErrorMessage(error as Error));
     }
 }
 
@@ -54,6 +54,6 @@ export async function deleteRating(req: Request, res: Response) {
         res.send(rating);
     } catch (error) {
         console.error(error);
-        res.send(createErrorMessage(error as string));
+        res.send(createErrorMessage(error as Error));
     }
 }
