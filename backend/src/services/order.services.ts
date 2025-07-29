@@ -38,3 +38,9 @@ export const deleteOrderService = async (id: string): Promise<DeleteResult> => {
 
     return await OrderRepository.deleteOrder(id);
 }
+
+export async function removeAllItems(id: string): Promise<UpdateResult> {
+    if (!validateStringId(id)) throw new Error("invalid-id");
+
+    return await OrderRepository.removeAllItems(id);
+}
