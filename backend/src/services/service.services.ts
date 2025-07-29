@@ -8,7 +8,7 @@ export const createServiceService = async (data: Partial<Service>): Promise<Serv
 }
 
 export const readAllServicesService = async (): Promise<Service[]> => {
-    return await ServiceRepository.readAllServices()
+    return await ServiceRepository.readAllServices();
 }
 
 export const readServiceByIdService = async (id: number): Promise<Service> => {

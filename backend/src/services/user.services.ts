@@ -5,9 +5,10 @@ import { DeleteResult, UpdateResult } from "typeorm";
 import { validateStringId } from "@functionality/validation";
 
 export const createUserService = async (data: Partial<User>): Promise<User> => {
-    if (!data.password) throw new Error("PASSWORD_REQUIRED");
+    if (!data.password) throw new Error("Contraseña es obligatoria para crear el usuario");
 
     const hashedPassword = await bcrypt.hash(data.password, 10)
+
     return await UserRepository.createUser({ ...data, password: hashedPassword })
 }
 
