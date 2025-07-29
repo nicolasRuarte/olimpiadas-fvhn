@@ -4,6 +4,6 @@ import { createOrderDetailController, readOrderDetailController } from "@control
 const router = Router()
 
 router.post("/orderdetail", createOrderDetailController);
-router.get("/orderdetail/:id", readOrderDetailController); // Devolver todos los OrderDetail solo funciona si pasamos -1 como id
+router.get("/orderdetail", readOrderDetailController); // Devolver todos los OrderDetail solo funciona si pasamos -1 como id
 
 export default router
