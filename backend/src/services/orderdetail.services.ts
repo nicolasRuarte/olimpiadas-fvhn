@@ -2,8 +2,8 @@ import OrderDetail from "@entities/OrderDetail";
 import OrderDetailRepository from "@repositories/orderdetail.repository";
 import { validateNumberId } from "@functionality/validation";
 
-export const createOrderDetailService = async (data: Partial<OrderDetail>): Promise<OrderDetail> => {
-    return await OrderDetailRepository.createOrderDetail(data);
+export const createOrderDetailService = async (orderId: string, data: Partial<OrderDetail>): Promise<OrderDetail> => {
+    return await OrderDetailRepository.createOrderDetail(orderId, data);
 }
 
 export const readAllOrderDetailsService = async (): Promise<OrderDetail[]> => {
