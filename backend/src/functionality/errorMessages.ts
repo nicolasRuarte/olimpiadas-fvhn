@@ -12,6 +12,6 @@ export function createErrorMessage(errorType: string){
         case "empty-body":
             return { message: "El cuerpo de la request no poseía ningún valor", statusCode: 400 };
         default:
-            return { message: errorType, statusCode: 400 };
+            return { message: errorType, statusCode: 500 };
     }
 }
