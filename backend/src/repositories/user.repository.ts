@@ -5,16 +5,18 @@ import { DeleteResult, UpdateResult } from "typeorm";
 const userRepository = AppDataSource.getRepository(User).extend({
     async createUser(data: Partial<User>): Promise<User> {
         const existing = this.findOneBy({ dni: data.dni });
-        if (existing !== null) throw new Error("Usuario ya existe");
+        if (!existing) throw new Error("Usuario ya existe");
 
-        const user = this.create(data);
+        const newUser = this.create(data);
+        this.save(newUser);
 
-        return await this.save(user);
+        return newUser;
     },
 
     async findByDni(dni: string): Promise<User> {
         const user = await this.findOneBy({ dni: dni });
-        if (user === null) throw new Error("not-found");
+        console.log(user)
+        if (!user) throw new Error("not-found");
 
         return user;
     },

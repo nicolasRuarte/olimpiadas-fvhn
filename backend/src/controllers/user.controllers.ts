@@ -10,7 +10,7 @@ import {
 
 // CRUD OPERATIONS -----------------------------------------
 export async function createUserController(req: Request, res: Response): Promise<void> {
-    const data = req.body ? req.body : undefined;
+    const data = req.body ? req.body : "vacío";
 
     try {
         if (data === undefined) throw new Error("empty-body");
@@ -29,6 +29,7 @@ export async function createUserController(req: Request, res: Response): Promise
 export async function readUsersController(req: Request, res: Response) {
     const selectAllFlag = -1;
     const dni = req.body ? req.body.dni : selectAllFlag;
+    console.log("BODY: ", req.body)
 
     try {
         let user;
@@ -47,8 +48,8 @@ export async function readUsersController(req: Request, res: Response) {
 }
 
 export async function updateUserController(req: Request, res: Response) {
-    const dni = req.body ? req.body.dni : undefined;
-    const data = req.body ? req.body.data : undefined;
+    const dni = req.body.dni ? req.body.dni : undefined;
+    const data = req.body.data ? req.body.data : undefined;
 
     try {
         if (dni === undefined || data === undefined) throw new Error("empty-body");
