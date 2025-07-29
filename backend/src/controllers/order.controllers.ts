@@ -11,22 +11,29 @@ import {
 
 
 export async function readOrderController(req: Request, res: Response) {
-    const { id } = req.body;
+    let id;
+    if (req.body !== undefined) id = req.body.id;
+    let order;
 
     try {
-        const order = await readOrderByIdService(id);
+        if (id === undefined || id === null) {
+            order = readAllOrdersService();
+        } else {
+            order = await readOrderByIdService(id);
+        }
 
-        console.log("Orden leída");
+        console.log("Orden/es leída/s");
         res.status(200).send(order);
     } catch (error) {
         console.error(error);
-        res.send(createErrorMessage(error as string));
+        res.send(createErrorMessage(error as Error));
     }
 }
 
 
 export async function updateOrderItemsController(req: Request, res: Response) {
-    const { id, items } = req.body;
+    const id = req.body ? req.body.id : undefined;
+    let items = req.body ? req.body.items : {};
 
     try {
         const order = await updateOrderService(id, items);
@@ -35,21 +42,21 @@ export async function updateOrderItemsController(req: Request, res: Response) {
         res.status(201).send(order);
     } catch (error) {
         console.error(error);
-        res.status(400).send(createErrorMessage(error as string));
+        res.status(400).send(createErrorMessage(error as Error));
     }
 }
 
 export async function deleteOrderItems(req: Request, res: Response) {
-    const selectAllItemsFlag = -1;
-    const { id } = req.body;
+    const selectAllItemsFlag = "-1";
+    const id = req.body.id || selectAllItemsFlag;
 
     try {
         const order = await deleteOrderService(id);
  
         console.log("Borrado elemento de orden");
-        res.status(204).send();
+        res.status(204).send(order);
      } catch (error) {
          console.error(error);
-         res.status(400).send(createErrorMessage(error as string));
+         res.status(400).send(createErrorMessage(error as Error));
      }
 }
