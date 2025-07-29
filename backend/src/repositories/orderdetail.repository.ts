@@ -1,11 +1,16 @@
 import { AppDataSource } from "@root/db";
 import OrderDetail from "@entities/OrderDetail";
+import {
+    removeAllItems
+} from "@services/order.services";
 
 const orderDetailRepository = AppDataSource.getRepository(OrderDetail).extend({
-    async createOrderDetail(data: Partial<OrderDetail>): Promise<OrderDetail> {
-        const newService = this.create(data);
+    async createOrderDetail(orderId: string, data: Partial<OrderDetail>): Promise<OrderDetail> {
+        await removeAllItems(orderId);
 
-        return this.save(newService);
+        const newOrderDetail = this.create(data);
+
+        return this.save(newOrderDetail);
     },
 
     async readOrderDetailByOrderNumber(orderNumber: number): Promise<OrderDetail> {
