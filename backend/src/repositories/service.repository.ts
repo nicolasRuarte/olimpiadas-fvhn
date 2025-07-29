@@ -6,7 +6,7 @@ const serviceRepository = AppDataSource.getRepository(Service).extend({
     async createService(data: Partial<Service>): Promise<Service> {
         const newService = this.create(data);
 
-        return this.save(newService);
+        return await this.save(newService);
     },
 
     async readServiceById(id: number): Promise<Service> {
