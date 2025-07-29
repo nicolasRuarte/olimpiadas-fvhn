@@ -1,5 +1,5 @@
-export function createErrorMessage(errorType: string){
-    switch (errorType) {
+export function createErrorMessage(errorType: Error, statusCode?: number) {
+    switch (errorType.message) {
         case "invalid-id":
             return { message: "Por favor ingrese un id válido", statusCode: 400 };
 
@@ -11,7 +11,8 @@ export function createErrorMessage(errorType: string){
             
         case "empty-body":
             return { message: "El cuerpo de la request no poseía ningún valor", statusCode: 400 };
+
         default:
-            return { message: errorType, statusCode: 500 };
+            return { message: errorType.message, statusCode: statusCode };
     }
 }
