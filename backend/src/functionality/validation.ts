@@ -2,10 +2,12 @@ import * as v from "valibot";
 
 const messages = {
     string: "debe ser un string",
+    stringId: "El ID debe ser de tipo string",
     nonEmpty: "debe ingresar el dato",
     minLength: "longitud debe ser de mínimo 8 caracteres",
     length: "debe tener longitud de 8 caracteres",
-    number: "debe ser un número"
+    number: "debe ser un número",
+    numberId: "El ID debe ser de tipo número"
 }
 
 const dniLength = 8;
@@ -24,8 +26,7 @@ const userLoginSchema = v.object({
     names: v.pipe(
         v.string(messages.string),
         v.nonEmpty()
-    ),
-    email: v.pipe(
+    ), email: v.pipe(
         v.string(messages.string),
         v.email(),
         v.nonEmpty(messages.nonEmpty)
@@ -42,27 +43,16 @@ const userLoginSchema = v.object({
     )
 });
 
-const stringIdSchema = v.object({
-    id: v.pipe(
-        v.string(messages.string),
-        v.nonEmpty(messages.nonEmpty),
-    )
-});
 
-const numberIdSchema = v.object({
-    id: v.pipe(
-        v.number(messages.number)
-    )
-});
 
 export function validateNumberId(id: number) {
-    type id = v.InferOutput<typeof numberIdSchema>;
+    const numberIdSchema = v.pipe(v.number(messages.numberId));
 
     return v.parse(numberIdSchema, id);
 }
 
 export function validateStringId(id: unknown) {
-    type id = v.InferOutput<typeof stringIdSchema>;
+    const stringIdSchema = v.pipe(v.string(messages.stringId), v.nonEmpty(messages.nonEmpty), v.trim());
 
     return v.parse(stringIdSchema, id);
 }
@@ -71,4 +61,10 @@ export function validateUserData(loginData: unknown) {
     type loginData = v.InferOutput<typeof userLoginSchema>;
 
     return v.parse(userLoginSchema, loginData);
+}
+
+export function validateBody(body: object) {
+    if (body === undefined || body === null || Object.keys(body).length === 0) return false;
+
+    return true;
 }
