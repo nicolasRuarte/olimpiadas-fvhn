@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { createErrorMessage } from "@functionality/errorMessages";
+import { validateBody, validateNumberId, validateStringId } from "@functionality/validation";
 import {
     createServiceService,
     readAllServicesService,
@@ -23,7 +24,8 @@ export async function createServiceController(req: Request, res: Response) {
 
 export async function readServiceControlller(req: Request, res: Response) {
     const selectAllFlag = -1;
-    const id = req.body ? req.body : selectAllFlag;
+    const id = validateBody(req.body) ? req.body.id : selectAllFlag;
+    console.log("BODY: ", req.body)
 
     try {
         let services;
@@ -43,10 +45,13 @@ export async function readServiceControlller(req: Request, res: Response) {
 
 // Update parameters es un objeto que incluye los nombres de la propiedad a cambiar y el valor al que se la quiere actualizar
 export async function updateServiceController(req: Request, res: Response) {
-    let updateParameters = req.body ? req.body : "awawawawaw";
+    const updatedData = validateBody(req.body) ? req.body.updatedData : null;
+    const id = validateNumberId(req.body.id) ? req.body.id : null
 
     try {
-        const updatedService = await updateServiceService(updateParameters);
+        if (updatedData === null) throw new Error("empty-body");
+
+        const updatedService = await updateServiceService(id, updatedData);
 
         console.log("Actualizando servicio");
         res.status(200).send(updatedService);
@@ -58,9 +63,11 @@ export async function updateServiceController(req: Request, res: Response) {
 
 
 export async function deleteServiceController(req: Request, res: Response) {
-    const id = req.body ? req.body.id : "wawawawa";
+    const id = validateBody(req.body) ? req.body.id : null;
 
     try {
+        if (id === null) throw new Error("invalid-id");
+
         const deleteResult = await deleteServiceService(id);
 
         console.log("Borrando servicio");

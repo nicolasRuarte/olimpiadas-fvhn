@@ -23,8 +23,8 @@ const serviceRepository = AppDataSource.getRepository(Service).extend({
         return services;
     },
 
-    async updateService(data: Partial<Service>): Promise<UpdateResult> {
-        return await this.update({ id: data.id }, data);
+    async updateService(id: number, data: Partial<Service>): Promise<UpdateResult> {
+        return await this.update({ id: id }, data);
     },
 
     async deleteService(id: number): Promise<DeleteResult> {

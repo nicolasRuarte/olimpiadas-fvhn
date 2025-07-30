@@ -17,8 +17,8 @@ export const readServiceByIdService = async (id: number): Promise<Service> => {
     return await ServiceRepository.readServiceById(id)
 }
 
-export const updateServiceService = async (data: Partial<Service>): Promise<UpdateResult> => {
-    return await ServiceRepository.updateService(data);
+export const updateServiceService = async (id: number, data: Partial<Service>): Promise<UpdateResult> => {
+    return await ServiceRepository.updateService(id, data);
 }
 
 export const deleteServiceService = async (id: number): Promise<DeleteResult> => {

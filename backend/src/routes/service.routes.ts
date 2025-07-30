@@ -7,7 +7,6 @@ router.post("/service", createServiceController);
 router.get("/service", readServiceControlller);
 router.get("/service/:id", readServiceControlller);
 router.patch("/service", updateServiceController);
-router.patch("/service/:id", updateServiceController);
-router.delete("/service/:id", deleteServiceController);
+router.delete("/service", deleteServiceController);
 
 export default router;
