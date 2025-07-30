@@ -4,5 +4,5 @@ propuesta-viejo*
 archivos/estructura-pagina.svg
 node_modules/
 *.env
-*config.ts
-dbconfig.ts
+*config.*
+*dbconfig.*

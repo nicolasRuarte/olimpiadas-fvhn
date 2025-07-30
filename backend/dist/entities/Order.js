@@ -11,19 +11,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Order = void 0;
 const typeorm_1 = require("typeorm");
-const User_1 = require("./User");
+const Service_1 = require("./Service");
+const class_validator_1 = require("class-validator");
 let Order = class Order extends typeorm_1.BaseEntity {
 };
 exports.Order = Order;
 __decorate([
     (0, typeorm_1.PrimaryColumn)(),
-    (0, typeorm_1.OneToOne)(() => User_1.User, (user) => user.order),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], Order.prototype, "dni", void 0);
+], Order.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Order.prototype, "total_price", void 0);
+    (0, typeorm_1.ManyToMany)(() => Service_1.Service),
+    (0, typeorm_1.JoinTable)(),
+    __metadata("design:type", Array)
+], Order.prototype, "items", void 0);
 exports.Order = Order = __decorate([
     (0, typeorm_1.Entity)()
 ], Order);
