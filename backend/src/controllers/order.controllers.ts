@@ -7,17 +7,18 @@ import {
     updateOrderService,
     deleteOrderService
 } from "@services/order.services";
+import { validateBody } from "@functionality/validation";
 
 
 
 export async function readOrderController(req: Request, res: Response) {
-    let id;
-    if (req.body !== undefined) id = req.body.id;
-    let order;
+    const selectAllFlag = -1;
+    const id = validateBody(req.body) ? req.body.id : selectAllFlag;
 
     try {
-        if (id === undefined || id === null) {
-            order = readAllOrdersService();
+        let order;
+        if (id === selectAllFlag) {
+            order = await readAllOrdersService();
         } else {
             order = await readOrderByIdService(id);
         }
