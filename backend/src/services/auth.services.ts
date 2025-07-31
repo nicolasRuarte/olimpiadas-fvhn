@@ -1,54 +1,23 @@
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import User from "@entities/User";
+import userRepository from "@repositories/user.repository";
+import { JWT_SECRET } from "@root/config";
 
-export async function logInUser(req: Request, res: Response) {
-    const { dni, email, password } = req.body;
+export async function logInService(dni: string, password: string): Promise<{ token: string, user: Partial<User>}> {
+    const user = await userRepository.findOneBy({ dni: dni }) as unknown as User; // Solo hago esta línea porque la validación del condicional de abajo no parece hacer callar al compilador
+    if (!user) throw new Error("not-found");
 
-    try {
-        const userToLogIn = await userRepository.findOne({ where: [ { dni: dni }, { email: email } ] });
-        if (userToLogIn === null) throw new Error("not-found");
+    const passwordIsCorrect = await bcrypt.compare(password, user.password);
+    if (!passwordIsCorrect) throw new Error("La contraseña ingresada no es correcta");
 
-        const isPasswordCorrect = await bcrypt.compare(password, userToLogIn?.password);
-        if (!isPasswordCorrect) throw new Error("La contraseña o el usuario son incorrectos");
+    const token = jwt.sign(
+        { dni: user.dni, email: user.email, role: user.role },
+        JWT_SECRET,
+        { expiresIn: "24h" }
+    )
 
-        const role: string = userToLogIn.role;
-        const token = jwt.sign(
-            { dni, role },
-            JWT_SECRET,
-            {
-                expiresIn: "24h"
-            });
+    const { password: _, ...userWithoutPassword } = user;
 
-        const twentyFourHoursInSeconds = 1000 * 60 * 60 * 24;
-        res.cookie("access_token", token, {
-            httpOnly: true,
-            sameSite: "strict",
-            maxAge: twentyFourHoursInSeconds
-        }).status(200)
-        .send({ dni, role, token });
-
-        console.log("Loggeando usuario");
-        res.status(200).send({ message: "Usuario loggeado con éxito" });
-    } catch (error) {
-        console.error(error);
-        res.status(400).send(createErrorMessage(error as string));
-    }
-}
-
-export async function getAllPurchases(req: Request, res: Response) {
-    try {
-        const token = req.cookies.access_token;
-        if (token === undefined || token === null) throw new Error("access-denied");
-
-        const data = jwt.verify(token, JWT_SECRET);
-
-
-        // Si se puede eliminar los any
-        const user = await userRepository.findOne({ where: { dni: (<any>data).dni }, relations: { orderDetails: true } });
-        if (user === null) throw new Error("not-found");
-
-        res.status(200).send(user.orderDetails);
-        console.log("Devolviendo todas las compras del usuario");
-    } catch (error) {
-        console.error(error);
-        res.send(createErrorMessage(error as string));
-    }
+    return { token: token, user: userWithoutPassword };
 }
