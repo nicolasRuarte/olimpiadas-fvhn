@@ -8,7 +8,7 @@ const orderRepository = AppDataSource.getRepository(Order).extend({
         const newOrder = this.create();
         newOrder.id = id;
 
-        return this.save(newOrder);
+        return await this.save(newOrder);
     },
 
     async readOrderById(id: string): Promise<Order | null> {
