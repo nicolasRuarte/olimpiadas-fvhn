@@ -1,6 +1,6 @@
 import { AppDataSource } from "@root/db";
 import Service from "@entities/Service";
-import { DeleteResult, UpdateResult } from "typeorm";
+import { DeleteResult} from "typeorm";
 
 const serviceRepository = AppDataSource.getRepository(Service).extend({
     async createService(data: Partial<Service>): Promise<Service> {
@@ -23,8 +23,11 @@ const serviceRepository = AppDataSource.getRepository(Service).extend({
         return services;
     },
 
-    async updateService(id: number, data: Partial<Service>): Promise<UpdateResult> {
-        return await this.update({ id: id }, data);
+    async updateService(id: number, data: Partial<Service>): Promise<Service | null> {
+        const updateResult = await this.update({ id: id }, data);
+        console.log(updateResult);
+
+        return this.findOneBy({ id: id });
     },
 
     async deleteService(id: number): Promise<DeleteResult> {

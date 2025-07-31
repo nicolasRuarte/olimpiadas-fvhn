@@ -45,10 +45,10 @@ export async function readServiceControlller(req: Request, res: Response) {
 
 // Update parameters es un objeto que incluye los nombres de la propiedad a cambiar y el valor al que se la quiere actualizar
 export async function updateServiceController(req: Request, res: Response) {
-    const updatedData = validateBody(req.body) ? req.body.updatedData : null;
-    const id = validateNumberId(req.body.id) ? req.body.id : null
-
     try {
+        const updatedData = validateBody(req.body) ? req.body.updatedData : null;
+        const id = validateNumberId(req.body.id) ? req.body.id : null
+
         if (updatedData === null) throw new Error("empty-body");
 
         const updatedService = await updateServiceService(id, updatedData);
