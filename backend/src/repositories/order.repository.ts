@@ -4,8 +4,9 @@ import Item from "@entities/Item";
 import { UpdateResult, DeleteResult } from "typeorm";
 
 const orderRepository = AppDataSource.getRepository(Order).extend({
-    async createOrder(data: Partial<Order>): Promise<Order> {
-        const newOrder = this.create(data);
+    async createOrder(id: string): Promise<Order> {
+        const newOrder = this.create();
+        newOrder.id = id;
 
         return this.save(newOrder);
     },

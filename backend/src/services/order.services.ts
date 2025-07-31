@@ -4,8 +4,8 @@ import OrderRepository from "@repositories/order.repository";
 import { DeleteResult, UpdateResult } from "typeorm";
 import { validateStringId } from "@functionality/validation";
 
-export const createOrderService = async (data: Partial<Order>) => {
-    return await OrderRepository.createOrder(data);
+export const createOrderService = async (id: string) => {
+    return await OrderRepository.createOrder(id);
 }
 
 export const readAllOrdersService = async (): Promise<Order[] | undefined> => {
