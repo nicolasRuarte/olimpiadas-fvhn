@@ -21,10 +21,10 @@ export const readOrderByIdService = async (id: string): Promise<Order> => {
     return order;
 }
 
-export function addItemsService(id: string, item: Item[]): Promise<UpdateResult> {
+export async function addOneItemService(id: string, item: { serviceId: number, orderId: string, quantity: number }): Promise<Order> {
     if (!validateStringId(id)) throw new Error("invalid-id");
 
-    return OrderRepository.addItems(id, item)
+    return await OrderRepository.addOneItem(id, item);
 }
 
 export const updateOrderService = async (id: string, data: Partial<Order>): Promise<UpdateResult> => {

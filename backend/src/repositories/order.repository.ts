@@ -2,6 +2,7 @@ import { AppDataSource } from "@root/db";
 import Order from "@entities/Order";
 import Item from "@entities/Item";
 import { UpdateResult, DeleteResult } from "typeorm";
+import itemRepository from "@repositories/item.repository";
 
 const orderRepository = AppDataSource.getRepository(Order).extend({
     async createOrder(id: string): Promise<Order> {
@@ -18,7 +19,7 @@ const orderRepository = AppDataSource.getRepository(Order).extend({
     },
 
     async readAllOrders(): Promise<Order[] | undefined> {
-        const orders = await this.find();
+        const orders = await this.find({ relations: { items: true }});
 
         return orders;
     },
@@ -31,12 +32,30 @@ const orderRepository = AppDataSource.getRepository(Order).extend({
         return await this.delete({ id: id });
     },
 
-    async addItems(id: string, items: Item[]): Promise<UpdateResult> {
-        return await this.update({ id: id }, { items: items })
+    async addOneItem(id: string, item: { serviceId: number, orderId: string, quantity: number }): Promise<Order> {
+        const newItem = await itemRepository.createItem(item.serviceId, item.orderId, item.quantity);
+
+        const order = await this.findOneBy({ id: id });
+        if (!order) throw new Error("not-found");
+
+        if (order.items === undefined) {
+            order.items = [];
+            order.items.push(newItem);
+        } else {
+            order.items.push(newItem);
+        }
+
+        await this.save(order);
+
+        return order;
     },
 
-    async removeItems(id: string, items: Item[]): Promise<UpdateResult> {
-        return await this.update({ id: id }, { items: items })
+    async addItems(id: string, items: Item[]): Promise<{}>{
+        return {};
+    },
+
+    async removeOneItem(id: string, itemIds: { orderId: string, serviceId: number }): Promise<Order> {
+        return new Order;
     },
 
     async removeAllItems(id: string): Promise<UpdateResult> {

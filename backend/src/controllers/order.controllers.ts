@@ -5,7 +5,8 @@ import {
     readAllOrdersService,
     readOrderByIdService,
     updateOrderService,
-    deleteOrderService
+    deleteOrderService,
+    addOneItemService
 } from "@services/order.services";
 import { validateBody } from "@functionality/validation";
 
@@ -32,12 +33,12 @@ export async function readOrderController(req: Request, res: Response) {
 }
 
 
-export async function updateOrderItemsController(req: Request, res: Response) {
-    const id = req.body ? req.body.id : undefined;
-    let items = req.body ? req.body.items : {};
+export async function addItemsControlller(req: Request, res: Response) {
+    const id = validateBody(req.body) ? req.body.id : undefined;
+    let item = validateBody(req.body) ? req.body.item : {};
 
     try {
-        const order = await updateOrderService(id, items);
+        const order = await addOneItemService(id, item);
 
         console.log("Actualizando orden");
         res.status(201).send(order);
