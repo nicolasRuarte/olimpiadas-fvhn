@@ -6,7 +6,8 @@ import {
     readOrderByIdService,
     updateOrderService,
     deleteOrderService,
-    addOneItemService
+    addOneItemService,
+    removeOneItemService
 } from "@services/order.services";
 import { validateBody } from "@functionality/validation";
 
@@ -48,12 +49,15 @@ export async function addItemsControlller(req: Request, res: Response) {
     }
 }
 
-export async function deleteOrderItems(req: Request, res: Response) {
-    const selectAllItemsFlag = "-1";
-    const id = req.body.id || selectAllItemsFlag;
+export async function removeItemsController(req: Request, res: Response) {
+    const selectAllItemsFlag = -1;
+    const id = validateBody(req.body) ? req.body.id : selectAllItemsFlag;
+    const itemIds = validateBody(req.body) ? req.body.itemIds : undefined;
 
     try {
-        const order = await deleteOrderService(id);
+        if (!itemIds) throw new Error("Por favor seleccione los IDs del item a borrar");
+
+        const order = await removeOneItemService(id, itemIds);
  
         console.log("Borrado elemento de orden");
         res.status(204).send(order);
