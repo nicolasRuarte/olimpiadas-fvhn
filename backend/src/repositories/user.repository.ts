@@ -17,11 +17,17 @@ const userRepository = AppDataSource.getRepository(User).extend({
         return newUser;
     },
 
-    async findByDni(dni: string): Promise<User> {
+    async readUserByDni(dni: string): Promise<Partial<User>> {
         const user = await this.findOneBy({ dni: dni });
         if (!user) throw new Error("not-found");
 
-        return user;
+        return {
+            dni: user.dni,
+            surname: user.surname,
+            names: user.names,
+            email: user.email,
+            phone_number: user.phone_number
+        }
     },
 
     async findAllUsers(): Promise<User[]> {

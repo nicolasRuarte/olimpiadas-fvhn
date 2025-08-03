@@ -16,10 +16,10 @@ export const getAllUsersService = async (): Promise<User[]> => {
     return await UserRepository.findAllUsers()
 }
 
-export const getUserByDniService = async (dni: string): Promise<User> => {
+export const getUserByDniService = async (dni: string): Promise<Partial<User>> => {
     if (!validateStringId(dni)) throw new Error("invalid-id");
 
-    return await UserRepository.findByDni(dni)
+    return await UserRepository.readUserByDni(dni)
 }
 
 export const updateUserService = async (dni: string, data: Partial<User>): Promise<UpdateResult> => {
