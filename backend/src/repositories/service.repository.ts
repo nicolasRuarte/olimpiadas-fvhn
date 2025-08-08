@@ -1,5 +1,6 @@
 import { AppDataSource } from "@root/db";
 import Service from "@entities/Service";
+import Rating from "@entities/Rating";
 import { DeleteResult} from "typeorm";
 
 const serviceRepository = AppDataSource.getRepository(Service).extend({
@@ -32,8 +33,20 @@ const serviceRepository = AppDataSource.getRepository(Service).extend({
 
     async deleteService(id: number): Promise<DeleteResult> {
         return await this.delete({ id: id });
-    }
+    },
 
+    async addRatingToService(rating: Rating): Promise<void> {
+        const service = await this.findOneBy({ id: rating.service?.id as number}) as Service;
+
+        if (!service.ratings) {
+            service.ratings = [];
+            service.ratings.push(rating);
+        } else {
+            service.ratings.push(rating);
+        }
+
+        await this.save(service);
+    }
 });
 
 export default serviceRepository;

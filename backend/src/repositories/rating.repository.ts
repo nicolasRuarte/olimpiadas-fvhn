@@ -1,35 +1,49 @@
 import { AppDataSource } from "@root/db";
 import Rating from "@entities/Rating";
-import { UpdateResult, DeleteResult } from "typeorm";
+import User from "@entities/User";
+import { readServiceByIdService } from "@services/service.services";
+import userRepository from "./user.repository";
+import serviceRepository from "./service.repository";
 
 const ratingRepository = AppDataSource.getRepository(Rating).extend({
-    async createRating(data: Partial<Rating>): Promise<Rating> {
-        const newRating = this.create(data);
+    async createRating(data: { userId: string, serviceId: number, rating: number }): Promise<Rating> {
+        //const user = userdni
+        //if user.items !includes service with service id
+        const user = await userRepository.findOneBy({ dni: data.userId });
+        if (!user) throw new Error("not-found");
+        const service = await readServiceByIdService(data.serviceId as number);
+        if (!service) throw new Error("not-found");
 
-        return this.save(newRating);
+        const newRating = this.create();
+        newRating.rating = data.rating;
+        newRating.user = user;
+        newRating.service = service;
+
+        await userRepository.addRatingToUser(newRating);
+        await serviceRepository.addRatingToService(newRating);
+
+        return await this.save(newRating);
     },
 
-    async readRatingByIds(ratingData: Partial<Rating>): Promise<Rating> {
-        const service = await this.findOneBy({ userDni: ratingData.userDni, serviceId: ratingData.serviceId });
-        if (service === null) throw new Error("not-found");
+    async readRatingByIds(data: { userId: string, serviceId: number }): Promise<Rating> {
+        const rating = await this.findOne({ where: { user: { dni: data.userId }, service: { id: data.serviceId }}});
+        if (!rating) throw new Error("not-found");
 
-        return service;
+        return rating;
     },
 
     async readAllRatings(): Promise<Rating[]> {
-        const services = await this.find();
-        if (services === undefined) throw new Error("No hay ningún servicio registrado");
+        const ratings = await this.find();
+        if (ratings === undefined) throw new Error("No hay ningún servicio registrado");
 
-        return services;
+        return ratings;
     },
 
-    async updateRating(updatedRating: Partial<Rating>): Promise<UpdateResult> {
-        return await this.update({userDni: updatedRating.userDni, serviceId: updatedRating.serviceId }, updatedRating);
+    async updateRating(updatedRating: { userId: string, serviceId: number, rating: number }): Promise<void> {
     },
 
-    async deleteRating(ratingIds: Partial<Rating>): Promise<DeleteResult> {
-        return await this.delete({ userDni: ratingIds.userDni, serviceId: ratingIds.serviceId });
-    },
+    async deleteRating(ratingIds: Partial<Rating>): Promise<void> {
+    }
 });
 
 export default ratingRepository;
