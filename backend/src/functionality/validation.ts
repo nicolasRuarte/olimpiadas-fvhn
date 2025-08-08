@@ -45,14 +45,14 @@ const userLoginSchema = v.object({
 
 
 
-export function validateNumberId(id: number) {
+export function validateNumberId(id: unknown) {
     const numberIdSchema = v.pipe(v.number(messages.numberId));
 
     return v.parse(numberIdSchema, id);
 }
 
 export function validateStringId(id: unknown) {
-    const stringIdSchema = v.pipe(v.string(messages.stringId), v.nonEmpty(messages.nonEmpty), v.trim());
+    const stringIdSchema = v.pipe(v.string(messages.stringId), v.nonEmpty(messages.nonEmpty), v.trim(), v.length(8, messages.length));
 
     return v.parse(stringIdSchema, id);
 }
