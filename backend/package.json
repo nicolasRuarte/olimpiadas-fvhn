@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "compile": "tsc",
-    "dev": "tsc; tsnd --rs --respawn src/index.ts",
+    "dev": "tsnd --rs --respawn src/index.ts",
     "build": "npm install; tsc",
     "start": "node dist/index.js"
   },
@@ -14,7 +14,9 @@
     "@entities": "dist/entities",
     "@routes": "dist/routes",
     "@root": "dist/",
-    "@functionality": "dist/functionality"
+    "@functionality": "dist/functionality",
+    "@repositories": "dist/repositories",
+    "@services": "dist/services"
   },
   "repository": {
     "type": "git",
