@@ -3,10 +3,11 @@ import { createErrorMessage } from "@functionality/errorMessages";
 import {
     createUserService,
     getAllUsersService,
-    getUserByDniService,
+    readUserByDniService,
     updateUserService,
     deleteUserService
 } from "@services/user.services";
+import { validateBody } from "@functionality/validation";
 
 // CRUD OPERATIONS -----------------------------------------
 export async function createUserController(req: Request, res: Response): Promise<void> {
@@ -28,7 +29,7 @@ export async function createUserController(req: Request, res: Response): Promise
 
 export async function readUsersController(req: Request, res: Response) {
     const selectAllFlag = -1;
-    const dni = req.body ? req.body.dni : selectAllFlag;
+    const dni = validateBody(req.body) ? req.body.dni : selectAllFlag;
     console.log("BODY: ", req.body)
 
     try {
@@ -36,7 +37,7 @@ export async function readUsersController(req: Request, res: Response) {
         if (dni === selectAllFlag) {
             user = await getAllUsersService();
         } else {
-            user = await getUserByDniService(dni);
+            user = await readUserByDniService(dni);
         }
 
         console.log("Devolviendo usuario/s");
