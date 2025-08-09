@@ -3,8 +3,11 @@ import jwt from "jsonwebtoken";
 import User from "@entities/User";
 import userRepository from "@repositories/user.repository";
 import { JWT_SECRET } from "@root/config";
+import { validateStringId } from "@functionality/validation";
 
 export async function logInService(dni: string, password: string): Promise<{ token: string, user: Partial<User>}> {
+    if (!validateStringId(dni)) throw new Error("invalid-id");
+
     const user = await userRepository.findOneBy({ dni: dni }) as unknown as User; // Solo hago esta línea porque la validación del condicional de abajo no parece hacer callar al compilador
     if (!user) throw new Error("not-found");
 
