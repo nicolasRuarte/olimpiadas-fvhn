@@ -2,11 +2,11 @@ import { Column, Entity, BaseEntity, PrimaryColumn, OneToOne, JoinColumn, OneToM
 import Order from "./Order";
 import OrderDetail from "./OrderDetail";
 import Rating from "./Rating";
-import { IsInt,
+import { 
     IsString,
     MinLength,
     IsEmail,
-    Length,
+    Length
 } from "class-validator";
 
 @Entity()
