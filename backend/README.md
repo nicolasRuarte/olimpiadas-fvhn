@@ -138,6 +138,17 @@ Todos los repositorios siguen una plantilla muy parecida, ya que todos tienen la
 
 Luego hay excepciones como la entidad Order que tiene además la funcionalidad para añadir y borrar los items de su campo items
 
+#### Ejemplo en una request
+
+Supongamos que queremos crear un usuario, para ello vamos a utilizar en el frontend los formularios de inicio de sesión. Dichos formularios van a tener un código Javascript que envíe una petición POST a la ruta /user, cuando esta llega la ruta lo que hace es llamar a la función createUserController() que recibe como parámetros los objetos request y response que le sirven para procesar tanto la petición recibida como la respuesta que enviará después.
+
+Dentro del controlador, el programa hace una validación del body de la petición y verifica que el mismo no se encuentre vacío (por vacío se puede entender a los casos en los que el body no existe, contenga un objeto vacío o carezca de algunos atributos que sean necesarios para que las funciones de servicio puedan hacer su trabajo, que en este caso podrían ser que no tengan la ID de usuario), si no lo está, manda todos los datos que contenga el body a la función de servicio correspondiente, que en nuestro caso sería createUserController().
+
+Cuando el servicio agarra los datoss del body, lo que hace generalmente es verificar las IDs que se envían para comprobar que estén en el formato correcto (verifica si es string o número según corresponda). Luego de verificar los IDs, envía los datos al repositorio de User (userRepository)
+De momento esta es la única funcionalidad que realiza a la hora de validar, pero en un futuro cercano buscamos añadirle la capacidad de verificar el esquema con el que vienen los datos y compararlos con el esquema de la entidad que se quiera manipular, todo esto sería con Valibot. 
+
+Finalmente los datos llegan al repositorio y es aquí cuando ya la base de datos empieza a ser manipulada y cambiada. Para el caso de creación de usuario lo que hace es que, mediante TypeORM, se llama a la función create() del repositorio, se le pasan los datos que provienen del servicio y luego se crea una entidad que para guardar en la base de datos tenemos que meterla como parámetro a la función del repositorio save() y ya tendríamos nuestro usuario creado
+
 ### Manejo de errores
 
 El manejo de errores se realiza principalmente mediante el uso de bloques try-catch. El modo en que utilizamos estos bloques es que los declaramos a nivel de controlador, porque sabemos que cuando alguno de los niveles inferiores tira un error, este hace como un efecto de cascada por todas las funciones anteriores que se llamaron previamente y el error llega hasta la primera función que llamó a toda la pila de funciones.
@@ -150,3 +161,5 @@ Puede entenderse así:
 4. Repositorios <- Error ocurre acá
 
 Sería como un trycatch "global" que engloba a la mayoría de funcionamiento del programa. Kinda
+
+
