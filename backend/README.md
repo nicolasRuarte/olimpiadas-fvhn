@@ -137,3 +137,16 @@ Todos los repositorios siguen una plantilla muy parecida, ya que todos tienen la
 5. Borrar una entidad del repositorio
 
 Luego hay excepciones como la entidad Order que tiene además la funcionalidad para añadir y borrar los items de su campo items
+
+### Manejo de errores
+
+El manejo de errores se realiza principalmente mediante el uso de bloques try-catch. El modo en que utilizamos estos bloques es que los declaramos a nivel de controlador, porque sabemos que cuando alguno de los niveles inferiores tira un error, este hace como un efecto de cascada por todas las funciones anteriores que se llamaron previamente y el error llega hasta la primera función que llamó a toda la pila de funciones.
+
+Puede entenderse así:
+
+1. Rutas
+2. Controladores <- Y sube hasta acá donde es manejado por un trycatch
+3. Servicios
+4. Repositorios <- Error ocurre acá
+
+Sería como un trycatch "global" que engloba a la mayoría de funcionamiento del programa. Kinda
