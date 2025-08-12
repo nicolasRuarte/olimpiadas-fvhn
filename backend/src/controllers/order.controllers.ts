@@ -1,13 +1,10 @@
 import { Request, Response } from "express";
 import { createErrorMessage } from "@functionality/errorMessages";
 import {
-    createOrderService,
     readAllOrdersService,
-    readOrderByIdService,
-    updateOrderService,
-    deleteOrderService,
     addOneItemService,
-    removeOneItemService
+    removeOneItemService,
+    readOrderByUserDniService
 } from "@services/order.services";
 import { validateBody } from "@functionality/validation";
 
@@ -15,14 +12,15 @@ import { validateBody } from "@functionality/validation";
 
 export async function readOrderController(req: Request, res: Response) {
     const selectAllFlag = -1;
-    const id = validateBody(req.body) ? req.body.id : selectAllFlag;
+    const dni = validateBody(req.body) ? req.body.dni : selectAllFlag;
 
     try {
+
         let order;
-        if (id === selectAllFlag) {
+        if (dni === selectAllFlag) {
             order = await readAllOrdersService();
         } else {
-            order = await readOrderByIdService(id);
+            order = await readOrderByUserDniService(dni);
         }
 
         console.log("Orden/es leída/s");
@@ -35,32 +33,37 @@ export async function readOrderController(req: Request, res: Response) {
 
 
 export async function addItemsControlller(req: Request, res: Response) {
-    const id = validateBody(req.body) ? req.body.id : undefined;
-    let item = validateBody(req.body) ? req.body.item : {};
+    const serviceId = validateBody(req.body) ? req.body.serviceId : undefined;
+    const orderId = validateBody(req.body) ? req.body.orderId : undefined;
+    const quantity = validateBody(req.body) ? req.body.quantity : undefined;
 
     try {
-        const order = await addOneItemService(id, item);
+        if (!serviceId || !orderId || !quantity) throw new Error("empty-body");
+
+        const order = await addOneItemService(serviceId, orderId, quantity);
 
         console.log("Actualizando orden");
         res.status(201).send(order);
     } catch (error) {
         console.error(error);
-        res.status(400).send(createErrorMessage(error as Error));
+        const errorData = createErrorMessage(error as Error);
+        res.status(errorData.statusCode).send(errorData.message);
     }
 }
 
 export async function removeItemsController(req: Request, res: Response) {
-    const selectAllItemsFlag = -1;
-    const id = validateBody(req.body) ? req.body.id : selectAllItemsFlag;
-    const itemIds = validateBody(req.body) ? req.body.itemIds : undefined;
+    const orderId = validateBody(req.body) ? req.body.orderId : undefined;
+    const serviceId = validateBody(req.body) ? req.body.serviceId : undefined;
+    const quantity = validateBody(req.body) ? req.body.quantity : undefined;
 
     try {
-        if (!itemIds) throw new Error("Por favor seleccione los IDs del item a borrar");
+        if (!orderId || !serviceId || !quantity) throw new Error("empty-body");
 
-        const order = await removeOneItemService(id, itemIds);
+        const order = await removeOneItemService(serviceId, orderId, quantity);
+        console.log("ORDER IN CONTROLLER", order)
  
         console.log("Borrado elemento de orden");
-        res.status(204).send(order);
+        res.status(201).send(order);
      } catch (error) {
          console.error(error);
          res.status(400).send(createErrorMessage(error as Error));

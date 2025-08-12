@@ -6,21 +6,33 @@ import itemRepository from "@repositories/item.repository";
 
 
 const orderRepository = AppDataSource.getRepository(Order).extend({
-    async createOrder(id: string): Promise<Order> {
+    async createOrder(id: number): Promise<Order> {
         const newOrder = this.create();
-        newOrder.id = id;
 
         return await this.save(newOrder);
     },
 
-    async readOrderById(id: string): Promise<Order | null> {
+    async readOrderById(id: number): Promise<Order | null> {
         const order = await this.findOne({ where: { id: id }, relations: { items: true }});
+        if (!order) throw new Error("not-found");
+
+        return order;
+    },
+
+    async readOrderByUserDni(dni: string): Promise<Order[]> {
+        const order = await this
+        .createQueryBuilder("order")
+        .leftJoin("order.user", "user")
+        .leftJoinAndSelect("order.items", "items")
+        .where("user.dni = :dni", { dni: dni })
+        .getMany()
+        if (!order) throw new Error("not-found");
 
         return order;
     },
 
     async readAllOrders(): Promise<Order[] | undefined> {
-        const orders = await this.find({ relations: { items: true }});
+        const orders = await this.find({ relations: { items: true, user: true } });
 
         return orders;
     },
@@ -29,80 +41,45 @@ const orderRepository = AppDataSource.getRepository(Order).extend({
         return await this.update({ id: data.id }, data);
     },
 
-    async deleteOrder(id: string): Promise<DeleteResult> {
+    async deleteOrder(id: number): Promise<DeleteResult> {
         return await this.delete({ id: id });
     },
 
-    async addOneItem(id: string, itemToAdd: { serviceId: number, orderId: string, quantity: number }): Promise<Order> {
-        const itemExists = itemRepository.findOne({ where: { orderId: itemToAdd.orderId, serviceId: itemToAdd.serviceId }})
-
-        const order = await this.findOne({ where: { id: id }, relations: { items: true } });
+    async addOneItem(serviceId: number, orderId: number, quantity: number): Promise<Order> {
+        const order = await this.findOne({ where: { id: orderId }, relations: { items: true } });
         if (!order) throw new Error("not-found");
 
-        let newItem;
-        let itemIsInList = false;
-        if (!itemExists) {
-            newItem = await itemRepository.createItem(itemToAdd.serviceId, itemToAdd.orderId, itemToAdd.quantity);
-
-        } else {
-            for (let index = 0 ; index < order.items.length; index++) {
-                if (order.items[index].orderId === id && order.items[index].serviceId === itemToAdd.serviceId) {
-                    order.items[index].quantity++;
-                    newItem = await itemRepository.save(order.items[index]);
-                    itemIsInList = true;
-                    break;
-                }
-            }
+        const itemExists = await itemRepository.checkIfItemExists(serviceId, orderId);
+        if (itemExists) {
+            await itemRepository.addToQuantity(serviceId, orderId, quantity);
+            return await this.findOne({ relations: { items: true }, where: { id: orderId } }) as Order;
         }
 
+        const item = await itemRepository.createItem(serviceId, orderId, quantity);
 
-        if (itemIsInList) {
-            console.log("ORDER ITEMS DENTRO DE IF", order.items)
-            await this.save(order);
+        if(!order.items) order.items = [];
+        
+        order.items.push(item);
 
-            if (!order.items) {
-                order.items = [];
-                order.items.push(newItem as Item);
-            } else {
-                order.items.push(newItem as Item);
-            }
-
-            return order;
-        }
-
-        await this.save(order);
-
-        return order;
+        return await this.save(order);
     },
 
-    async addItems(id: string, items: Item[]): Promise<{}>{
-        return {};
-    },
-
-    async removeOneItem(id: string, itemIds: { orderId: string, serviceId: number }): Promise<Order> {
-        const order = await this.findOne({ where: { id: id }, relations: { items: true } }) as unknown as Order;
+    async removeOneItem(serviceId: number, orderId: number, quantity: number): Promise<Order> {
+        const order = await this.findOne({ where: { id: orderId }, relations: { items: true } }) as unknown as Order;
         if (!order) throw new Error("not-found");
 
-        const item = await itemRepository.findOne({ where: { orderId: itemIds.orderId, serviceId: itemIds.serviceId } });
-        if (!item) throw new Error("not-found");
+        const itemExists = await itemRepository.checkIfItemExists(serviceId, orderId);
+        if (!itemExists) throw new Error("not-found");
 
-        if (item.quantity === 1){
-            //order.items.filter((item) => item.orderId !== itemIds.orderId && item.serviceId !== itemIds.serviceId );
-            itemRepository.delete({ orderId: itemIds.orderId, serviceId: itemIds.serviceId })
-        } else {
-            for (const item of order.items) {
-                if (item.orderId === itemIds.orderId && item.serviceId === itemIds.serviceId) {
-                    item.quantity++;
-                    break;
-                }
-            }
+        if (itemExists) {
+            await itemRepository.substractToQuantity(serviceId, orderId, quantity)
+            return await this.readOrderById(orderId) as Order;
         }
-        this.save(order);
 
-        return order;
+        throw new Error("Intentado borrar un item de una orden sin items");
     },
 
-    async removeAllItems(id: string): Promise<UpdateResult> {
+    async removeAllItems(id: number): Promise<UpdateResult> {
         return await this.update({ id: id }, { items: [] });
     }
 });
