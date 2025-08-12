@@ -1,16 +1,36 @@
 import { AppDataSource } from "@root/db";
 import OrderDetail from "@entities/OrderDetail";
-import {
-    removeAllItems
-} from "@services/order.services";
+import orderRepository from "./order.repository";
+import Item from "@entities/Item";
+import itemRepository from "./item.repository";
+
+function calculateTotalPrice(items: Item[]): number {
+    let total = 0;
+    for (const item of items) {
+        total += item.service.price * item.quantity;
+    }
+
+    return total;
+}
 
 const orderDetailRepository = AppDataSource.getRepository(OrderDetail).extend({
-    async createOrderDetail(orderId: string, data: Partial<OrderDetail>): Promise<OrderDetail> {
-        await removeAllItems(orderId);
+    async createOrderDetail(orderId: number): Promise<OrderDetail> {
+        const order = await orderRepository.readOrderById(orderId);
+        if (!order) throw new Error("not-found");
 
-        const newOrderDetail = this.create(data);
+        const newOrderDetail = this.create();
+        newOrderDetail.items = order.items;
+        for (const item of newOrderDetail.items) {
+            item.orderDetail = newOrderDetail;
+        }
+        await itemRepository.save(newOrderDetail.items);
 
-        return this.save(newOrderDetail);
+        newOrderDetail.total_price = calculateTotalPrice(order.items);
+
+        order.items = [];
+        orderRepository.save(order);
+
+        return await this.save(newOrderDetail);
     },
 
     async readOrderDetailByOrderNumber(orderNumber: number): Promise<OrderDetail> {

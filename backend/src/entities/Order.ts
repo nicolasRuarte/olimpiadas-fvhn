@@ -1,15 +1,15 @@
-import {  Entity, BaseEntity, PrimaryColumn, OneToMany } from "typeorm";
-import {
-    IsString
-} from "class-validator";
+import {  Entity, BaseEntity,  OneToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import Item from "./Item";
+import User from "@entities/User";
 
 @Entity()
 export default class Order extends BaseEntity {
-    @PrimaryColumn()
-    @IsString()
-    id: string;
+    @PrimaryGeneratedColumn()
+    id: number;
 
     @OneToMany(() => Item, (item) => item.order)
     items: Item[];
+
+    @ManyToOne(() => User, (user) => user.order)
+    user: User;
 }

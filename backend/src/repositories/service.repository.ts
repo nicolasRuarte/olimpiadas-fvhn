@@ -1,6 +1,7 @@
 import { AppDataSource } from "@root/db";
 import Service from "@entities/Service";
 import Rating from "@entities/Rating";
+import Item from "@entities/Item";
 import { DeleteResult} from "typeorm";
 
 const serviceRepository = AppDataSource.getRepository(Service).extend({
@@ -38,14 +39,20 @@ const serviceRepository = AppDataSource.getRepository(Service).extend({
     async addRatingToService(rating: Rating): Promise<void> {
         const service = await this.findOneBy({ id: rating.service?.id as number}) as Service;
 
-        if (!service.ratings) {
-            service.ratings = [];
-            service.ratings.push(rating);
-        } else {
-            service.ratings.push(rating);
-        }
+        if (!service.ratings) service.ratings = [];
+        
+        service.ratings.push(rating);
 
         await this.save(service);
+    },
+
+    async addItemRelation(item: Item, id: number): Promise<void> {
+        const service = await this.findOne({ where: { id: id }, relations: { items: true } });
+        if (!service) throw new Error("not-found");
+
+        if (!service.items) service.items = [];
+
+        service.items.push(item);
     }
 });
 

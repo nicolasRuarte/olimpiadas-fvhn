@@ -2,20 +2,21 @@ import { AppDataSource } from "@root/db";
 import User from "@entities/User";
 import Rating from "@entities/Rating";
 import { DeleteResult, UpdateResult } from "typeorm";
-import { createOrderService } from "@services/order.services";
+import orderRepository from "./order.repository";
 
 const userRepository = AppDataSource.getRepository(User).extend({
     async createUser(data: Partial<User>): Promise<User> {
         const existing = await this.findOneBy({ dni: data.dni });
         if (existing) throw new Error("Usuario ya existe");
 
-        const newOrder = await createOrderService(data.dni as string);
-
         const newUser = this.create(data);
-        newUser.order = newOrder;
         await this.save(newUser);
 
-        return newUser;
+        const newOrder = orderRepository.create({ user: newUser });
+        await orderRepository.save(newOrder);
+
+        return await this.save(newUser);
+
     },
 
     async readUserByDni(dni: string): Promise<Partial<User>> {

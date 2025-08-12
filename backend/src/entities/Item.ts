@@ -5,7 +5,7 @@ import OrderDetail from "./OrderDetail";
 
 @Entity()
 export default class Item extends BaseEntity {
-    @PrimaryColumn({ name: "service_id", type: "number" })
+    @PrimaryColumn({ name: "service_id", type: "integer" })
     @ManyToOne(() => Service, (service) => service.items)
     @JoinColumn({ name: "service_id" })
     service: Service;
@@ -18,13 +18,6 @@ export default class Item extends BaseEntity {
     @ManyToOne(() => OrderDetail, (orderDetail) => orderDetail.items)
     orderDetail: OrderDetail;
 
-    //@PrimaryColumn("string")
-    //orderId: string;
-
-    //@PrimaryColumn("int")
-    //serviceId: number;
-
     @Column({ default: 1 })
     quantity: number;
-
 }

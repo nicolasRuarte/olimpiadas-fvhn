@@ -1,4 +1,4 @@
-import { Column, Entity, BaseEntity, PrimaryColumn, OneToOne, JoinColumn, OneToMany } from "typeorm";
+import { Column, Entity, BaseEntity, PrimaryColumn, JoinColumn, OneToMany } from "typeorm";
 import Order from "./Order";
 import OrderDetail from "./OrderDetail";
 import Rating from "./Rating";
@@ -41,7 +41,7 @@ export default class User extends BaseEntity {
     @IsString()
     role: string;
 
-    @OneToOne(() => Order)
+    @OneToMany(() => Order, (order) => order.user)
     @JoinColumn()
     order: Order;
 
