@@ -14,38 +14,62 @@ const typeorm_1 = require("typeorm");
 const Order_1 = require("./Order");
 const OrderDetail_1 = require("./OrderDetail");
 const Rating_1 = require("./Rating");
+<<<<<<< HEAD
+=======
 const class_validator_1 = require("class-validator");
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
 let User = class User extends typeorm_1.BaseEntity {
 };
 exports.User = User;
 __decorate([
     (0, typeorm_1.PrimaryColumn)(),
+<<<<<<< HEAD
+=======
     (0, class_validator_1.IsString)(),
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
     __metadata("design:type", String)
 ], User.prototype, "dni", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+<<<<<<< HEAD
+=======
     (0, class_validator_1.IsString)(),
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
     __metadata("design:type", String)
 ], User.prototype, "surname", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+<<<<<<< HEAD
+=======
     (0, class_validator_1.IsString)(),
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
     __metadata("design:type", String)
 ], User.prototype, "names", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+<<<<<<< HEAD
+=======
     (0, class_validator_1.IsEmail)(),
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+<<<<<<< HEAD
+=======
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.MinLength)(8),
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+<<<<<<< HEAD
+    __metadata("design:type", String)
+], User.prototype, "phone_number", void 0);
+__decorate([
+    (0, typeorm_1.OneToOne)(() => Order_1.Order, (order) => order.dni),
+=======
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.Length)(8),
     __metadata("design:type", String)
@@ -57,6 +81,7 @@ __decorate([
 ], User.prototype, "role", void 0);
 __decorate([
     (0, typeorm_1.OneToOne)(() => Order_1.Order),
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", Order_1.Order)
 ], User.prototype, "order", void 0);

@@ -1,4 +1,13 @@
 import { Request, Response } from "express";
+<<<<<<< HEAD
+import { User } from "../entities/User";
+import { Order } from "../entities/Order";
+import { AppDataSource } from "../db";
+import { validateStringId, validateUserData } from "../validation";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { SALT_ROUNDS, JWT_SECRET } from "../config";
+=======
 import { User } from "@entities/User";
 import { Order } from "@entities/Order";
 import { AppDataSource } from "@root/db";
@@ -6,6 +15,7 @@ import { validateStringId, validateUserData } from "@functionality/validation";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { SALT_ROUNDS, JWT_SECRET } from "@root/config";
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
 
 // CRUD OPERATIONS -----------------------------------------
 export async function createUser(req: Request, res: Response) {
@@ -22,6 +32,10 @@ export async function createUser(req: Request, res: Response) {
 
     const manager = AppDataSource.manager;
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
     try {
         loginData = validateUserData(loginData);
         
@@ -40,16 +54,33 @@ export async function createUser(req: Request, res: Response) {
         await manager.save(newOrder);
 
 
+<<<<<<< HEAD
+        res.send({ newUser, newOrder});
+    } catch (error) {
+        console.error(error);
+        res.send("Error al crear usuario");
+=======
         res.status(201).send({ newUser, newOrder});
         console.log("Creando nuevo usuario");
     } catch (error) {
         console.error(error);
         res.status(400).send("Error al crear usuario");
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
     }
     
 }
 
 export async function readUsers(req: Request, res: Response) {
+<<<<<<< HEAD
+    const manager = AppDataSource.manager;
+
+        const result = await manager.find(User, 
+                                        { relations: { orderDetails: true },
+                                            select: { dni: true, names: true, surname: true, email: true },
+                                            order: { dni: "ASC" } });
+
+    res.send(result);
+=======
     try {
         const manager = AppDataSource.manager;
 
@@ -64,16 +95,29 @@ export async function readUsers(req: Request, res: Response) {
         console.error(error);
         res.status(400).send();
     }
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
 }
 
 export async function updateUser(req: Request, res: Response) {
     try {
         const token = req.cookies.access_token;
+<<<<<<< HEAD
+        if (token === undefined || token === undefined) {
+            throw new Error("Acceso denegado");
+        }
+
+        console.log("Buen día");
+    } catch (error) {
+        console.error(error);
+        res.status(403).send("Acceso denegado");
+        
+=======
         if (token === undefined || token === undefined) throw new Error("Acceso denegado");
        
     } catch (error) {
         console.error(error);
         res.status(403).send("Acceso denegado");
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
     }
 
 }
@@ -108,6 +152,11 @@ export async function logInUser(req: Request, res: Response) {
             httpOnly: true,
             sameSite: "strict",
             maxAge: twentyFourHoursInSeconds
+<<<<<<< HEAD
+        }).send({ dni, role, token });
+    } catch (error) {
+        console.error(error);
+=======
         }).status(200)
         .send({ dni, role, token });
 
@@ -115,6 +164,7 @@ export async function logInUser(req: Request, res: Response) {
     } catch (error) {
         console.error(error);
         res.status(400).send();
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
     }
 }
 
@@ -122,7 +172,13 @@ export async function getAllPurchases(req: Request, res: Response) {
 
     try {
         const token = req.cookies.access_token;
+<<<<<<< HEAD
+        if (token === undefined || token === null) {
+            throw new Error("Acceso denegado");
+        }
+=======
         if (token === undefined || token === null) throw new Error("Acceso denegado");
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
 
         const data = jwt.verify(token, JWT_SECRET);
 
@@ -130,6 +186,16 @@ export async function getAllPurchases(req: Request, res: Response) {
 
         // Si se puede eliminar los any
         const user = await manager.findOne(User, { where: { dni: (<any>data).dni }, relations: { orderDetails: true } });
+<<<<<<< HEAD
+        if (user === null) {
+            throw new Error("Usuario no existe");
+        }
+
+        res.status(200).send(user.orderDetails);
+        console.log("Devolviendo todas las compras del usuario");
+    } catch (error) {
+        console.error(error);
+=======
         if (user === null) throw new Error("Usuario no existe");
 
         res.status(200).send(user.orderDetails);
@@ -137,5 +203,6 @@ export async function getAllPurchases(req: Request, res: Response) {
     } catch (error) {
         console.error(error);
         res.status(400).send();
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
     }
 }

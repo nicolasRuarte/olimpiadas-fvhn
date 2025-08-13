@@ -13,17 +13,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
+<<<<<<< HEAD
+const app_1 = __importDefault(require("./app"));
+const db_1 = require("./db");
+=======
 require("module-alias/register");
 const app_1 = __importDefault(require("@root/app"));
 const db_1 = require("@root/db");
 const config_1 = require("@root/config");
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             yield db_1.AppDataSource.initialize();
             console.log("Database intialized");
+<<<<<<< HEAD
+            app_1.default.listen(3000);
+            console.log("Server up on port ", 3000);
+=======
             app_1.default.listen(config_1.PORT || 4000);
             console.log("Server up on port ", config_1.PORT);
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
         }
         catch (error) {
             console.error(error);

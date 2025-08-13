@@ -4,11 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+<<<<<<< HEAD
+=======
     "compile": "tsc",
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
     "dev": "tsnd --rs --respawn src/index.ts",
     "build": "npm install; tsc",
     "start": "node dist/index.js"
   },
+<<<<<<< HEAD
+=======
   "_moduleAliases": {
     "@controllers": "dist/controllers",
     "@entities": "dist/entities",
@@ -16,6 +21,7 @@
     "@root": "dist/",
     "@functionality": "dist/functionality"
   },
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nicolasRuarte/olimpiadas-fvhn.git"
@@ -47,7 +53,10 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mercadopago": "^2.8.0",
+<<<<<<< HEAD
+=======
     "module-alias": "^2.2.3",
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
     "morgan": "^1.10.0",
     "pg": "^8.16.3",
     "reflect-metadata": "^0.2.2",
