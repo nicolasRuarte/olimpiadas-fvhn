@@ -161,5 +161,3 @@ Puede entenderse así:
 4. Repositorios <- Error ocurre acá
 
 Sería como un trycatch "global" que engloba a la mayoría de funcionamiento del programa. Kinda
-
-
