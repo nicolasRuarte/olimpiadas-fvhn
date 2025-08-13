@@ -11,18 +11,19 @@ import { validateBody } from "@functionality/validation";
 
 // CRUD OPERATIONS -----------------------------------------
 export async function createUserController(req: Request, res: Response): Promise<void> {
-    const data = req.body ? req.body : "vacío";
+    const data = validateBody(req.body) ? req.body : undefined;
 
     try {
-        if (data === undefined) throw new Error("empty-body");
+        if (!data) throw new Error("empty-body");
 
-        const newUser = await createUserService(req.body);
+        const newUser = await createUserService(data);
 
         console.log("Creando nuevo usuario");
         res.status(201).send(newUser);
     } catch (error) {
         console.error(error);
-        res.status(400).send(createErrorMessage(error as Error));
+        const errorData = createErrorMessage(error as Error);
+        res.status(errorData.statusCode).send(errorData.message);
     }
 }
 
