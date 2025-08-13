@@ -1,8 +1,14 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../db";
+<<<<<<< HEAD
 import { OrderDetail } from "../entities/OrderDetail";
 import { User } from "../entities/User";
 import { validateNumberId, validateStringId } from "../validation";
+=======
+import { OrderDetail } from "@entities/OrderDetail";
+import { User } from "@entities/User";
+import { validateNumberId, validateStringId } from "@functionality/validation";
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
 import { deleteOrderItems } from "./order.controllers";
 
 // Pasando valor any momentáneamente. Cambiar después
@@ -46,9 +52,15 @@ export async function createOrderDetail(req: Request, res: Response) {
         await manager.save(user);
 
         req.params.id = orderId;
+<<<<<<< HEAD
         deleteOrderItems(req, res)
         console.log("Elementos de carrito borrados");
 
+=======
+        await deleteOrderItems(req, res)
+
+        res.status(201).send(newOrderDetail);
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
     } catch (error) {
         console.error(error);
     }
@@ -70,12 +82,18 @@ export async function readOrderDetail(req: Request, res: Response) {
 
         if (selectedId === selectAllFlag) {
             orderDetailFound = await dataManager.find(OrderDetail, { order: { order_number: "ASC" }});
+<<<<<<< HEAD
             console.log("Devolviendo todos los detalles de orden registrados");
             res.send(orderDetailFound);
+=======
+            res.send(orderDetailFound);
+            console.log("Devolviendo todos los detalles de orden registrados");
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
             return;
         }
 
         orderDetailFound = await dataManager.findOne(OrderDetail, { where: { order_number: selectedId } })
+<<<<<<< HEAD
         if (orderDetailFound === null){
             throw new Error("El número de orden solicitado no existe");
         } 
@@ -85,6 +103,15 @@ export async function readOrderDetail(req: Request, res: Response) {
     } catch (error) {
         console.error(error);
         res.send("Error");
+=======
+        if (orderDetailFound === null) throw new Error("El número de orden solicitado no existe");
+
+        res.status(200).send(orderDetailFound);
+        console.log("Devolviendo detalle de orden");
+    } catch (error) {
+        console.error(error);
+        res.status(400).send();
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
     }
 }
 

@@ -12,23 +12,44 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Service = void 0;
 const typeorm_1 = require("typeorm");
 const Rating_1 = require("./Rating");
+<<<<<<< HEAD
+=======
+const class_validator_1 = require("class-validator");
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
 let Service = class Service extends typeorm_1.BaseEntity {
 };
 exports.Service = Service;
 __decorate([
+<<<<<<< HEAD
     (0, typeorm_1.PrimaryColumn)(),
+=======
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
     __metadata("design:type", Number)
 ], Service.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+<<<<<<< HEAD
+=======
+    (0, class_validator_1.IsString)(),
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
     __metadata("design:type", String)
 ], Service.prototype, "name", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+<<<<<<< HEAD
     __metadata("design:type", String)
 ], Service.prototype, "description", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+=======
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], Service.prototype, "description", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: 0.0 }),
+    (0, class_validator_1.IsInt)(),
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
     __metadata("design:type", Number)
 ], Service.prototype, "price", void 0);
 __decorate([

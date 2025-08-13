@@ -5,7 +5,11 @@ import { createUser,
     deleteUser,
     logInUser,
     getAllPurchases
+<<<<<<< HEAD
 } from "../controllers/user.controllers";
+=======
+} from "@controllers/user.controllers";
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
 
 const router = Router()
 

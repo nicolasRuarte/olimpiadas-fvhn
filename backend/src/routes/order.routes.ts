@@ -1,5 +1,9 @@
 import { Router } from "express";
+<<<<<<< HEAD
 import { readOrder, updateOrderItems, deleteOrderItems } from "../controllers/order.controllers";
+=======
+import { readOrder, updateOrderItems, deleteOrderItems } from "@controllers/order.controllers";
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
 
 const router = Router()
 

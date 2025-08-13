@@ -11,12 +11,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Order = void 0;
 const typeorm_1 = require("typeorm");
+<<<<<<< HEAD
 const User_1 = require("./User");
+=======
+const Service_1 = require("./Service");
+const class_validator_1 = require("class-validator");
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
 let Order = class Order extends typeorm_1.BaseEntity {
 };
 exports.Order = Order;
 __decorate([
     (0, typeorm_1.PrimaryColumn)(),
+<<<<<<< HEAD
     (0, typeorm_1.OneToOne)(() => User_1.User, (user) => user.order),
     __metadata("design:type", String)
 ], Order.prototype, "dni", void 0);
@@ -24,6 +30,16 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Order.prototype, "total_price", void 0);
+=======
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], Order.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.ManyToMany)(() => Service_1.Service),
+    (0, typeorm_1.JoinTable)(),
+    __metadata("design:type", Array)
+], Order.prototype, "items", void 0);
+>>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
 exports.Order = Order = __decorate([
     (0, typeorm_1.Entity)()
 ], Order);
