@@ -43,7 +43,7 @@ export default class User extends BaseEntity {
 
     @OneToMany(() => Order, (order) => order.user)
     @JoinColumn()
-    order: Order;
+    orders: Order[];
 
     @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.user)
     orderDetails: OrderDetail[];

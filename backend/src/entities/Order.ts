@@ -1,4 +1,4 @@
-import {  Entity, BaseEntity,  OneToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {  Entity, BaseEntity,  OneToMany, ManyToOne, PrimaryGeneratedColumn, Column } from "typeorm";
 import Item from "./Item";
 import User from "@entities/User";
 
@@ -10,6 +10,9 @@ export default class Order extends BaseEntity {
     @OneToMany(() => Item, (item) => item.order)
     items: Item[];
 
-    @ManyToOne(() => User, (user) => user.order)
+    @ManyToOne(() => User, (user) => user.orders)
     user: User;
+    
+    @Column({ default: false })
+    isBought: boolean
 }
