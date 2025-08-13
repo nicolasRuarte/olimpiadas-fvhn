@@ -4,10 +4,6 @@ import { DeleteResult, UpdateResult } from "typeorm";
 import { validateNumberId, validateStringId } from "@functionality/validation";
 import orderRepository from "@repositories/order.repository";
 
-export const createOrderService = async (id: number) => {
-    return await OrderRepository.createOrder(id);
-}
-
 export const readAllOrdersService = async (): Promise<Order[] | undefined> => {
     return await OrderRepository.readAllOrders();
 }

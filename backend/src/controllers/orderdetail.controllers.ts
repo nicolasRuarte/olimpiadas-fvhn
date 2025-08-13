@@ -3,17 +3,19 @@ import { createErrorMessage } from "@functionality/errorMessages";
 import {
     createOrderDetailService,
     readAllOrderDetailsService,
-    readOrderDetailByOrderNumberService
+    readOrderDetailByOrderNumberService,
+    updateOrderDetailStatusService
 } from "@services/orderdetail.services";
 import { validateBody } from "@functionality/validation";
 
 export async function createOrderDetailController(req: Request, res: Response) {
     const orderId = validateBody(req.body) ? req.body.orderId : undefined;
+    const userId = validateBody(req.body) ? req.body.userId : undefined;
 
     try {
-        if (!orderId) throw new Error("invalid-id");
+        if (!orderId) throw new Error("empty-body");
 
-        const newOrderDetail = createOrderDetailService(orderId);
+        const newOrderDetail = createOrderDetailService(orderId, userId);
 
         console.log("Detalle de orden creado");
         res.status(201).send(newOrderDetail);
@@ -31,16 +33,34 @@ export async function readOrderDetailController(req: Request, res: Response) {
     try {
         let orderDetail;
         if (id === selectAllFlag) {
-            orderDetail = readAllOrderDetailsService();
+            orderDetail = await readAllOrderDetailsService();
         } else {
-            orderDetail = readOrderDetailByOrderNumberService(id);
+            orderDetail = await readOrderDetailByOrderNumberService(id);
         }
-
 
         console.log("Devolviendo el/los detalle/s de orden");
         res.status(200).send(orderDetail);
     } catch (error) {
         console.error(error);
-        res.status(400).send(createErrorMessage(error as Error));
+        const err = createErrorMessage(error as Error);
+        res.status(err.statusCode).send(err.message);
+    }
+}
+
+export async function updateOrderDetailStatusController(req: Request, res: Response) {
+    const orderNumber = validateBody(req.body) ? req.body.orderNumber : undefined;
+    const newStatus = validateBody(req.body) ? req.body.newStatus : undefined;
+
+    try {
+        if (!orderNumber || !newStatus) throw new Error("empty-body");
+
+        const updatedOrderDetail = await updateOrderDetailStatusService(orderNumber, newStatus);
+
+        console.log("Actualizando el estatus de la orden");
+        res.status(201).send(updatedOrderDetail);
+    } catch (error) {
+        console.error(error);
+        const errorData = createErrorMessage(error as Error);
+        res.status(errorData.statusCode as number).send(errorData.message);
     }
 }

@@ -23,7 +23,7 @@ export default class OrderDetail extends BaseEntity {
     @OneToMany(() => Item, (item) => item.orderDetail)
     items: Item[];
 
-    @Column()
+    @Column({ type: "real" })
     @IsNumber()
     total_price: number;
 

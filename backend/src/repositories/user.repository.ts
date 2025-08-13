@@ -3,6 +3,7 @@ import User from "@entities/User";
 import Rating from "@entities/Rating";
 import { DeleteResult, UpdateResult } from "typeorm";
 import orderRepository from "./order.repository";
+import OrderDetail from "@entities/OrderDetail";
 
 const userRepository = AppDataSource.getRepository(User).extend({
     async createUser(data: Partial<User>): Promise<User> {
@@ -14,6 +15,9 @@ const userRepository = AppDataSource.getRepository(User).extend({
 
         const newOrder = orderRepository.create({ user: newUser });
         await orderRepository.save(newOrder);
+
+        newUser.orders = [];
+        newUser.orders.push(newOrder);
 
         return await this.save(newUser);
 
@@ -49,6 +53,28 @@ const userRepository = AppDataSource.getRepository(User).extend({
         } else {
             user.ratings.push(rating);
         }
+
+        await this.save(user);
+    },
+
+    async asignNewOrder(userDni: string): Promise<void> {
+        const user = await this.readUserByDni(userDni) as User;
+        if (!user) throw new Error("not-found");
+
+        const order = await orderRepository.createOrder(user);
+        
+        if (!user.orders) user.orders = [];
+        user.orders.push(order);
+
+        await this.save(user);
+    },
+
+    async addOrderDetail(userDni: string, orderDetail: OrderDetail): Promise<void> {
+        const user = await this.readUserByDni(userDni);
+        if(!user) throw new Error("not-found");
+
+        if (!user.orderDetails) user.orderDetails = [];
+        user.orderDetails.push(orderDetail);
 
         await this.save(user);
     }

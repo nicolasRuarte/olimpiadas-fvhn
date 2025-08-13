@@ -1,13 +1,14 @@
 import { AppDataSource } from "@root/db";
 import Order from "@entities/Order";
 import Item from "@entities/Item";
+import User from "@entities/User";
 import { UpdateResult, DeleteResult } from "typeorm";
 import itemRepository from "@repositories/item.repository";
 
 
 const orderRepository = AppDataSource.getRepository(Order).extend({
-    async createOrder(id: number): Promise<Order> {
-        const newOrder = this.create();
+    async createOrder(user: User): Promise<Order> {
+        const newOrder = this.create({ user: user });
 
         return await this.save(newOrder);
     },
@@ -48,6 +49,7 @@ const orderRepository = AppDataSource.getRepository(Order).extend({
     async addOneItem(serviceId: number, orderId: number, quantity: number): Promise<Order> {
         const order = await this.findOne({ where: { id: orderId }, relations: { items: true } });
         if (!order) throw new Error("not-found");
+        if (order.isBought) throw new Error("Esta orden ya fue comprada");
 
         const itemExists = await itemRepository.checkIfItemExists(serviceId, orderId);
         if (itemExists) {
@@ -81,6 +83,10 @@ const orderRepository = AppDataSource.getRepository(Order).extend({
 
     async removeAllItems(id: number): Promise<UpdateResult> {
         return await this.update({ id: id }, { items: [] });
+    },
+
+    async markAsBought(id: number): Promise<void> {
+        await this.update(id, { isBought: true });
     }
 });
 
