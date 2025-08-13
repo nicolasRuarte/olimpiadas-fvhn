@@ -1,6 +1,5 @@
 import Rating from "@entities/Rating";
 import RatingRepository from "@repositories/rating.repository";
-import { DeleteResult, UpdateResult } from "typeorm";
 import { validateNumberId, validateStringId } from "@functionality/validation";
 
 export const createRatingService = async (data: { userId: string, serviceId: number, rating: number }) => {
@@ -21,5 +20,6 @@ export const readRatingByIdsService = async (ids: { userId: string, serviceId: n
 export const updateRatingService = async (ids: Partial<Rating>): Promise<void> => {
 }
 
-export const deleteRatingService = async (ids: Partial<Rating>): Promise<void> => {
+export const deleteRatingService = async (ids: { userId: string, serviceId: number }): Promise<{ message: string, statusCode: number }> => {
+    return await RatingRepository.deleteRating(ids);
 }
