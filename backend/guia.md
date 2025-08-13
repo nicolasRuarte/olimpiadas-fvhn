@@ -23,17 +23,16 @@ Las tecnologías que usamos en el proyecto son las siguientes:
 4. *bcrypt:* Librería de encriptación que utilizamos para el tema de hasheo y deshasheo de contraseñas
 5. *cookie-parser:* Librería que maneja el middleware de las cookies. Utilizada para el manejo de sesión del usuario.
 6. *pg*: Dependencia de TypeORM que es utilizada para realizar todas las queries a la base de datos de PostgreSQL
-7. reflect-metadata: Librería que es utilizada porque era necesaria para no me acuerdo qué cosa
+7. reflect-metadata: Librería que es utilizada para el tema de los decoradores de TypeORM, si no me equivoco
 8. mercadopago: Librería oficial de Mercado Pago para manejar el tema de las compras con la plataforma
 9. module-alias: Librería de alias de módulos utilizada para simplificar la labor de poner la ruta de los imports. Empezada como inclusión experimental, pero quedó
-10. dotenv: Librería utilizada para permitirnos utilizar variables de entorno en nuestra aplicación
-11. jsonwebtoken: Librería utilizada para generar los tokens que se utilizarán para el manejo de sesión en las cookies
+10. dotenv: Librería utilizada para permitirnos utilizar variables de entorno desde un archivo .env en nuestra aplicación
+11. jsonwebtoken: Librería utilizada para generar los tokens que se utilizan para el manejo de sesión en las cookies
 12. class-validator: Librería incluida con TypeORM que nos permite agregar decoradores de validación de datos dentro de las propias entidades
 
 ## Entidades
 
 En TypeORM, las tablas de la base de datos 
-
 
 Las entidades principales son:
 
@@ -344,3 +343,22 @@ Puede entenderse así:
 4. Repositorios <- Error ocurre acá
 
 Sería como un trycatch "global" que engloba a la mayoría de funcionamiento del programa. Kinda
+
+Otro punto importante del manejo de errores es el servicio de errorMessages.ts. Este módulo se encarga de enviar mensajes predeterminados cuando ocurre un error, utilzando el atributo message del objeto Error cuando realizamos throw new Error()
+
+El archivo errorMessages.ts consiste de una función que recibe como parámetro un objeto de Error. A este objeto de error luego le saca el mensaje de error mediante el atributo message del mismo (Error.message) y con el contenido del message lo compara mediante una sentencia switch con todas las opciones de mensajes disponibles. Si el mensaje coincide con alguna de las opciones, la función devuelve un objeto que incluye un atributo message y un atributo statusCode; en el atributo message se haya una string con un mensaje de error prearmado, mientras que en el atributo statusCode se devuelve un código de respuesta.
+
+Los mensajes de error se envían en los bloques catch de los controladores
+
+**Opciones:**
+
+1. "invalid-id": Para cuando un id es inválido
+2. "invalid-number-id": Para cuando un id numérico es inválido
+3. "invalid-string-id": Para cuando un id de string es inválido
+4. "not-found": Para cuando una entidad no es contrada. Por ahora es muy genérico, pero se planea dividir este mensaje en varios más para especificar qué entidad fue la que no se encontró, ya que durante el desarrollo se encontró que esa info era útil y sin embargo no se estaba devolviendo
+5. "access-denied": Para cuando un usuario quiere entrar a contenido que requiere autenticación
+6. "empty-body": Para cuando se envía una request que requiere tener datos en el body y no los tiene. También para cuando sí tiene datos, pero le falta alguno
+7. "already-exists": Para cuando se quiere crear una entidad que ya existe
+8. "query-builder-error": Este se agregó como prueba, pero no sé si funciona porque los errores de queryBuilder te pausan todo el servidor, entonces no sé hasta qué punto el código puede "catchear" eso
+
+El método para acceder a los mensajes más explícitamente por si todavía no entendieron, es utilizando el código ```throw new Error(opción)``` 
