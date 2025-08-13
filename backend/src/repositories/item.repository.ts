@@ -2,7 +2,6 @@ import Item from "@entities/Item";
 import { AppDataSource } from "@root/db";
 import serviceRepository from "./service.repository";
 import orderRepository from "./order.repository";
-import { Equal } from "typeorm";
 
 const itemRepository = AppDataSource.getRepository(Item).extend({
     async readByIds(serviceId: number, orderId: number): Promise<Item | null> {
@@ -80,7 +79,18 @@ const itemRepository = AppDataSource.getRepository(Item).extend({
     },
 
     async readAllItems(): Promise<Item[]> {
-        return await this.find({ relations: { order: true, service: true, orderDetail: true }});
+        return this
+        .createQueryBuilder("item")
+        .leftJoinAndSelect("item.service", "service")
+        .leftJoinAndSelect("item.order", "order")
+        .getMany()
+    },
+
+    async getServiceAndOrder(item: Item): Promise<Item> {
+        const selectedItem = await this.findOne({ relations: { service: true, order: true }, where: { service: item.service, order: item.order }})
+        if (!selectedItem) throw new Error("not-found");
+
+        return selectedItem;
     },
 
     async deleteOne(serviceId: number, orderId: number): Promise<void> {
