@@ -6,7 +6,7 @@ import orderRepository from "./order.repository";
 import OrderDetail from "@entities/OrderDetail";
 
 const userRepository = AppDataSource.getRepository(User).extend({
-    async createUser(data: Partial<User>): Promise<User> {
+    async createUser(data: Partial<User>): Promise<Partial<User>> {
         const existing = await this.findOneBy({ dni: data.dni });
         if (existing) throw new Error("Usuario ya existe");
 
@@ -19,8 +19,9 @@ const userRepository = AppDataSource.getRepository(User).extend({
         newUser.orders = [];
         newUser.orders.push(newOrder);
 
-        return await this.save(newUser);
+        const { password:_, ...userWithoutPassword } = await this.save(newUser);
 
+        return userWithoutPassword;
     },
 
     async readUserByDni(dni: string): Promise<Partial<User>> {
