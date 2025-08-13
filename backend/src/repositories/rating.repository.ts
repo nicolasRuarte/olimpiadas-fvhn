@@ -1,6 +1,5 @@
 import { AppDataSource } from "@root/db";
 import Rating from "@entities/Rating";
-import User from "@entities/User";
 import { readServiceByIdService } from "@services/service.services";
 import userRepository from "./user.repository";
 import serviceRepository from "./service.repository";
@@ -26,23 +25,30 @@ const ratingRepository = AppDataSource.getRepository(Rating).extend({
     },
 
     async readRatingByIds(data: { userId: string, serviceId: number }): Promise<Rating> {
-        const rating = await this.findOne({ where: { user: { dni: data.userId }, service: { id: data.serviceId }}});
+
+        const rating = await this
+        .createQueryBuilder("rating")
+        .leftJoinAndSelect("rating.user", "user")
+        .leftJoinAndSelect("rating.service", "service")
+        .where("user.dni = :userId", { userId: data.userId })
+        .andWhere("service.id = :serviceId", { serviceId: data.serviceId })
+        .getOne()
         if (!rating) throw new Error("not-found");
 
         return rating;
     },
 
     async readAllRatings(): Promise<Rating[]> {
-        const ratings = await this.find();
-        if (ratings === undefined) throw new Error("No hay ningún servicio registrado");
-
-        return ratings;
+        return this.find();
     },
 
     async updateRating(updatedRating: { userId: string, serviceId: number, rating: number }): Promise<void> {
     },
 
-    async deleteRating(ratingIds: Partial<Rating>): Promise<void> {
+    async deleteRating(ids: { userId: string, serviceId: number }): Promise<{ message: string, statusCode: number }> {
+        await this.delete({ user: { dni: ids.userId }, service: { id: ids.serviceId }});
+
+        return { message: "Objeto borrado", statusCode: 201 };
     }
 });
 

@@ -71,13 +71,18 @@ export async function updateRatingController(req: Request, res: Response) {
 }
 
 export async function deleteRating(req: Request, res: Response) {
+    const userId = validateBody(req.body) ? req.body.userId : undefined;
+    const serviceId = validateBody(req.body) ? req.body.serviceId : undefined;
     try {
-        const rating = deleteRatingService(req.body);
+        if (!userId) throw new Error("invalid-string-id");
+        if (!serviceId) throw new Error("invalid-number-id");
+        const response = await deleteRatingService(req.body);
 
         console.log("Borrando rating");
-        res.send(rating);
+        res.send(response);
     } catch (error) {
         console.error(error);
-        res.send(createErrorMessage(error as Error));
+        const errorData = createErrorMessage(error as Error);
+        res.status(errorData.statusCode).send(errorData.message);
     }
 }
