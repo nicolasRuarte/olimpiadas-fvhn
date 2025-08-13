@@ -52,3 +52,6 @@
 - [x] Páginas de admin (Sarraf)
 
 - [x] Carrito (Sarraf)
+- [x] inicio sesión (Sarraf)
+- [x] Registro (Sarraf)
+      
