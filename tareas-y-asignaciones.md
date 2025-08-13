@@ -5,7 +5,7 @@
 **Entregables:**
 - [ ] Terminar diagrama de Base de datos (Nico)
 
-- [ ] Corregir User Story (Sarraf) HACIENDO
+- [x] Corregir User Story (Sarraf) 
 
 - [x] Hacer manual de usuario (Nico)
 
