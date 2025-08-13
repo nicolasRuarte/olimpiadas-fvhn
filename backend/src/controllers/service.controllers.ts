@@ -1,92 +1,79 @@
 import { Request, Response } from "express";
-import { Service } from "@entities/Service";
-import { AppDataSource } from "../db";
-import { validateNumberId } from "@functionality/validation";
+import { createErrorMessage } from "@functionality/errorMessages";
+import { validateBody, validateNumberId, validateStringId } from "@functionality/validation";
+import {
+    createServiceService,
+    readAllServicesService,
+    readServiceByIdService,
+    updateServiceService,
+    deleteServiceService
+} from "@services/service.services";
 
-export async function createService(req: Request, res: Response) {
-    const { name, description, price } = req.body;
-
-    const newService = new Service;
-    newService.name = name;
-    newService.description = description;
-    newService.price = price;
-
-    const dataManager = AppDataSource.manager;
-
+export async function createServiceController(req: Request, res: Response) {
     try {
-        await dataManager.save(newService);
-        res.status(200).send(newService);
+        const newService = await createServiceService(req.body);
+
+        console.log("Creando servicio");
+        res.status(201).send(newService);
     } catch (error) {
         console.error(error);
-        res.status(400).send("Error");
+        res.send(createErrorMessage(error as Error));
     }
 }
 
-// De momento solo lee por ID
-// Si ID vale "-1" se devuelven todos los valores de la tabla Service
-export async function readService(req: Request, res: Response) {
-    const selectAllFlag = -1;
-    const selectedId = parseInt(req.params.id) || selectAllFlag;
-    if (!validateNumberId(selectedId)) {
-        res.status(400).send("Por favor ingrese un ID de servicio válido");
-        return;
-    }
 
-    const dataManager = AppDataSource.manager;
+export async function readServiceControlller(req: Request, res: Response) {
+    const selectAllFlag = -1;
+    const id = validateBody(req.body) ? req.body.id : selectAllFlag;
+    console.log("BODY: ", req.body)
 
     try {
-        let serviceFound;
-
-        if (selectedId === selectAllFlag) {
-            serviceFound = await dataManager.find(Service, { order: { id: "ASC" }});
-            res.status(200).send(serviceFound);
-            return;
+        let services;
+        if (id === selectAllFlag) {
+            services = await readAllServicesService();
+        } else {
+            services = await readServiceByIdService(id);
         }
 
-        serviceFound = await dataManager.findOne(Service, { where: { id: selectedId } })
-        if (serviceFound === null) throw new Error("El servicio solictado no existe");
-
-        res.status(200).send(serviceFound);
+        console.log("Leyendo servicio/s");
+        res.status(200).send(services);
     } catch (error) {
         console.error(error);
-        res.status(400).send("Error al leer servicio/s");
+        res.status(400).send(createErrorMessage(error as Error));
     }
 }
 
-export async function updateService(req: Request, res: Response) {
-    const selectedId = parseInt(req.params.id);
-    const updateParameters = req.body;
-    if (selectedId === undefined || typeof selectedId !== "number") {
-        res.status(400).send("Por favor solicite un ID válido");
-        return;
-    }
-
-    const  dataManager = AppDataSource.manager;
-
+// Update parameters es un objeto que incluye los nombres de la propiedad a cambiar y el valor al que se la quiere actualizar
+export async function updateServiceController(req: Request, res: Response) {
     try {
-        await dataManager.update(Service, { id: selectedId }, updateParameters)
-        res.status(200).send("Servicio actualizado");
+        const updatedData = validateBody(req.body) ? req.body.updatedData : null;
+        const id = validateNumberId(req.body.id) ? req.body.id : null
+
+        if (updatedData === null) throw new Error("empty-body");
+
+        const updatedService = await updateServiceService(id, updatedData);
+
+        console.log("Actualizando servicio");
+        res.status(200).send(updatedService);
     } catch (error) {
         console.error(error);
-        res.status(400).send();
+        res.status(400).send(error as Error);
     }
 }
 
-export async function deleteService(req: Request, res: Response) {
-    const selectedId = parseInt(req.params.id);
-    if (selectedId === undefined || selectedId === null || typeof selectedId !== "number") {
-        res.status(400).send("Por favor solicite un ID válido");
-        return;
-    }
 
-    const dataManager = AppDataSource.manager;
+export async function deleteServiceController(req: Request, res: Response) {
+    const id = validateBody(req.body) ? req.body.id : null;
 
     try {
-        await dataManager.delete(Service, { id: selectedId })
+        if (id === null) throw new Error("invalid-id");
 
-        res.status(200).send("Servicio borrado");
+        const deleteResult = await deleteServiceService(id);
+
+        console.log("Borrando servicio");
+        res.status(200).send(deleteResult);
     } catch (error) {
         console.error(error);
-        res.status(400).send("Error al borrar");
+        res.status(400).send(createErrorMessage(error as Error));
     }
 }

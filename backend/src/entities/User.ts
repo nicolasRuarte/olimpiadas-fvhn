@@ -1,16 +1,16 @@
-import { Column, Entity, BaseEntity, PrimaryColumn, OneToOne, JoinColumn, OneToMany } from "typeorm";
-import { Order } from "./Order";
-import { OrderDetail } from "./OrderDetail";
-import { Rating } from "./Rating";
-import { IsInt,
+import { Column, Entity, BaseEntity, PrimaryColumn, JoinColumn, OneToMany } from "typeorm";
+import Order from "./Order";
+import OrderDetail from "./OrderDetail";
+import Rating from "./Rating";
+import { 
     IsString,
     MinLength,
     IsEmail,
-    Length,
+    Length
 } from "class-validator";
 
 @Entity()
-export class User extends BaseEntity {
+export default class User extends BaseEntity {
     @PrimaryColumn()
     @IsString()
     dni: string;
@@ -41,9 +41,9 @@ export class User extends BaseEntity {
     @IsString()
     role: string;
 
-    @OneToOne(() => Order)
+    @OneToMany(() => Order, (order) => order.user)
     @JoinColumn()
-    order: Order;
+    orders: Order[];
 
     @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.user)
     orderDetails: OrderDetail[];

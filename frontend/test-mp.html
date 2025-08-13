@@ -1,31 +1,53 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagar con Mercado Pago</title>
-</head>
-<body>
-    <script src="https://sdk.mercadopago.com/js/v2"></script>
-    <script>
-        const publicKey = "APP_USR-01dbfc49-0435-4af9-a970-daec3680a949";
-        const preferenceId = "1219752495-8060531c-12fe-47be-be4b-68f107a90b0f";
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pagar con Mercado Pago</title>
 
-        const mp = new MercadoPago(publicKey);
+        <script src="test-mp.js" defer></script>
+    </head>
+    <body>
+        <script src="https://sdk.mercadopago.com/js/v2"></script>
 
-        const bricksBuilder = mp.bricks();
-        const renderWalletBrick = async (bricksBuilder) => {
-            await bricksBuilder.create("wallet", "walletBrick_container", {
-                initialization: {
-                    preferenceId: preferenceId
-                }
-            });
-        };
+        <script type="module">
+            const publicKey = "APP_USR-01dbfc49-0435-4af9-a970-daec3680a949";
 
-        renderWalletBrick(bricksBuilder);
-    </script>
+            async function getPreferenceId(body) {
+                console.log(body);
+                const request = await fetch("http://localhost:4000/payment", { method: "POST", headers: {"Content-Type": "application/json" }, body: JSON.stringify(body) })
+                return request.json();
+            }
 
-    <div id="walletBrick_container"></div>
+            const mp = new MercadoPago(publicKey);
 
-</body>
+            const bricksBuilder = mp.bricks();
+            const renderWalletBrick = async (bricksBuilder) => {
+                const request = await getPreferenceId(
+                    [
+                        {
+                            id: "1",
+                            title: "Viaje a La Rioja",
+                            description: "Viaje 3 días y 3 noches con todo incluído",
+                            quantity: 1,
+                            unit_price: 1
+                        }
+                    ]
+                )
+                console.log(typeof request);
+                console.log("REQUEST: ", request)
+                await bricksBuilder.create("wallet", "walletBrick_container", {
+                    initialization: {
+                        preferenceId: request.preferenceId
+                    }
+                });
+            };
+
+            renderWalletBrick(bricksBuilder);
+
+
+        </script>
+
+        <div id="walletBrick_container"></div>
+    </body>
 </html>

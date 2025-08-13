@@ -1,95 +1,66 @@
 import { Request, Response } from "express";
-import { AppDataSource } from "../db";
-import { OrderDetail } from "@entities/OrderDetail";
-import { User } from "@entities/User";
-import { validateNumberId, validateStringId } from "@functionality/validation";
-import { deleteOrderItems } from "./order.controllers";
+import { createErrorMessage } from "@functionality/errorMessages";
+import {
+    createOrderDetailService,
+    readAllOrderDetailsService,
+    readOrderDetailByOrderNumberService,
+    updateOrderDetailStatusService
+} from "@services/orderdetail.services";
+import { validateBody } from "@functionality/validation";
 
-// Pasando valor any momentáneamente. Cambiar después
-function calculateTotalPrice(items: any) {
-    let totalPrice = 0.0;
-    for (const item of items) {
-        totalPrice += item.price;
-    }
-
-    return totalPrice;
-}
-
-export async function createOrderDetail(req: Request, res: Response) {
-    const { orderId, items } = req.body; 
-    if (items === undefined || items === null || !validateStringId(orderId)) {
-        console.error("Error en id o productos de la orden");
-        return;
-    }
-    
-
-    const manager = AppDataSource.manager;
+export async function createOrderDetailController(req: Request, res: Response) {
+    const orderId = validateBody(req.body) ? req.body.orderId : undefined;
+    const userId = validateBody(req.body) ? req.body.userId : undefined;
 
     try {
-        const newOrderDetail = new OrderDetail;
-        newOrderDetail.items = items;
-        newOrderDetail.total_price = calculateTotalPrice(items);
+        if (!orderId) throw new Error("empty-body");
 
-        await manager.save(newOrderDetail);
+        const newOrderDetail = createOrderDetailService(orderId, userId);
+
         console.log("Detalle de orden creado");
-
-        // Usamos orderId para sacar la id de usuario porque son la misma
-        const user = await manager.findOne(User, { where: { dni: orderId }, relations: { orderDetails: true } });
-        if ( user === null ) throw new Error("Usuario no existe");
-
-        if (user.orderDetails === undefined) {
-            user.orderDetails = [ newOrderDetail ];
-        } else {
-            user.orderDetails.push(newOrderDetail);
-        }
-
-        await manager.save(user);
-
-        req.params.id = orderId;
-        await deleteOrderItems(req, res)
-
         res.status(201).send(newOrderDetail);
     } catch (error) {
         console.error(error);
+        const errorData = createErrorMessage(error as Error);
+        res.status(errorData.statusCode as number).send(errorData.message);
     }
 }
 
-export async function readOrderDetail(req: Request, res: Response) {
+export async function readOrderDetailController(req: Request, res: Response) {
     const selectAllFlag = -1;
-    const selectedId = parseInt(req.params.id) || selectAllFlag;
-    if (!validateNumberId(selectedId)) {
-        console.log("Error de validación al leer detalle de orden");
-        res.send("Por favor ingrese un ID de detalle de orden válido");
-        return;
-    }
-
-    const dataManager = AppDataSource.manager;
+    const id = validateBody(req.body) ? req.body.id : selectAllFlag;
 
     try {
-        let orderDetailFound;
-
-        if (selectedId === selectAllFlag) {
-            orderDetailFound = await dataManager.find(OrderDetail, { order: { order_number: "ASC" }});
-            res.send(orderDetailFound);
-            console.log("Devolviendo todos los detalles de orden registrados");
-            return;
+        let orderDetail;
+        if (id === selectAllFlag) {
+            orderDetail = await readAllOrderDetailsService();
+        } else {
+            orderDetail = await readOrderDetailByOrderNumberService(id);
         }
 
-        orderDetailFound = await dataManager.findOne(OrderDetail, { where: { order_number: selectedId } })
-        if (orderDetailFound === null) throw new Error("El número de orden solicitado no existe");
-
-        res.status(200).send(orderDetailFound);
-        console.log("Devolviendo detalle de orden");
+        console.log("Devolviendo el/los detalle/s de orden");
+        res.status(200).send(orderDetail);
     } catch (error) {
         console.error(error);
-        res.status(400).send();
+        const err = createErrorMessage(error as Error);
+        res.status(err.statusCode).send(err.message);
     }
 }
 
-export async function updateOrderDetail(req: Request, res: Response) {
-    res.send("Detalle de orden actualizado");
-}
+export async function updateOrderDetailStatusController(req: Request, res: Response) {
+    const orderNumber = validateBody(req.body) ? req.body.orderNumber : undefined;
+    const newStatus = validateBody(req.body) ? req.body.newStatus : undefined;
 
-export async function deleteOrderDetail(req: Request, res: Response) {
-    res.send("Detalle de orden borrado");
+    try {
+        if (!orderNumber || !newStatus) throw new Error("empty-body");
+
+        const updatedOrderDetail = await updateOrderDetailStatusService(orderNumber, newStatus);
+
+        console.log("Actualizando el estatus de la orden");
+        res.status(201).send(updatedOrderDetail);
+    } catch (error) {
+        console.error(error);
+        const errorData = createErrorMessage(error as Error);
+        res.status(errorData.statusCode as number).send(errorData.message);
+    }
 }

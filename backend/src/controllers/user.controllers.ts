@@ -1,141 +1,71 @@
 import { Request, Response } from "express";
-import { User } from "@entities/User";
-import { Order } from "@entities/Order";
-import { AppDataSource } from "@root/db";
-import { validateStringId, validateUserData } from "@functionality/validation";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import { SALT_ROUNDS, JWT_SECRET } from "@root/config";
+import { createErrorMessage } from "@functionality/errorMessages";
+import {
+    createUserService,
+    getAllUsersService,
+    readUserByDniService,
+    updateUserService,
+    deleteUserService
+} from "@services/user.services";
+import { validateBody } from "@functionality/validation";
 
 // CRUD OPERATIONS -----------------------------------------
-export async function createUser(req: Request, res: Response) {
-    let loginData = req.body;
-
-    if (!validateStringId(loginData.dni)) {
-        res.send("Por favor elija un DNI válido");
-        return;
-    }
-    if (await User.findOne({ where: { dni: loginData.dni }}) !== null) {
-        res.send("Usuario ya existe");
-        return;
-    }
-
-    const manager = AppDataSource.manager;
+export async function createUserController(req: Request, res: Response): Promise<void> {
+    const data = validateBody(req.body) ? req.body : undefined;
 
     try {
-        loginData = validateUserData(loginData);
-        
-        const newUser = new User;
-        newUser.dni = loginData.dni;
-        newUser.surname = loginData.surname;
-        newUser.names = loginData.names;
-        newUser.email = loginData.email;
-        newUser.password = await bcrypt.hash(loginData.password, SALT_ROUNDS);
-        newUser.phone_number = loginData.phone_number;
-        await manager.save(newUser);
+        if (!data) throw new Error("empty-body");
 
-        const newOrder = new Order;
-        newOrder.id = loginData.dni;
-        newUser.order = newOrder;
-        await manager.save(newOrder);
+        const newUser = await createUserService(data);
 
-
-        res.status(201).send({ newUser, newOrder});
         console.log("Creando nuevo usuario");
+        res.status(201).send(newUser);
     } catch (error) {
         console.error(error);
-        res.status(400).send("Error al crear usuario");
+        const errorData = createErrorMessage(error as Error);
+        res.status(errorData.statusCode).send(errorData.message);
     }
-    
 }
 
-export async function readUsers(req: Request, res: Response) {
+
+export async function readUsersController(req: Request, res: Response) {
+    const selectAllFlag = -1;
+    const dni = validateBody(req.body) ? req.body.dni : selectAllFlag;
+    console.log("BODY: ", req.body)
+
     try {
-        const manager = AppDataSource.manager;
+        let user;
+        if (dni === selectAllFlag) {
+            user = await getAllUsersService();
+        } else {
+            user = await readUserByDniService(dni);
+        }
 
-        const result = await manager.find(User, 
-                                        { relations: { orderDetails: true },
-                                            select: { dni: true, names: true, surname: true, email: true },
-                                            order: { dni: "ASC" } });
-
-        res.status(200).send(result);
-        console.log("Leyendo usuario");
+        console.log("Devolviendo usuario/s");
+        res.status(200).send(user);
     } catch (error) {
         console.error(error);
-        res.status(400).send();
+        res.status(400).send(createErrorMessage(error as Error));
     }
 }
 
-export async function updateUser(req: Request, res: Response) {
+export async function updateUserController(req: Request, res: Response) {
+    const dni = req.body.dni ? req.body.dni : undefined;
+    const data = req.body.data ? req.body.data : undefined;
+
     try {
-        const token = req.cookies.access_token;
-        if (token === undefined || token === undefined) throw new Error("Acceso denegado");
-       
+        if (dni === undefined || data === undefined) throw new Error("empty-body");
+
+        const result = await updateUserService(dni, data);
+
+        console.log("Usuario borrado");
+        res.send(result);
     } catch (error) {
         console.error(error);
-        res.status(403).send("Acceso denegado");
+        res.send(createErrorMessage(error as Error));
     }
-
 }
 
-export async function deleteUser(req: Request, res: Response) {
+export async function deleteUserController(req: Request, res: Response) {
     res.send("Usuario borrado");
-}
-
-// EXTRAS ----------------------------------------------------
-export async function logInUser(req: Request, res: Response) {
-    const { dni, email, password } = req.body;
-
-    try {
-        const manager = AppDataSource.manager;
-
-        const userToLogIn = await manager.findOne(User, { where: [ { dni: dni }, { email: email } ] });
-        if (userToLogIn === null) throw new Error("Usuario no existe");
-
-        const isPasswordCorrect = await bcrypt.compare(password, userToLogIn?.password);
-        if (!isPasswordCorrect) throw new Error("La contraseña o el usuario son incorrectos");
-
-        const role: string = userToLogIn.role;
-        const token = jwt.sign(
-            { dni, role },
-            JWT_SECRET,
-            {
-                expiresIn: "24h"
-            });
-
-        const twentyFourHoursInSeconds = 1000 * 60 * 60 * 24;
-        res.cookie("access_token", token, {
-            httpOnly: true,
-            sameSite: "strict",
-            maxAge: twentyFourHoursInSeconds
-        }).status(200)
-        .send({ dni, role, token });
-
-        console.log("Loggeando usuario");
-    } catch (error) {
-        console.error(error);
-        res.status(400).send();
-    }
-}
-
-export async function getAllPurchases(req: Request, res: Response) {
-
-    try {
-        const token = req.cookies.access_token;
-        if (token === undefined || token === null) throw new Error("Acceso denegado");
-
-        const data = jwt.verify(token, JWT_SECRET);
-
-        const manager = AppDataSource.manager;
-
-        // Si se puede eliminar los any
-        const user = await manager.findOne(User, { where: { dni: (<any>data).dni }, relations: { orderDetails: true } });
-        if (user === null) throw new Error("Usuario no existe");
-
-        res.status(200).send(user.orderDetails);
-        console.log("Devolviendo todas las compras del usuario");
-    } catch (error) {
-        console.error(error);
-        res.status(400).send();
-    }
 }

@@ -1,16 +1,18 @@
-import {  Entity, BaseEntity, PrimaryColumn, ManyToMany, JoinTable } from "typeorm";
-import { Service } from "./Service";
-import {
-    IsString
-} from "class-validator";
+import {  Entity, BaseEntity,  OneToMany, ManyToOne, PrimaryGeneratedColumn, Column } from "typeorm";
+import Item from "./Item";
+import User from "@entities/User";
 
 @Entity()
-export class Order extends BaseEntity {
-    @PrimaryColumn()
-    @IsString()
-    id: string;
+export default class Order extends BaseEntity {
+    @PrimaryGeneratedColumn()
+    id: number;
 
-    @ManyToMany(() => Service)
-    @JoinTable()
-    items: Service[];
+    @OneToMany(() => Item, (item) => item.order)
+    items: Item[];
+
+    @ManyToOne(() => User, (user) => user.orders)
+    user: User;
+    
+    @Column({ default: false })
+    isBought: boolean
 }

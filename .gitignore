@@ -6,7 +6,11 @@ node_modules/
 *.env
 *config.*
 <<<<<<< HEAD
+<<<<<<< HEAD
 *dbconfig.*
-=======
-dbconfig.*
->>>>>>> temp
+archivos/paquetes.docx
+sample*.json
+*dist/
+*paquetes*.docx
+codigo-clase/
+pensando.md

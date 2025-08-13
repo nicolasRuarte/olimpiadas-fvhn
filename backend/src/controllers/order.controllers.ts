@@ -1,105 +1,71 @@
 import { Request, Response } from "express";
-import { Service } from "../entities/Service";
-import { AppDataSource } from "../db";
-import { validateNumberId, validateStringId } from "@functionality/validation";
-import { Order } from "../entities/Order";
+import { createErrorMessage } from "@functionality/errorMessages";
+import {
+    readAllOrdersService,
+    addOneItemService,
+    removeOneItemService,
+    readOrderByUserDniService
+} from "@services/order.services";
+import { validateBody } from "@functionality/validation";
 
-export async function readOrder(req: Request, res: Response) {
-    const selectedId = req.params.id;
 
-    if (!validateStringId(selectedId)) {
-        res.status(400).send("Error al leer carrito");
-        return;
-    }
-    
-    const manager = AppDataSource.manager;
-    try {
-        const orderFound = await manager.findOne(Order, { where: { id: selectedId }, relations: { items: true } })
-        if (orderFound === null) throw new Error("La orden solicitada no existe");
 
-        res.status(200).send(orderFound);
-        console.log("Orden leída");
-    } catch (error) {
-        console.error(error);
-        res.status(400).send();
-    }
-
-}
-export async function updateOrderItems(req: Request, res: Response) {
-    const orderId = req.params.id;
-    const serviceId: number = parseInt(req.query.sId as string);
-
-    if (!validateStringId(orderId) || !validateNumberId(serviceId)) {
-        res.status(400).send("Por favor elija un ID de orden o ID de servicio válido");
-        return;
-    }
-
-    const manager = AppDataSource.manager;
+export async function readOrderController(req: Request, res: Response) {
+    const selectAllFlag = -1;
+    const dni = validateBody(req.body) ? req.body.dni : selectAllFlag;
 
     try {
-        const order = await manager.findOne(Order, { where: { id: orderId }, relations: { items: true } });
-        if (order === null) throw new Error("ID de orden no existe");
 
-        const serviceToAdd = await manager.findOne(Service, { where: { id: serviceId } });
-        if (serviceToAdd === null) throw new Error("ID de servicio no existe");
-
-        if (order.items === undefined) {
-            order.items = [ serviceToAdd ];
+        let order;
+        if (dni === selectAllFlag) {
+            order = await readAllOrdersService();
         } else {
-            order.items.push(serviceToAdd);
+            order = await readOrderByUserDniService(dni);
         }
 
-        await manager.save(order)
-        res.status(201).send(order);
-        console.log("Actualizando orden");
+        console.log("Orden/es leída/s");
+        res.status(200).send(order);
     } catch (error) {
         console.error(error);
-        res.status(400).send();
-        return;
+        res.send(createErrorMessage(error as Error));
     }
 }
 
-export async function deleteOrderItems(req: Request, res: Response) {
-    const selectAllItemsFlag = -1;
-    const orderId = req.params.id;
-    const serviceIdToDelete: number = parseInt(req.query.sId as string) || selectAllItemsFlag;
-    if (!validateStringId(orderId) || !validateNumberId(serviceIdToDelete)) {
-        console.error("Por favor elija un ID de orden o ID de servicio válido");
-        res.status(400).send();
-        return;
-    }
 
-    const manager = AppDataSource.manager;
+export async function addItemsControlller(req: Request, res: Response) {
+    const serviceId = validateBody(req.body) ? req.body.serviceId : undefined;
+    const orderId = validateBody(req.body) ? req.body.orderId : undefined;
+    const quantity = validateBody(req.body) ? req.body.quantity : undefined;
 
     try {
-        let order = await manager.findOne(Order, { where: { id: orderId }, relations: { items: true } });
-        if (order === null) throw new Error("Error de borrado");
+        if (!serviceId || !orderId || !quantity) throw new Error("empty-body");
 
-        console.log(orderId);
-        if (serviceIdToDelete === selectAllItemsFlag) {
-            // Borra todos los elementos del array
-            order.items = order.items.filter((item) => { return item.id === -1 });
-            await manager.save(order);
-            res.send(order);
-            console.log("Borrados todos los elementos de la orden");
-            return;
-        }
+        const order = await addOneItemService(serviceId, orderId, quantity);
 
-        // item[0] es index e item[1] es el valor
-        const index = 0;
-        const value = 1;
-        for (const entry of order.items.entries()) {
-            if (entry[value].id === serviceIdToDelete) {
-                order.items.splice(entry[index], 1)
-                break;
-            }
-        }
+        console.log("Actualizando orden");
+        res.status(201).send(order);
+    } catch (error) {
+        console.error(error);
+        const errorData = createErrorMessage(error as Error);
+        res.status(errorData.statusCode).send(errorData.message);
+    }
+}
+
+export async function removeItemsController(req: Request, res: Response) {
+    const orderId = validateBody(req.body) ? req.body.orderId : undefined;
+    const serviceId = validateBody(req.body) ? req.body.serviceId : undefined;
+    const quantity = validateBody(req.body) ? req.body.quantity : undefined;
+
+    try {
+        if (!orderId || !serviceId || !quantity) throw new Error("empty-body");
+
+        const order = await removeOneItemService(serviceId, orderId, quantity);
+        console.log("ORDER IN CONTROLLER", order)
  
-        await manager.save(order);
-        res.status(204).send();
         console.log("Borrado elemento de orden");
+        res.status(201).send(order);
      } catch (error) {
          console.error(error);
-         res.status(400).send("Error de borrado");
+         res.status(400).send(createErrorMessage(error as Error));
      }
 }
