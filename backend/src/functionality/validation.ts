@@ -4,7 +4,7 @@ const messages = {
     string: "debe ser un string",
     stringId: "El ID debe ser de tipo string",
     nonEmpty: "debe ingresar el dato",
-    minLength: "longitud debe ser de mínimo 8 caracteres",
+    minLength: "La longitud del id de string debe ser de 8 caracteres exactamente",
     length: "debe tener longitud de 8 caracteres",
     number: "debe ser un número",
     numberId: "El ID debe ser de tipo número"
@@ -18,7 +18,7 @@ const userLoginSchema = v.object({
     dni: v.pipe(
         v.string(messages.string),
         v.nonEmpty(),
-        v.length(dniLength)
+        v.length(dniLength, messages.length)
     ),
     surname: v.pipe(
         v.string(messages.string),

@@ -16,9 +16,15 @@ export function createErrorMessage(errorType: Error, statusCode?: number) {
             return { message: "Acceso no autorizado. Por favor inicie sesión", statusCode: 401 };
             
         case "empty-body":
-            return { message: "Al cuerpo de la petición le faltaban uno o más datos", statusCode: 400 };
+            return { message: "Al cuerpo de la petición le faltan uno o más datos", statusCode: 400 };
+
+        case "already-exists":
+            return { message: "El objeto que está intentando crear ya existe", statusCode: 409 };
+
+        case "query-builder-error":
+            return { message: "Hubo un error al ejecutar un query builder", statusCode: 500 };
 
         default:
-            return { message: errorType.message, statusCode: 500 }; // 0 para indicar que no se sabe qué codigo es
+            return { message: errorType.message, statusCode: 500 }; // 500 para indicar que no se sabe qué codigo es
     }
 }
