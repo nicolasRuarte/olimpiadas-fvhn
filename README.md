@@ -7,7 +7,7 @@
 
 # MyFlight – Un sistema de reserva de vuelos web
 
-![Banner] (frontend/logocompletoMF.svg)
+![Banner](frontend/logocompletoMF.svg)
 
 
 MyFlight es una página web que permite a los usuarios registrarse, buscar y reservar vuelos. También, podrán visualizar el precio total y recibir una confirmación inmediata por correo electrónico con todos los detalles del viaje.
@@ -68,7 +68,7 @@ La interfaz es intuitiva y responsiva para una mejor experiencia del usuario.
 
 | Nombre                                | Roles                 |
 |---------------------------------------|-----------------------|
-| Valentín Arian Sarraf Bazan           | Líder de Proyecto     |
+| Arian Valentín Sarraf Bazan           | Líder de Proyecto     |
 | Miqueas Nicolás Ruarte                | Programador           |
 | Héctor Eduardo Daga Morales           | Analista de Datos     |
 | Fabio Yala Cabrera                    | Diseñador Gráfico     |
@@ -77,13 +77,13 @@ La interfaz es intuitiva y responsiva para una mejor experiencia del usuario.
 
 ## Diagrama Base de datos
 
-![Diagrama] (archivos/DiagramaBD.jpeg)
+![Diagrama](archivos/DiagramaBD.jpeg)
 
 ---
 
 ## Cronograma 
 
-![BenteveoAir] (<archivos/diagrama de gantt.jpeg>)
+![MyFlight](archivos/diagrama-gantt.jpeg)
 
 ---
 # Página para las olimpiadas
