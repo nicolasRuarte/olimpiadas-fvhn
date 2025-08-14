@@ -1,27 +1,16 @@
 import { Router } from "express";
-import { createUser, 
-    readUsers,
-    updateUser,
-    deleteUser,
-    logInUser,
-    getAllPurchases
-<<<<<<< HEAD
-} from "../controllers/user.controllers";
-=======
+import { createUserController, 
+    readUsersController,
+    updateUserController,
+    deleteUserController,
 } from "@controllers/user.controllers";
->>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
+import verifyToken from "@root/middlewares/auth.middleware";
 
 const router = Router()
 
-router.post("/user", createUser);
-router.get("/user", readUsers);
-router.put("/user", updateUser);
-router.delete("/user", deleteUser);
-
-// Obtiene el ID mediante JSON en el body
-router.get("/user/purchases", getAllPurchases);
-
-//router.get("/user/login", );
-router.post("/user/login", logInUser)
+router.post("/user", createUserController);
+router.get("/user", readUsersController);
+router.put("/user", verifyToken,  updateUserController);
+router.delete("/user", verifyToken, deleteUserController);
 
 export default router

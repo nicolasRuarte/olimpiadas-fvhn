@@ -14,7 +14,9 @@
     "@entities": "dist/entities",
     "@routes": "dist/routes",
     "@root": "dist/",
-    "@functionality": "dist/functionality"
+    "@functionality": "dist/functionality",
+    "@repositories": "dist/repositories",
+    "@services": "dist/services"
   },
   "repository": {
     "type": "git",
@@ -39,6 +41,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@types/nodemailer": "^6.4.17",
     "bcrypt": "^6.0.0",
     "class-validator": "^0.14.2",
     "cookie-parser": "^1.4.7",
@@ -47,11 +50,9 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mercadopago": "^2.8.0",
-<<<<<<< HEAD
-=======
     "module-alias": "^2.2.3",
->>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
     "morgan": "^1.10.0",
+    "nodemailer": "^7.0.5",
     "pg": "^8.16.3",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.25",

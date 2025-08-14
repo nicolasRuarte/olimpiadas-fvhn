@@ -1,118 +1,88 @@
 import { Request, Response } from "express";
-import { AppDataSource } from "../db";
-<<<<<<< HEAD
-import { Rating } from "../entities/Rating";
-import { Service } from "../entities/Service";
-import { validateNumberId, validateStringId } from "../validation";
-import { User } from "../entities/User";
-=======
-import { Rating } from "@entities/Rating";
-import { Service } from "@entities/Service";
-import { validateNumberId, validateStringId } from "@functionality/validation";
-import { User } from "@entities/User";
->>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
+import { createErrorMessage } from "@functionality/errorMessages";
+import {
+    createRatingService,
+    readAllRatingsService,
+    readRatingByIdsService,
+    updateRatingService,
+    deleteRatingService
+} from "@services/rating.services";
+import { validateBody } from "@functionality/validation";
 
-export async function createRating(req: Request, res: Response) {
-    let sId = req.query.sId as string;
-    const serviceId = parseInt(sId);
-
-    const r = req.query.r as string;
-    const rating = parseInt(r);
-
-    const userDni = req.query.uId as string;
-
-    if (!validateNumberId(serviceId) || !validateStringId(userDni)) {
-        console.error("Id de servicio para calificar inválido");
-        return;
-    }
-
-<<<<<<< HEAD
-
-
-=======
->>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
-    const manager = AppDataSource.manager;
+export async function createRatingController(req: Request, res: Response) {
+    const serviceId = validateBody(req.body) ? req.body.serviceId : undefined;
+    const userId = validateBody(req.body) ? req.body.userId : undefined;
+    const rating = validateBody(req.body) ? req.body.rating : undefined;
 
     try {
-        const newRating = new Rating;
-        newRating.rating = rating;
-        await manager.save(newRating);
+        if (!serviceId || !userId || !rating) throw new Error("empty-body");
+        const newRating = await createRatingService({ userId, serviceId, rating });
 
-        const serviceRated = await manager.findOne(Service, { where: { id: serviceId }, relations: { ratings: true } });
-        // findOne() retorna null si no lo encuentra
-<<<<<<< HEAD
-        if (serviceRated === null) {
-            throw new Error("El servicio que se quiere calificar no existe");
-        }
-=======
-        if (serviceRated === null) throw new Error("El servicio que se quiere calificar no existe");
->>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
-
-        if (serviceRated.ratings === undefined) {
-            serviceRated.ratings = [ newRating ];
-        } else {
-            serviceRated.ratings.push(newRating);
-        }
-
-        await manager.save(serviceRated);
-
-
-        const user = await manager.findOne(User, { where: { dni: userDni }, relations: { ratings: true } });
-        // findOne() retorna null si no lo encuentra
-<<<<<<< HEAD
-        if (user === null) {
-            throw new Error("El usuario que ingresa la calificación no existe");
-        }
-=======
-        if (user === null) throw new Error("El usuario que ingresa la calificación no existe");
->>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
-
-        if (user.ratings === undefined) {
-            user.ratings = [ newRating ];
-        } else {
-            user.ratings.push(newRating);
-        }
-
-        await manager.save(user);
-
-<<<<<<< HEAD
-        res.send({ serviceRated: serviceRated.name, ratingUser: user.names, rating: newRating });
+        console.log("Creando rating");
+        res.status(200).send(newRating);
     } catch (error) {
         console.error(error);
-=======
-        res.status(200).send({ serviceRated: serviceRated.name, ratingUser: user.names, rating: newRating });
-    } catch (error) {
-        console.error(error);
-        res.status(400).send();
->>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
+        const errorData = createErrorMessage(error as Error);
+        res.status(errorData.statusCode).send(errorData.message);
     }
 }
 
-export async function readRatings(req: Request, res: Response) {
-    const manager = AppDataSource.manager;
+export async function readRatingsController(req: Request, res: Response) {
+    const userDni = validateBody(req.body) ? req.body.userDni : undefined
+    const serviceId = validateBody(req.body) ? req.body.serviceId : undefined
 
-<<<<<<< HEAD
-    const ratings = await manager.find(Rating, { relations: { user: true, service: true }})
-
-    res.send(ratings);
-=======
     try {
-        const ratings = await manager.find(Rating, { relations: { user: true, service: true }})
+        let ratings;
+        
+        if (!userDni && !serviceId) {
+            ratings = await readAllRatingsService();
+        } else {
+            if (!userDni) throw new Error("invalid-string-id");
+            if (!serviceId) throw new Error("invalid-number-id");
 
+            ratings = await readRatingByIdsService({ userId: userDni, serviceId: serviceId});
+        }
+
+        console.log("Leyendo todos los ratings");
         res.status(200).send(ratings);
     } catch (error) {
         console.error(error);
-        res.status(400).send();       
+        const errorData = createErrorMessage(error as Error);
+        res.status(errorData.statusCode).send(errorData.message);
+
     }
-
-
->>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
 }
 
-export async function updateRating(req: Request, res: Response) {
-    res.send("Rating actualizado");
+export async function updateRatingController(req: Request, res: Response) {
+    const userDni = validateBody(req.body) ? req.body.userDni : undefined
+    const serviceId = validateBody(req.body) ? req.body.serviceId : undefined
+
+    try {
+        if (!userDni || !serviceId) throw new Error("invalid-id");
+        const result = await updateRatingService(req.body);
+
+        console.log("Actualizando rating");
+        res.send(result);
+    } catch(error) {
+        console.error(error);
+        const errorData = createErrorMessage(error as Error);
+        res.status(errorData.statusCode).send(errorData.message);
+    }
 }
 
 export async function deleteRating(req: Request, res: Response) {
-    res.send("Rating borrado");
+    const userId = validateBody(req.body) ? req.body.userId : undefined;
+    const serviceId = validateBody(req.body) ? req.body.serviceId : undefined;
+    try {
+        if (!userId) throw new Error("invalid-string-id");
+        if (!serviceId) throw new Error("invalid-number-id");
+        const response = await deleteRatingService(req.body);
+
+        console.log("Borrando rating");
+        res.send(response);
+    } catch (error) {
+        console.error(error);
+        const errorData = createErrorMessage(error as Error);
+        res.status(errorData.statusCode).send(errorData.message);
+    }
 }

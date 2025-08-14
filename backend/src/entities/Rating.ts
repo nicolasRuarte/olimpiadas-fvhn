@@ -1,6 +1,6 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { User } from "./User";
-import { Service } from "./Service";
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import User from "./User";
+import Service from "./Service";
 import {
     IsInt,
     Max,
@@ -8,14 +8,15 @@ import {
 } from "class-validator";
 
 @Entity()
-export class Rating extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
-
+export default class Rating extends BaseEntity {
+    @PrimaryColumn({name: "userId", type: "string" })
     @ManyToOne(() => User, (user) => user.ratings)
+    @JoinColumn({ name: "userId" })
     user: User;
 
+    @PrimaryColumn({ name: "serviceId", type: "number" })
     @ManyToOne(() => Service, (service) => service.ratings)
+    @JoinColumn({ name: "serviceId" })
     service: Service;
 
     @Column()

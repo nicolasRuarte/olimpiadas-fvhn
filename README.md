@@ -86,3 +86,10 @@ La interfaz es intuitiva y responsiva para una mejor experiencia del usuario.
 ![BenteveoAir] (<archivos/diagrama de gantt.jpeg>)
 
 ---
+# Página para las olimpiadas
+
+## Links útiles
+
+[Buenas prácticas para los commits](https://github.com/nicolasRuarte/olimpiadas-fvhn/blob/main/archivos/buenas-practicas-commits.md)
+[Convenciones](https://github.com/nicolasRuarte/olimpiadas-fvhn/blob/main/archivos/convenciones.md)
+

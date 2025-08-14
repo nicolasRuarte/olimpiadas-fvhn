@@ -5,13 +5,12 @@ archivos/estructura-pagina.svg
 node_modules/
 *.env
 *config.*
+<<<<<<< HEAD
+<<<<<<< HEAD
 *dbconfig.*
-
-notas.md
-archivos/requerimientos.pdf
-propuesta-viejo*
-archivos/estructura-pagina.svg
-node_modules/
-*.env
-*config.ts
-dbconfig.ts
+archivos/paquetes.docx
+sample*.json
+*dist/
+*paquetes*.docx
+codigo-clase/
+pensando.md

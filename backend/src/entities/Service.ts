@@ -1,14 +1,15 @@
 import { Column, BaseEntity, Entity, OneToMany, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Rating } from "./Rating";
-import { OrderDetail } from "./OrderDetail";
+import Rating from "@entities/Rating";
+import OrderDetail from "@entities/OrderDetail";
 import {
     IsInt,
     IsString,
 } from "class-validator";
+import Item from "@entities/Item";
 
 
 @Entity()
-export class Service extends BaseEntity {
+export default class Service extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -26,4 +27,7 @@ export class Service extends BaseEntity {
 
     @OneToMany(() => Rating, (rating) => rating.service)
     ratings: Rating[];
+
+    @OneToMany(() => Item, (items) => items.service)
+    items: Item[];
 }

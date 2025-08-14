@@ -21,7 +21,11 @@ Ejemplo:
 La lista de prefijos que utilizaremos es la siguiente
 | Prefijo | Caso de uso   | Ejemplo|
 |:------- |:------|:---------|
+<<<<<<< HEAD
 |``feat``| Al agregar nueva característica|``feat: Agregando funcionalidad de listar usuarios por nombre``|
+=======
+|``feat``| Al agregar nueva característica o refactorizar código|``feat: Agregando funcionalidad de listar usuarios por nombre``|
+>>>>>>> 03a2bd3431f07ba2de481409ff1aa19aed1570cb
 |``fix``| Al arreglar un bug|``fix: Arreglando error que no permitía al usuario loguearse``|
 |``docs``|Al crear o cambiar documentos|``docs: Agregando explicación de la página de admin al manual de usuario``|
 |``style``|Al cambiar cualquier cosa relacionada al estilo de la página|``style: Cambiando color de la página de amarillo a violeta``|

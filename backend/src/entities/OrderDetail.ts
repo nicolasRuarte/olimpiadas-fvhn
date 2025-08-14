@@ -1,32 +1,36 @@
 import { Column, 
-    Entity, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, ManyToMany, JoinTable } from "typeorm";
-import { User } from "./User";
-import { Service } from "./Service";
+    Entity, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, 
+    OneToMany,
+    OneToOne,
+    JoinColumn} from "typeorm";
+import User from "./User";
+import Item from "@entities/Item";
 import {
     IsDate,
-    IsNumber
+    IsNumber,
+    IsString
 } from "class-validator";
 
 @Entity()
-export class OrderDetail extends BaseEntity {
+export default class OrderDetail extends BaseEntity {
     @PrimaryGeneratedColumn()
     order_number: number;
 
     @CreateDateColumn()
     @IsDate()
     emittedDate: Date;
-     
-    @ManyToOne(() => User, (user) => user.orderDetails)
-    user: User;
 
-    @ManyToMany(() => Service)
-    @JoinTable()
-    items: Service[];
+    @OneToMany(() => Item, (item) => item.orderDetail)
+    items: Item[];
 
-    @Column()
+    @Column({ type: "real" })
     @IsNumber()
     total_price: number;
 
     @Column({ default: "pending" })
+    @IsString()
     status: string;
+
+    @ManyToOne(() => User, (user) => user.orderDetails)
+    user: User;
 }
