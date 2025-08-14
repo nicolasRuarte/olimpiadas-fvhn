@@ -25,24 +25,16 @@ Lista de tareas que hay que realizar en el backend
 [x] Agregar funcionalidad de ver todos los pedidos anulados
 [x] Crear servidor en Render para desplegar
 [ ] Agregar funcionalidad de pagos con Mercado Pago HACIENDO
-<<<<<<< HEAD
-[ ] Conectar backend con el frontend
-[ ] (No llego) Agregar funcionalidad de generar PDF de detalle de orden
-=======
 [ ] Agregar funcionalidad de generar PDF de detalle de orden
 [ ] Conectar backend con el frontend
 [ ] Agregar módulo de creación de mensaje de errores
->>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
 
 ## Fixes
 
 [ ] Arreglar error de no poder agregar un producto dos veces seguidas
 [ ] Cambiar las partes del código donde usé el tipo any
 [ ] Asegurarme de que todas las funciones devuelvan JSON
-<<<<<<< HEAD
-=======
 [ ] Refactorizar para usar repositorios en lugar del DataManager
->>>>>>> f50acc086a4f6d45916c379a0f63e53e12bd7c72
 
 ## Testing
 
