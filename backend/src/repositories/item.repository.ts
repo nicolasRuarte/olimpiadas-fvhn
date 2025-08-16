@@ -2,21 +2,28 @@ import Item from "@entities/Item";
 import { AppDataSource } from "@root/db";
 import serviceRepository from "./service.repository";
 import orderRepository from "./order.repository";
+import orderDetailRepository from "./orderdetail.repository";
 
 const itemRepository = AppDataSource.getRepository(Item).extend({
-    async readByIds(serviceId: number, orderId: number): Promise<Item | null> {
-        console.log("SERVICE ID: ", serviceId)
-        console.log("ORDER ID: ", orderId);
-        //const item = await this.find({ where: { service: { id: Equal(serviceId) }, order: { id: Equal(orderId) } }});
-        const item = await this
-        .createQueryBuilder("item")
-        .leftJoinAndSelect("item.service", "service")
-        .leftJoinAndSelect("item.order", "order")
-        .where("service.id = :serviceId", { serviceId: serviceId })
-        .andWhere("order.id = :orderId", { orderId: orderId })
-        .getOne()
+    async readByIds(serviceId: number | undefined, orderId: number | undefined): Promise<Item | null> {
+        let item;
+        if (!serviceId && !orderId) throw new Error("No se seleccionó ningún id de Item");
+            
+        if (!serviceId) {
+            item = await this.
+            createQueryBuilder("item")
+            .leftJoinAndSelect("item.order", "order")
+            .where("order.id = :orderId", { orderId })
+            .getOne();
+        } else if (!orderId) {
+            item = await this
+            .createQueryBuilder("item")
+            .leftJoinAndSelect("item.service", "service")
+            .where("service.id = :serviceId", { serviceId: serviceId })
+            .getOne()
+        }
 
-        return item;
+        return item as Item | null;
     },
 
     async deleteById(serviceId: number, orderId: number): Promise<void> {
@@ -79,11 +86,19 @@ const itemRepository = AppDataSource.getRepository(Item).extend({
     },
 
     async readAllItems(): Promise<Item[]> {
-        return this
+        return await this
         .createQueryBuilder("item")
         .leftJoinAndSelect("item.service", "service")
         .leftJoinAndSelect("item.order", "order")
         .getMany()
+    },
+
+    async readAllFromOrderId(orderId: number): Promise<Item[]> {
+        return await this
+        .createQueryBuilder("item")
+        .leftJoinAndSelect("item.order", "order")
+        .where("order.id = :orderId", { orderId })
+        .getMany();
     },
 
     async getServiceAndOrder(item: Item): Promise<Item> {
@@ -98,6 +113,20 @@ const itemRepository = AppDataSource.getRepository(Item).extend({
         if (!item) throw new Error("not-found");
 
         await this.delete({ service: { id: serviceId }, order: { id: orderId } });
+    },
+
+    async assignOrderDetailRelation(orderNumber: number, orderId: number): Promise<void> {
+        const items = await this
+        .createQueryBuilder("item")
+        .leftJoinAndSelect("item.order", "order")
+        .where("order.id = :orderId", { orderId })
+        .getMany()
+
+        for (const item of items) {
+            item.orderDetail = await orderDetailRepository.readOrderDetailByOrderNumber(orderNumber);
+        }
+
+        await this.save(items);
     }
 
 })

@@ -10,12 +10,12 @@ import { validateBody } from "@functionality/validation";
 
 export async function createOrderDetailController(req: Request, res: Response) {
     const orderId = validateBody(req.body) ? req.body.orderId : undefined;
-    const userId = validateBody(req.body) ? req.body.userId : undefined;
+    const userDni = validateBody(req.body) ? req.body.userDni : undefined;
 
     try {
         if (!orderId) throw new Error("empty-body");
 
-        const newOrderDetail = createOrderDetailService(orderId, userId);
+        const newOrderDetail = await createOrderDetailService(orderId, userDni);
 
         console.log("Detalle de orden creado");
         res.status(201).send(newOrderDetail);

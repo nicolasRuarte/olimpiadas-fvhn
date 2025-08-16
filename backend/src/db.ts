@@ -20,5 +20,6 @@ export const AppDataSource = new DataSource({
     database: DB_NAME,
     entities: [ User, Order, OrderDetail, Service, Rating, Item ],
     logging: true,
-    synchronize: true
+    synchronize: true,
+    dropSchema: true
 });

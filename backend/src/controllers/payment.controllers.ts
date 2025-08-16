@@ -1,35 +1,25 @@
 import { Request, Response } from "express";
-import { MercadoPagoConfig, Preference } from "mercadopago";
-import { MERCADOPAGO_ACCESS_TOKEN } from "@root/config";
-import Service from "@entities/Service";
-import { Items } from "mercadopago/dist/clients/commonTypes";
+import {
+    makePayment
+} from "@services/payment.services";
+import { validateBody } from "@functionality/validation";
+import { createErrorMessage } from "@functionality/errorMessages";
 
-const client = new MercadoPagoConfig({ accessToken: MERCADOPAGO_ACCESS_TOKEN });
-
-export async function createPreference(serviceData: Items[]) {
-    console.log("SERVICE DATA: ", serviceData);
-    const preference = new Preference(client);
-
-    const result = await preference.create({
-        body: {
-            items: serviceData,
-        }
-    });
-    console.log(result);
-
-    return result;
-}
 
 export async function createPayment(req: Request, res: Response) {
-    try {
-        console.log("Body: ", req.body);
-        const result = await createPreference(req.body);
+    const orderId = validateBody(req.body) ? req.body.orderId : undefined;
 
-        console.log(`RESULT ID: ${result.id}`)
-        res.status(200).send({ preferenceId: result.id, url: result.init_point });
+    try {
+        if (!orderId) throw new Error("empty-body");
+
+        const payment = await makePayment(orderId);
+
+        console.log("Realizando pago con Mercado Pago");
+        res.status(200).send(payment);
     } catch (error) {
         console.error(error);
-        res.status(400).send({message: "Error al crear el pago" });
+        const err = createErrorMessage(error as Error);
+        res.status(err.statusCode).send(err.message);
     }
 }
 

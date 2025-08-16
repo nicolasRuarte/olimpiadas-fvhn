@@ -4,7 +4,7 @@ import orderRepository from "./order.repository";
 import Item from "@entities/Item";
 import itemRepository from "./item.repository";
 import userRepository from "./user.repository";
-import serviceRepository from "./service.repository";
+import { sendPurchaseConfirmationEmail } from "@services/nodemailer.services";
 
 async function calculateTotalPrice(items: Item[]): Promise<number> {
     let total = 0;
@@ -23,11 +23,8 @@ const orderDetailRepository = AppDataSource.getRepository(OrderDetail).extend({
         if (!order) throw new Error("not-found");
 
         const newOrderDetail = this.create();
+
         newOrderDetail.items = order.items;
-        for (const item of newOrderDetail.items) {
-            item.orderDetail = newOrderDetail;
-        }
-        await itemRepository.save(newOrderDetail.items);
 
         newOrderDetail.total_price = await calculateTotalPrice(order.items);
         newOrderDetail.user = order.user;
@@ -36,10 +33,17 @@ const orderDetailRepository = AppDataSource.getRepository(OrderDetail).extend({
 
         await orderRepository.markAsBought(order.id);
 
+        // Bidireccionalidad y funciones extras para que las entidades Item y Usuario funcionen bien
+        await itemRepository.assignOrderDetailRelation(result.order_number, orderId);
+
         await userRepository.asignNewOrder(userDni);
 
-        // Asigna el order detail a user para cumplir la bidireccionalidad de las relaciones
         await userRepository.addOrderDetail(userDni, newOrderDetail);
+
+        const user = await userRepository.readUserByDni(userDni);
+        if (!user) throw new Error("not-found");
+
+        await sendPurchaseConfirmationEmail(user.email as string);
 
         return result;
     },
@@ -62,7 +66,7 @@ const orderDetailRepository = AppDataSource.getRepository(OrderDetail).extend({
         await this.update(orderNumber, { status: newStatus });
 
         return await this.readOrderDetailByOrderNumber(orderNumber);
-    }
+    },
 });
 
 export default orderDetailRepository;
