@@ -5,25 +5,17 @@ import orderRepository from "./order.repository";
 import orderDetailRepository from "./orderdetail.repository";
 
 const itemRepository = AppDataSource.getRepository(Item).extend({
-    async readByIds(serviceId: number | undefined, orderId: number | undefined): Promise<Item | null> {
-        let item;
-        if (!serviceId && !orderId) throw new Error("No se seleccionó ningún id de Item");
+    async readByIds(serviceId: number , orderId: number ): Promise<Item | null> {
             
-        if (!serviceId) {
-            item = await this.
-            createQueryBuilder("item")
-            .leftJoinAndSelect("item.order", "order")
-            .where("order.id = :orderId", { orderId })
-            .getOne();
-        } else if (!orderId) {
-            item = await this
-            .createQueryBuilder("item")
-            .leftJoinAndSelect("item.service", "service")
-            .where("service.id = :serviceId", { serviceId: serviceId })
-            .getOne()
-        }
+        const item = await this.
+        createQueryBuilder("item")
+        .leftJoinAndSelect("item.order", "order")
+        .leftJoinAndSelect("item.service", "service")
+        .where("service.id = :serviceId", { serviceId })
+        .andWhere("order.id = :orderId", { orderId })
+        .getOne()
 
-        return item as Item | null;
+        return item;
     },
 
     async deleteById(serviceId: number, orderId: number): Promise<void> {
