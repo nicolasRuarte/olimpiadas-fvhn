@@ -1,6 +1,5 @@
 import { AppDataSource } from "@root/db";
 import Order from "@entities/Order";
-import Item from "@entities/Item";
 import User from "@entities/User";
 import { UpdateResult, DeleteResult } from "typeorm";
 import itemRepository from "@repositories/item.repository";
@@ -47,14 +46,14 @@ const orderRepository = AppDataSource.getRepository(Order).extend({
     },
 
     async addOneItem(serviceId: number, orderId: number, quantity: number): Promise<Order> {
-        const order = await this.findOne({ where: { id: orderId }, relations: { items: true } });
+        const order = await this.readOrderById(orderId);
         if (!order) throw new Error("not-found");
         if (order.isBought) throw new Error("Esta orden ya fue comprada");
 
         const itemExists = await itemRepository.checkIfItemExists(serviceId, orderId);
         if (itemExists) {
             await itemRepository.addToQuantity(serviceId, orderId, quantity);
-            return await this.findOne({ relations: { items: true }, where: { id: orderId } }) as Order;
+            return await this.readOrderById(orderId) as Order; // Aseguramos que devuelve la orden porque ya se hace el handling previamente
         }
 
         const item = await itemRepository.createItem(serviceId, orderId, quantity);
@@ -67,7 +66,7 @@ const orderRepository = AppDataSource.getRepository(Order).extend({
     },
 
     async removeOneItem(serviceId: number, orderId: number, quantity: number): Promise<Order> {
-        const order = await this.findOne({ where: { id: orderId }, relations: { items: true } }) as unknown as Order;
+        const order = await this.readOrderById(orderId);
         if (!order) throw new Error("not-found");
 
         const itemExists = await itemRepository.checkIfItemExists(serviceId, orderId);
