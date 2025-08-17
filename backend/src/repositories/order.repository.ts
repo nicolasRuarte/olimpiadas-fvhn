@@ -89,4 +89,4 @@ const orderRepository = AppDataSource.getRepository(Order).extend({
     }
 });
 
-export default orderRepository;
+export default OrderRepository;

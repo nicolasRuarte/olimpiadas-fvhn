@@ -1,8 +1,6 @@
 import Order from "@entities/Order";
-import OrderRepository from "@repositories/order.repository";
-import { DeleteResult, UpdateResult } from "typeorm";
 import { validateNumberId, validateStringId } from "@functionality/validation";
-import orderRepository from "@repositories/order.repository";
+import OrderRepository from "@repositories/order.repository";
 
 export const readAllOrdersService = async (): Promise<Order[] | undefined> => {
     return await OrderRepository.readAllOrders();
@@ -11,16 +9,16 @@ export const readAllOrdersService = async (): Promise<Order[] | undefined> => {
 export const readOrderByIdService = async (id: number): Promise<Order> => {
     if (!validateNumberId(id)) throw new Error("invalid-id");
 
-    const order = await OrderRepository.readOrderById(id)
+    const order = await OrderRepository.readOrderItemsById(id)
     if (order === null) throw new Error("not-found");
 
     return order;
 }
 
-export async function readOrderByUserDniService(dni: string): Promise<Order[]> {
+export async function readOrderByUserDniService(dni: string): Promise<Order> {
     if (!validateStringId(dni)) throw new Error("invalid-id");
 
-    return await orderRepository.readOrderByUserDni(dni);
+    return await OrderRepository.readOrderByUserDni(dni);
 }
 
 export async function addOneItemService(serviceId: number, orderId: number, quantity: number): Promise<Order> {
