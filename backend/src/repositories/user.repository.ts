@@ -19,20 +19,24 @@ const userRepository = AppDataSource.getRepository(User).extend({
         newUser.orders = [];
         newUser.orders.push(newOrder);
 
-        const { password:_, ...userWithoutPassword } = await this.save(newUser);
-
-        return userWithoutPassword;
+        return await this.save(newUser);
     },
 
-    async readUserByDni(dni: string): Promise<Partial<User>> {
-        const user = await this.findOne({ select: { dni: true, surname: true, names: true, email: true, phone_number: true }, where: { dni: dni} });
+    async readUserByDni(userDni: string): Promise<Partial<User>> {
+        //const user = await this.findOne({ select: { dni: true, surname: true, names: true, email: true, phone_number: true }, where: { dni: dni} });
+        //if (!user) throw new Error("not-found");
+        const user = await this
+        .createQueryBuilder("user")
+        .where("user.dni = :userDni", { userDni })
+        .getOne()
+
         if (!user) throw new Error("not-found");
 
         return user;
     },
 
     async findAllUsers(): Promise<User[]> {
-        const users = await this.find({ select: { dni: true, surname: true, names: true, email: true, phone_number: true } });
+        const users = await this.find();
 
         return users;
     },
