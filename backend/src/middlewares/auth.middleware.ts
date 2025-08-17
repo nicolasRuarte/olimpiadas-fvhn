@@ -12,7 +12,7 @@ export default async function verifyToken(req: Request, res: Response, next: Nex
         const decoded = jwt.verify(token, JWT_SECRET);
         console.log("Token plano: ", decoded);
 
-        // Truco para dejar que el compilador de Typescript nos deje asignar el atributo extra al objeto request
+        // req as any es un truco para que TypeScript no llore y nos deje meterle un atributo más a req
         // Probablemente haya una manera más correcta de hacerlo
         (req as any).user = decoded;
 
