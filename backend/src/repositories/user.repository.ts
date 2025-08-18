@@ -35,6 +35,20 @@ const userRepository = AppDataSource.getRepository(User).extend({
         return user;
     },
 
+    async readPasswordByDni(userDni: string): Promise<string> {
+        const user = await this
+        .createQueryBuilder("user")
+        .select("user.password")
+        .where("user.dni = :userDni", { userDni })
+        .getOne()
+
+        if (!user) throw new Error("not-found");
+
+        console.log(user);
+
+        return user.password;
+    },
+
     async findAllUsers(): Promise<User[]> {
         const users = await this.find();
 
