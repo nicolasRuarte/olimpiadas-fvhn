@@ -66,7 +66,7 @@ const orderRepository = AppDataSource.getRepository(Order).extend({
     },
 
     async removeOneItem(serviceId: number, orderId: number, quantity: number): Promise<Order> {
-        const order = await this.readOrderById(orderId);
+        const order = await this.readOrderItemsById(orderId);
         if (!order) throw new Error("not-found");
 
         const itemExists = await itemRepository.checkIfItemExists(serviceId, orderId);
@@ -74,7 +74,7 @@ const orderRepository = AppDataSource.getRepository(Order).extend({
 
         if (itemExists) {
             await itemRepository.substractToQuantity(serviceId, orderId, quantity)
-            return await this.readOrderById(orderId) as Order;
+            return await this.readOrderItemsById(orderId) as Order;
         }
 
         throw new Error("Intentado borrar un item de una orden sin items");
