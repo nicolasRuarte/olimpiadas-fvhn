@@ -6,16 +6,17 @@ import { validateBody } from "@functionality/validation";
 import { createErrorMessage } from "@functionality/errorMessages";
 
 
-export async function createPayment(req: Request, res: Response) {
+export async function createPaymentController(req: Request, res: Response) {
     const orderId = validateBody(req.body) ? req.body.orderId : undefined;
+    const userDni = validateBody(req.body) ? req.body.userDni : undefined;
 
     try {
-        if (!orderId) throw new Error("empty-body");
+        if (!orderId || !userDni) throw new Error("empty-body");
 
-        const payment = await makePayment(orderId);
+        const payment = await makePayment(orderId, userDni);
 
         console.log("Realizando pago con Mercado Pago");
-        res.status(200).send(payment);
+        res.status(302).send(payment);
     } catch (error) {
         console.error(error);
         const err = createErrorMessage(error as Error);
@@ -23,6 +24,6 @@ export async function createPayment(req: Request, res: Response) {
     }
 }
 
-export async function renderPaymentPage(req: Request, res: Response) {
-    res.status(200).render("test-mp");
+export function succesMessageController(req: Request, res: Response) {
+    res.status(201).send({ message: "El producto fue pagado con éxito.", statusCode: 201 })
 }
