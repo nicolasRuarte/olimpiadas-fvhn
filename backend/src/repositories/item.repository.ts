@@ -18,6 +18,18 @@ const itemRepository = AppDataSource.getRepository(Item).extend({
         return item;
     },
 
+    async readByOrderNumber(orderNumber: number): Promise<Item[]> {
+        const items = await this
+        .createQueryBuilder("item")
+        .leftJoinAndSelect("item.order", "order")
+        .leftJoinAndSelect("item.service", "service")
+        .leftJoinAndSelect("item.orderDetail", "orderDetail")
+        .where("orderDetail.order_number = :orderNumber", { orderNumber })
+        .getMany();
+
+        return items;
+    },
+
     async deleteById(serviceId: number, orderId: number): Promise<void> {
         this
         .createQueryBuilder("item")
