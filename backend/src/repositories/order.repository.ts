@@ -5,27 +5,46 @@ import { UpdateResult, DeleteResult } from "typeorm";
 import itemRepository from "@repositories/item.repository";
 
 
-const orderRepository = AppDataSource.getRepository(Order).extend({
+const OrderRepository = AppDataSource.getRepository(Order).extend({
     async createOrder(user: User): Promise<Order> {
         const newOrder = this.create({ user: user });
 
         return await this.save(newOrder);
     },
 
-    async readOrderById(id: number): Promise<Order | null> {
-        const order = await this.findOne({ where: { id: id }, relations: { items: true }});
+    async readOrderItemsById(orderId: number): Promise<Order | null> {
+        const order = await this
+        .createQueryBuilder("order")
+        .leftJoinAndSelect("order.items", "items")
+        .where("order.id = :orderId", { orderId })
+        .getOne();
+        
         if (!order) throw new Error("not-found");
 
         return order;
     },
 
-    async readOrderByUserDni(dni: string): Promise<Order[]> {
+    async readById(orderId: number): Promise<Order> {
         const order = await this
         .createQueryBuilder("order")
-        .leftJoin("order.user", "user")
+        .leftJoinAndSelect("order.user", "user")
+        .leftJoinAndSelect("order.items", "items")
+        .where("order.id = :orderId", { orderId })
+        .andWhere("order.isBought = :isBought", { isBought: false })
+        .getOne()
+        if (!order) throw new Error("not-found");
+
+        return order;
+    },
+
+    async readOrderByUserDni(dni: string): Promise<Order> {
+        const order = await this
+        .createQueryBuilder("order")
+        .leftJoinAndSelect("order.user", "user")
         .leftJoinAndSelect("order.items", "items")
         .where("user.dni = :dni", { dni: dni })
-        .getMany()
+        .andWhere("order.isBought = :isBought", { isBought: false })
+        .getOne()
         if (!order) throw new Error("not-found");
 
         return order;
