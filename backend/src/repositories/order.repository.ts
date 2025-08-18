@@ -46,14 +46,14 @@ const orderRepository = AppDataSource.getRepository(Order).extend({
     },
 
     async addOneItem(serviceId: number, orderId: number, quantity: number): Promise<Order> {
-        const order = await this.readOrderById(orderId);
+        const order = await this.readOrderItemsById(orderId);
         if (!order) throw new Error("not-found");
         if (order.isBought) throw new Error("Esta orden ya fue comprada");
 
         const itemExists = await itemRepository.checkIfItemExists(serviceId, orderId);
         if (itemExists) {
             await itemRepository.addToQuantity(serviceId, orderId, quantity);
-            return await this.readOrderById(orderId) as Order; // Aseguramos que devuelve la orden porque ya se hace el handling previamente
+            return await this.readOrderItemsById(orderId) as Order; // Aseguramos que devuelve la orden porque ya se hace el handling previamente
         }
 
         const item = await itemRepository.createItem(serviceId, orderId, quantity);
