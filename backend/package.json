@@ -16,7 +16,8 @@
     "@root": "dist/",
     "@functionality": "dist/functionality",
     "@repositories": "dist/repositories",
-    "@services": "dist/services"
+    "@services": "dist/services",
+    "@middlewares": "dist/middlewares"
   },
   "repository": {
     "type": "git",
