@@ -1,4 +1,4 @@
-export function createErrorMessage(errorType: Error, statusCode?: number) {
+export function createErrorMessage(errorType: Error) {
     switch (errorType.message) {
         case "invalid-id":
             return { message: "Por favor ingrese un id válido", statusCode: 400 };
@@ -13,7 +13,10 @@ export function createErrorMessage(errorType: Error, statusCode?: number) {
             return { message: "El objeto solicitado no existe", statusCode: 404 };
         
         case "access-denied":
-            return { message: "Acceso no autorizado. Por favor inicie sesión", statusCode: 401 };
+            return { message: "Acceso denegado. Por favor inicie sesión", statusCode: 401 };
+
+        case "access-unauthorized":
+            return { message: "Acceso no autorizado", statusCode: 401 };
             
         case "empty-body":
             return { message: "Al cuerpo de la petición le faltan uno o más datos", statusCode: 400 };
