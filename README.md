@@ -1,10 +1,5 @@
 ﻿# Página para las olimpiadas
 
-## Links útiles
-
-[Buenas prácticas para los commits](https://github.com/nicolasRuarte/olimpiadas-fvhn/blob/main/archivos/buenas-practicas-commits.md)
-[Convenciones](https://github.com/nicolasRuarte/olimpiadas-fvhn/blob/main/archivos/convenciones.md)
-
 # MyFlight – Un sistema de reserva de vuelos web
 
 ![Banner](frontend/logocompletoMF.svg)
@@ -19,22 +14,35 @@ Este proyecto simula un sistema de reserva de vuelos, que incluye interfaz gráf
 # User Story
 
 ## Como cliente
+
 Tendrá acceso a un formulario de registro e inicio de sesion a tarvés de un botón.
+
 Podrá ver información de destinos turísticos en la página principal.
+
 Podrá calificar el servicio a través de un sistema de estrellas.
+
 Podrá acceder a un formulario para ingresar sus datos, destino, fecha de viaje, etc., al momento de comprar un pasaje.
+
 Podrá comprar uno o más paquetes turísticos.
+
 Dispondrá de un carrito virtual donde podrá añadir la cantidad de paquetes que desee y comprarlos en una sola transacción.
+
 Tendrá acceso a un historial de compras.
+
 Tendrá la posibilidad de anular una compra.
 
 ---
 
-## Como adminitrador
+## Como administrador
+
 Podrá iniciar sesión en la sección de administración con credenciales predefinidas.
+
 Tendrá acceso a la página principal de administración con un botón “Admin” visible en el navbar.
+
 Podrá ver y gestionar todos los pedidos registrados en la base de datos.
+
 Tendrá la posibilidad de filtrar las órdenes por:
+
 o	Estado (pendiente, aceptado, anulado).
 o	Producto incluido en la orden.
 o	Rango de precios.
@@ -50,11 +58,13 @@ Tendrá acceso a enlaces directos a la página individual de cada producto desde
 ---
 
 **Diseño grafico:**  
+
 La interfaz es intuitiva y responsiva para una mejor experiencia del usuario.  
 
 ---
 
 ## Tecnologías Utilizadas
+
 - Bootstrap y Axios (Librerias frontend)
 - TypeORM, Morgan, ExpressJS, Valibot, Bcrypt, Cookie-parser, pg, Reflect-metadata, Mercado pago, module-alias, dotenv, jsonwebtoken y class-validator (Librerias backend)
 - HTML, CSS y JavaScript (Frontend)
