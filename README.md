@@ -1,6 +1,4 @@
-﻿# Página para las olimpiadas
-
-# MyFlight – Un sistema de reserva de vuelos web
+﻿# MyFlight – Un sistema de reserva de vuelos web
 
 ![Banner](frontend/logocompletoMF.svg)
 
