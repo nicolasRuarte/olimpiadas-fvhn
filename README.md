@@ -15,7 +15,7 @@ Este proyecto simula un sistema de reserva de vuelos, que incluye interfaz gráf
 
 ## Como cliente
 
-Tendrá acceso a un formulario de registro e inicio de sesion a tarvés de un botón.
+Tendrá acceso a un formulario de registro e inicio de sesion a través de un botón.
 
 Podrá ver información de destinos turísticos en la página principal.
 
@@ -44,15 +44,25 @@ Podrá ver y gestionar todos los pedidos registrados en la base de datos.
 Tendrá la posibilidad de filtrar las órdenes por:
 
 o	Estado (pendiente, aceptado, anulado).
+
 o	Producto incluido en la orden.
+
 o	Rango de precios.
+
 Podrá modificar el estado de cualquier pedido.
+
 Podrá visualizar la lista de servicios disponibles en el sitio.
+
 Tendrá la opción de filtrar servicios por:
+
 o	Nombre.
+
 o	Rango de precio.
+
 o	Rango de calificación (1 a 5 Estrellas).
+
 Podrá consultar el historial de ventas, mostrando únicamente las órdenes aceptadas.
+
 Tendrá acceso a enlaces directos a la página individual de cada producto desde las tablas.
 
 ---
@@ -101,5 +111,6 @@ La interfaz es intuitiva y responsiva para una mejor experiencia del usuario.
 ## Links útiles
 
 [Buenas prácticas para los commits](https://github.com/nicolasRuarte/olimpiadas-fvhn/blob/main/archivos/buenas-practicas-commits.md)
+
 [Convenciones](https://github.com/nicolasRuarte/olimpiadas-fvhn/blob/main/archivos/convenciones.md)
 
