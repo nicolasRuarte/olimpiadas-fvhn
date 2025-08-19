@@ -2,11 +2,9 @@ import { MercadoPagoConfig, Preference } from "mercadopago";
 import { MERCADOPAGO_ACCESS_TOKEN } from "@root/config";
 import { Items } from "mercadopago/dist/clients/commonTypes";
 import { PreferenceResponse } from "mercadopago/dist/clients/preference/commonTypes";
-import { validateNumberId, validateStringId } from "@functionality/validation";
 import { readOrderByIdService } from "@services/order.services";
 import { createOrderDetailService } from "./orderdetail.services";
 import itemRepository from "@repositories/item.repository";
-import serviceRepository from "@repositories/service.repository";
 
 const client = new MercadoPagoConfig({ accessToken: MERCADOPAGO_ACCESS_TOKEN });
 
@@ -16,7 +14,10 @@ export async function createPreference(purchase: Items[]): Promise<PreferenceRes
     const result = await preference.create({
         body: {
             items: purchase,
-        }
+            back_urls: {
+                success: "http://localhost:4000/success"
+            }
+        },
     });
 
     return result;

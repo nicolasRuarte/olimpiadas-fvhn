@@ -24,6 +24,6 @@ export async function createPaymentController(req: Request, res: Response) {
     }
 }
 
-export function succesMessageController(req: Request, res: Response) {
+export function successMessageController(req: Request, res: Response) {
     res.status(201).send({ message: "El producto fue pagado con éxito.", statusCode: 201 })
 }
