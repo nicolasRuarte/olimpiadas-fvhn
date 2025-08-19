@@ -6,7 +6,7 @@ import orderRepository from "./order.repository";
 import OrderDetail from "@entities/OrderDetail";
 
 const userRepository = AppDataSource.getRepository(User).extend({
-    async createUser(data: Partial<User>): Promise<User> {
+    async createUser(data: Partial<User>): Promise<Partial<User>> {
         const existing = await this.findOneBy({ dni: data.dni });
         if (existing) throw new Error("Usuario ya existe");
 
@@ -20,18 +20,37 @@ const userRepository = AppDataSource.getRepository(User).extend({
         newUser.orders.push(newOrder);
 
         return await this.save(newUser);
-
     },
 
-    async readUserByDni(dni: string): Promise<Partial<User>> {
-        const user = await this.findOne({ select: { dni: true, surname: true, names: true, email: true, phone_number: true }, where: { dni: dni} });
+    async readUserByDni(userDni: string): Promise<Partial<User>> {
+        //const user = await this.findOne({ select: { dni: true, surname: true, names: true, email: true, phone_number: true }, where: { dni: dni} });
+        //if (!user) throw new Error("not-found");
+        const user = await this
+        .createQueryBuilder("user")
+        .where("user.dni = :userDni", { userDni })
+        .getOne()
+
         if (!user) throw new Error("not-found");
 
         return user;
     },
 
+    async readPasswordByDni(userDni: string): Promise<string> {
+        const user = await this
+        .createQueryBuilder("user")
+        .select("user.password")
+        .where("user.dni = :userDni", { userDni })
+        .getOne()
+
+        if (!user) throw new Error("not-found");
+
+        console.log(user);
+
+        return user.password;
+    },
+
     async findAllUsers(): Promise<User[]> {
-        const users = await this.find({ select: { dni: true, surname: true, names: true, email: true, phone_number: true } });
+        const users = await this.find();
 
         return users;
     },

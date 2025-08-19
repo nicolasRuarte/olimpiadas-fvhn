@@ -6,6 +6,8 @@ import { validateBody } from "@functionality/validation";
 import { createErrorMessage } from "@functionality/errorMessages";
 
 export async function logInController(req: Request, res: Response) {
+    if (req.cookies.access_token) throw new Error("La sesión ya está iniciada")
+
     const dni = validateBody(req.body) ? req.body.dni : null;
     const password = validateBody(req.body) ? req.body.password : null;
 
@@ -13,10 +15,15 @@ export async function logInController(req: Request, res: Response) {
         if (dni === null) throw new Error("Campo de dni no existe o está vacío");
         if (password === null) throw new Error("Campo de contraseña no existe o está vacío");
 
-        const logInCredentials = await logInService(dni, password);
+        const loginResponse = await logInService(dni, password);
 
         console.log("Loggeando usuario");
-        res.status(200).send(logInCredentials);
+        res.status(200).cookie("access_token", loginResponse.token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "strict",
+            maxAge: 1000 * 60 * 60 * 24
+        }).send({ token: loginResponse.token, user: loginResponse.user });
     } catch (error) {
         console.error(error);
         const errorData = createErrorMessage(error as Error)

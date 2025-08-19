@@ -23,11 +23,11 @@ export default class User extends BaseEntity {
     @IsString()
     names: string;
 
-    @Column()
+    @Column({ nullable: false })
     @IsEmail()
     email: string;
 
-    @Column()
+    @Column({ select: false })
     @IsString()
     @MinLength(8)
     password: string;

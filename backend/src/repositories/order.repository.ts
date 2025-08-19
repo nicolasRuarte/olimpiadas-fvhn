@@ -1,32 +1,50 @@
 import { AppDataSource } from "@root/db";
 import Order from "@entities/Order";
-import Item from "@entities/Item";
 import User from "@entities/User";
 import { UpdateResult, DeleteResult } from "typeorm";
 import itemRepository from "@repositories/item.repository";
 
 
-const orderRepository = AppDataSource.getRepository(Order).extend({
+const OrderRepository = AppDataSource.getRepository(Order).extend({
     async createOrder(user: User): Promise<Order> {
         const newOrder = this.create({ user: user });
 
         return await this.save(newOrder);
     },
 
-    async readOrderById(id: number): Promise<Order | null> {
-        const order = await this.findOne({ where: { id: id }, relations: { items: true }});
+    async readOrderItemsById(orderId: number): Promise<Order | null> {
+        const order = await this
+        .createQueryBuilder("order")
+        .leftJoinAndSelect("order.items", "items")
+        .where("order.id = :orderId", { orderId })
+        .getOne();
+        
         if (!order) throw new Error("not-found");
 
         return order;
     },
 
-    async readOrderByUserDni(dni: string): Promise<Order[]> {
+    async readById(orderId: number): Promise<Order> {
         const order = await this
         .createQueryBuilder("order")
-        .leftJoin("order.user", "user")
+        .leftJoinAndSelect("order.user", "user")
+        .leftJoinAndSelect("order.items", "items")
+        .where("order.id = :orderId", { orderId })
+        .andWhere("order.isBought = :isBought", { isBought: false })
+        .getOne()
+        if (!order) throw new Error("not-found");
+
+        return order;
+    },
+
+    async readOrderByUserDni(dni: string): Promise<Order> {
+        const order = await this
+        .createQueryBuilder("order")
+        .leftJoinAndSelect("order.user", "user")
         .leftJoinAndSelect("order.items", "items")
         .where("user.dni = :dni", { dni: dni })
-        .getMany()
+        .andWhere("order.isBought = :isBought", { isBought: false })
+        .getOne()
         if (!order) throw new Error("not-found");
 
         return order;
@@ -47,14 +65,14 @@ const orderRepository = AppDataSource.getRepository(Order).extend({
     },
 
     async addOneItem(serviceId: number, orderId: number, quantity: number): Promise<Order> {
-        const order = await this.findOne({ where: { id: orderId }, relations: { items: true } });
+        const order = await this.readOrderItemsById(orderId);
         if (!order) throw new Error("not-found");
         if (order.isBought) throw new Error("Esta orden ya fue comprada");
 
         const itemExists = await itemRepository.checkIfItemExists(serviceId, orderId);
         if (itemExists) {
             await itemRepository.addToQuantity(serviceId, orderId, quantity);
-            return await this.findOne({ relations: { items: true }, where: { id: orderId } }) as Order;
+            return await this.readOrderItemsById(orderId) as Order; // Aseguramos que devuelve la orden porque ya se hace el handling previamente
         }
 
         const item = await itemRepository.createItem(serviceId, orderId, quantity);
@@ -67,7 +85,7 @@ const orderRepository = AppDataSource.getRepository(Order).extend({
     },
 
     async removeOneItem(serviceId: number, orderId: number, quantity: number): Promise<Order> {
-        const order = await this.findOne({ where: { id: orderId }, relations: { items: true } }) as unknown as Order;
+        const order = await this.readOrderItemsById(orderId);
         if (!order) throw new Error("not-found");
 
         const itemExists = await itemRepository.checkIfItemExists(serviceId, orderId);
@@ -75,7 +93,7 @@ const orderRepository = AppDataSource.getRepository(Order).extend({
 
         if (itemExists) {
             await itemRepository.substractToQuantity(serviceId, orderId, quantity)
-            return await this.readOrderById(orderId) as Order;
+            return await this.readOrderItemsById(orderId) as Order;
         }
 
         throw new Error("Intentado borrar un item de una orden sin items");
@@ -90,4 +108,4 @@ const orderRepository = AppDataSource.getRepository(Order).extend({
     }
 });
 
-export default orderRepository;
+export default OrderRepository;

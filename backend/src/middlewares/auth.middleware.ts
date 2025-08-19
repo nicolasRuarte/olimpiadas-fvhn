@@ -10,9 +10,9 @@ export default async function verifyToken(req: Request, res: Response, next: Nex
         if (!token) throw new Error("access-denied");
 
         const decoded = jwt.verify(token, JWT_SECRET);
-        console.log("Token plano: ", decoded);
+        console.log("Token plano: ", decoded); // Borrar en producción
 
-        // Truco para dejar que el compilador de Typescript nos deje asignar el atributo extra al objeto request
+        // req as any es un truco para que TypeScript no llore y nos deje meterle un atributo más a req
         // Probablemente haya una manera más correcta de hacerlo
         (req as any).user = decoded;
 
@@ -21,5 +21,26 @@ export default async function verifyToken(req: Request, res: Response, next: Nex
         console.error(error);
         const errorData = createErrorMessage(error as Error);
         res.status(errorData.statusCode).send(errorData.message);
+    }
+}
+
+export async function verifyIfUserIsAdmin(req: Request, res: Response, next: NextFunction) {
+    const token = req.cookies.access_token;
+
+    try {
+        if (!token) throw new Error("access-denied");
+
+        const decoded = jwt.verify(token, JWT_SECRET);
+
+        if ((decoded as any).role === "client") throw new Error("access-unauthorized");
+        
+        (req as any).user = decoded;
+
+        next();
+    } catch (error) {
+        console.error(error);
+        const err = createErrorMessage(error as Error);
+        res.status(err.statusCode).send(err.message);
+        
     }
 }

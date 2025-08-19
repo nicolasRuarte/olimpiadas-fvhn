@@ -1,12 +1,13 @@
 import { Router } from "express";
 import { readAdmin, getAllSales, changeOrderDetailStatus, getAllOrders } from "@controllers/admin.controllers";
+import { verifyIfUserIsAdmin } from "@middlewares/auth.middleware";
 
 const router = Router();
 
-router.get("/admin", readAdmin);
-router.get("/admin/sells", getAllSales);
+router.get("/admin", verifyIfUserIsAdmin, readAdmin);
+router.get("/admin/sells", verifyIfUserIsAdmin, getAllSales);
 // Estatus pueden cambiar de pending a accepted o anulated
-router.patch("/admin/change-order-status", changeOrderDetailStatus);
-router.get("/admin/orders", getAllOrders);
+router.patch("/admin/change-order-status", verifyIfUserIsAdmin, changeOrderDetailStatus);
+router.get("/admin/orders", verifyIfUserIsAdmin, getAllOrders);
 
 export default router;

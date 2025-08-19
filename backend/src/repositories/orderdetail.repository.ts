@@ -1,10 +1,9 @@
 import { AppDataSource } from "@root/db";
 import OrderDetail from "@entities/OrderDetail";
-import orderRepository from "./order.repository";
+import OrderRepository from "@repositories/order.repository";
 import Item from "@entities/Item";
 import itemRepository from "./item.repository";
 import userRepository from "./user.repository";
-import serviceRepository from "./service.repository";
 
 async function calculateTotalPrice(items: Item[]): Promise<number> {
     let total = 0;
@@ -19,27 +18,28 @@ async function calculateTotalPrice(items: Item[]): Promise<number> {
 const orderDetailRepository = AppDataSource.getRepository(OrderDetail).extend({
     // Le pasamos el dni del usuario por conveniencia para realizar las direcciones bidireccionales entre User y Order y User y OrderDetail
     async createOrderDetail(orderId: number, userDni: string): Promise<OrderDetail> {
-        const order = await orderRepository.readOrderById(orderId);
+        const order = await OrderRepository.readOrderItemsById(orderId);
         if (!order) throw new Error("not-found");
 
         const newOrderDetail = this.create();
-        newOrderDetail.items = order.items;
-        for (const item of newOrderDetail.items) {
-            item.orderDetail = newOrderDetail;
-        }
-        await itemRepository.save(newOrderDetail.items);
 
+        newOrderDetail.items = order.items;
         newOrderDetail.total_price = await calculateTotalPrice(order.items);
         newOrderDetail.user = order.user;
 
         const result = await this.save(newOrderDetail);
 
-        await orderRepository.markAsBought(order.id);
+        await OrderRepository.markAsBought(order.id);
+
+        // Bidireccionalidad y funciones extras para que las entidades Item y Usuario funcionen bien
+        await itemRepository.assignOrderDetailRelation(result.order_number, orderId);
 
         await userRepository.asignNewOrder(userDni);
 
-        // Asigna el order detail a user para cumplir la bidireccionalidad de las relaciones
         await userRepository.addOrderDetail(userDni, newOrderDetail);
+
+        const user = await userRepository.readUserByDni(userDni);
+        if (!user) throw new Error("not-found");
 
         return result;
     },
@@ -62,7 +62,7 @@ const orderDetailRepository = AppDataSource.getRepository(OrderDetail).extend({
         await this.update(orderNumber, { status: newStatus });
 
         return await this.readOrderDetailByOrderNumber(orderNumber);
-    }
+    },
 });
 
 export default orderDetailRepository;

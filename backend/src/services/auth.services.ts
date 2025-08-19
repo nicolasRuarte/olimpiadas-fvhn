@@ -4,14 +4,18 @@ import User from "@entities/User";
 import userRepository from "@repositories/user.repository";
 import { JWT_SECRET } from "@root/config";
 import { validateStringId } from "@functionality/validation";
+import { readUserByDniService } from "./user.services";
 
 export async function logInService(dni: string, password: string): Promise<{ token: string, user: Partial<User>}> {
-    if (!validateStringId(dni)) throw new Error("invalid-id");
+    if (!validateStringId(dni)) throw new Error("invalid-string-id");
 
-    const user = await userRepository.findOneBy({ dni: dni }) as unknown as User; // Solo hago esta línea porque la validación del condicional de abajo no parece hacer callar al compilador
+    const user = await readUserByDniService(dni);
+    const userPassword = await userRepository.readPasswordByDni(dni);
+
     if (!user) throw new Error("not-found");
+    if (!userPassword) throw new Error("La contraseña no fue encontrada");
 
-    const passwordIsCorrect = await bcrypt.compare(password, user.password);
+    const passwordIsCorrect = await bcrypt.compare(password, userPassword);
     if (!passwordIsCorrect) throw new Error("La contraseña ingresada no es correcta");
 
     const token = jwt.sign(
@@ -20,7 +24,5 @@ export async function logInService(dni: string, password: string): Promise<{ tok
         { expiresIn: "24h" }
     )
 
-    const { password: _, ...userWithoutPassword } = user;
-
-    return { token: token, user: userWithoutPassword };
+    return { token: token, user: user };
 }

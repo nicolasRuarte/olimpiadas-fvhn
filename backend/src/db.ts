@@ -5,7 +5,7 @@ import OrderDetail from "@entities/OrderDetail";
 import Rating from "@entities/Rating";
 import Service from "@entities/Service";
 import Item from "@entities/Item";
-import { DB_NAME, DB_PORT, DB_URL, HOST, PASSWORD, USERNAME } from "./dbconfig";
+import { DB_NAME, DB_PORT, DB_URL, DB_HOST, DB_PASSWORD, DB_USERNAME } from "@root/dbconfig";
 
 export const AppDataSource = new DataSource({
     type: "postgres",
@@ -13,12 +13,13 @@ export const AppDataSource = new DataSource({
     //ssl: {
     //rejectUnauthorized: false,
     //},
-    host: HOST,
-    username: "postgres",
-    password: PASSWORD,
+    host: DB_HOST,
+    username: DB_USERNAME,
+    password: DB_PASSWORD,
     port: (<number>DB_PORT),
     database: DB_NAME,
     entities: [ User, Order, OrderDetail, Service, Rating, Item ],
     logging: true,
-    synchronize: true
+    synchronize: true,
+    dropSchema: true
 });
