@@ -23,3 +23,19 @@ export default async function verifyToken(req: Request, res: Response, next: Nex
         res.status(errorData.statusCode).send(errorData.message);
     }
 }
+
+export async function verifyIfUserIsAdmin(req: Request, res: Response) {
+    const token = req.cookies.access_token;
+
+    try {
+        if (!token) throw new Error("access-denied");
+
+        const decoded = jwt.verify(token, JWT_SECRET);
+
+        if ((decoded as any).role === "client") throw new Error("accesss-unauthorized");
+        
+        (req as any).user = decoded;
+    } catch (error) {
+        
+    }
+}
