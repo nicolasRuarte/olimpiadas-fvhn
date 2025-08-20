@@ -30,7 +30,6 @@ const OrderRepository = AppDataSource.getRepository(Order).extend({
         .leftJoinAndSelect("order.user", "user")
         .leftJoinAndSelect("order.items", "items")
         .where("order.id = :orderId", { orderId })
-        .andWhere("order.isBought = :isBought", { isBought: false })
         .getOne()
         if (!order) throw new Error("not-found");
 

@@ -1,10 +1,11 @@
 // Rutas para MP
 import { Router } from "express";
-import { createPaymentController } from "@controllers/payment.controllers"
-import verifyToken from "@root/middlewares/auth.middleware";
+import { createPreferenceController, successMessageController } from "@controllers/payment.controllers"
+import verifyToken from "@middlewares/auth.middleware";
 
 const router = Router();
 
-router.post("/payment", verifyToken, createPaymentController);
+router.post("/payment", verifyToken, createPreferenceController);
+router.get("/success", successMessageController);
 
 export default router;

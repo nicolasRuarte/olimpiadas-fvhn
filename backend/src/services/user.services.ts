@@ -8,6 +8,8 @@ export const createUserService = async (data: Partial<User>): Promise<Partial<Us
     if (!validateStringId(data.dni)) throw new Error("invalid-string-id");
     if (!data.password) throw new Error("Contraseña es obligatoria para crear el usuario");
 
+    if (data.role !== "admin" && data.role !== "client") throw new Error("El rol ingresado no es válido");
+
     const hashedPassword = await bcrypt.hash(data.password, 10)
 
     return await UserRepository.createUser({ ...data, password: hashedPassword })
