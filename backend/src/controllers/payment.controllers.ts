@@ -1,21 +1,22 @@
 import { Request, Response } from "express";
 import {
+    createPreference,
     makePayment
 } from "@services/payment.services";
 import { validateBody } from "@functionality/validation";
 import { createErrorMessage } from "@functionality/errorMessages";
 
 
-export async function createPaymentController(req: Request, res: Response) {
+export async function createPreferenceController(req: Request, res: Response) {
     const orderId = validateBody(req.body) ? req.body.orderId : undefined;
     const userDni = validateBody(req.body) ? req.body.userDni : undefined;
 
     try {
         if (!orderId || !userDni) throw new Error("empty-body");
 
-        const payment = await makePayment(orderId, userDni);
+        const payment = await createPreference(orderId, userDni);
 
-        console.log("Realizando pago con Mercado Pago");
+        console.log("Creando preferencia de Mercado Pago");
         res.status(302).send(payment);
     } catch (error) {
         console.error(error);
@@ -25,5 +26,11 @@ export async function createPaymentController(req: Request, res: Response) {
 }
 
 export function successMessageController(req: Request, res: Response) {
-    res.status(201).send({ message: "El producto fue pagado con éxito.", statusCode: 201 })
+    try {
+        //const result = await createPreference();
+    } catch (error) {
+        console.error(error);
+        const err = createErrorMessage(error as Error);
+        res.status(err.statusCode).send(err.message);
+    }
 }
