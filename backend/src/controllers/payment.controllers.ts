@@ -17,7 +17,7 @@ export async function createPreferenceController(req: Request, res: Response) {
         const payment = await createPreference(orderId, userDni);
 
         console.log("Creando preferencia de Mercado Pago");
-        res.status(302).send(payment);
+        res.status(201).send(payment);
     } catch (error) {
         console.error(error);
         const err = createErrorMessage(error as Error);
@@ -26,8 +26,8 @@ export async function createPreferenceController(req: Request, res: Response) {
 }
 
 export function successMessageController(req: Request, res: Response) {
+
     try {
-        //const result = await createPreference();
     } catch (error) {
         console.error(error);
         const err = createErrorMessage(error as Error);
