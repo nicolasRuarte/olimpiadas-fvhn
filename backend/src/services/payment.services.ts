@@ -9,6 +9,14 @@ import { readServiceByIdService } from "./service.services";
 
 const client = new MercadoPagoConfig({ accessToken: MERCADOPAGO_ACCESS_TOKEN });
 
+
+// Retorna tanto el ID de la preferencia como la URL para realizar el pago
+export async function makePayment(orderId: number, userDni: string): Promise<void> {
+    // DELEGAMOS VALIDACIÓN DE LOS IDs AL SERVICIO ORDERDETAIL
+
+    const orderDetail = createOrderDetailService(orderId, userDni);
+}
+
 export async function createPreference(orderId: number, userDni: string): Promise<Partial<PreferenceResponse>> {
     const preference = new Preference(client);
 
@@ -22,7 +30,6 @@ export async function createPreference(orderId: number, userDni: string): Promis
         mercadoPagoItems.push({
             id: service.id.toString(), 
             title: service.name,
-            description: service.description,
             unit_price: 1,
             quantity: item.quantity
         });
@@ -30,21 +37,21 @@ export async function createPreference(orderId: number, userDni: string): Promis
 
     console.log(mercadoPagoItems);
 
+    // Las URLs tienen que estar deployadas
     const result = await preference.create({
         body: {
             items: mercadoPagoItems,
             back_urls: {
-                success: "http://localhost:4000/success"
-            }
+                success: "https://youtube.com",
+                failure: "https://youtube.com/"
+            },
+            auto_return: "approved"
         },
     });
+
+    makePayment(orderId, userDni);
 
     const { id, init_point } = result;
 
     return { id, init_point };
-}
-
-// Retorna tanto el ID de la preferencia como la URL para realizar el pago
-export async function makePayment(orderId: number, userDni: string): Promise<void> {
-    // DELEGAMOS VALIDACIÓN DE LOS IDs AL SERVICIO ORDERDETAIL
 }
