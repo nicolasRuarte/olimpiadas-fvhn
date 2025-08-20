@@ -7,9 +7,9 @@ export const readAllOrdersService = async (): Promise<Order[] | undefined> => {
 }
 
 export const readOrderByIdService = async (id: number): Promise<Order> => {
-    if (!validateNumberId(id)) throw new Error("invalid-id");
+    if (!validateNumberId(id)) throw new Error("invalid-number-id");
 
-    const order = await OrderRepository.readOrderItemsById(id)
+    const order = await OrderRepository.readById(id)
     if (order === null) throw new Error("not-found");
 
     return order;
