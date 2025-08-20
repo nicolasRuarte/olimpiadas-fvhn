@@ -4,30 +4,53 @@ import {
     readAllOrdersService,
     addOneItemService,
     removeOneItemService,
-    readOrderByUserDniService
+    readOrderByUserDniService,
+    readOrderByIdService
 } from "@services/order.services";
 import { validateBody } from "@functionality/validation";
 
 
 
-export async function readOrderController(req: Request, res: Response) {
+export async function readOrderByUserDniController(req: Request, res: Response) {
     const selectAllFlag = -1;
     const dni = validateBody(req.body) ? req.body.dni : selectAllFlag;
 
     try {
-
         let order;
+
         if (dni === selectAllFlag) {
             order = await readAllOrdersService();
         } else {
             order = await readOrderByUserDniService(dni);
         }
 
-        console.log("Orden/es leída/s");
+        console.log("Leyendo orden");
         res.status(200).send(order);
     } catch (error) {
         console.error(error);
         res.send(createErrorMessage(error as Error));
+    }
+}
+
+export async function readOrderByIdController(req: Request, res: Response) {
+    const selectAllFlag = -1;
+    const id = validateBody(req.body) ? req.body.id : selectAllFlag;
+
+    try {
+        let order;
+
+        if (id === selectAllFlag) {
+            order = await readAllOrdersService();
+        } else {
+            order = await readOrderByIdService(id);
+        }
+
+        console.log("Leyendo orden mediante id");
+        res.status(200).send(order);
+    } catch (error) {
+        console.error(error);
+        const err = createErrorMessage(error as Error);
+        res.status(err.statusCode).send(err.message);
     }
 }
 
