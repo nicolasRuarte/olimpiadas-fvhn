@@ -255,7 +255,7 @@ Las relaciones de la base de datos son las siguientes:
 
 User - 1 a n - OrderDetail
 
-User - 1 a 1 - Order
+User - 1 a n - Order
 
 User - 1 a n - Rating
 
