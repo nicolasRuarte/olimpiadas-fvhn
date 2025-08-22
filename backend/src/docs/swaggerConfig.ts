@@ -8,11 +8,11 @@ export const swaggerOptions: SwaggerOptions = {
       version: '1.0.0',
       description: "Página de venta de paquetes de vuelos",
     },
-    servers: [
+    servers: [ 
       {
         url: 'http://localhost:4000',
       },
     ],
   },
-  apis: ['./src/routes/*.ts'],
+  apis: ['./src/routes/*.ts']
 };

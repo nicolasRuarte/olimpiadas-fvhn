@@ -87,7 +87,7 @@ export async function removeItemsController(req: Request, res: Response) {
         console.log("ORDER IN CONTROLLER", order)
  
         console.log("Borrado elemento de orden");
-        res.status(201).send(order);
+        res.status(200).send(order);
      } catch (error) {
          console.error(error);
          res.status(400).send(createErrorMessage(error as Error));

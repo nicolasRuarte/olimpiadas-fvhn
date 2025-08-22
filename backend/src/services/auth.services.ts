@@ -21,7 +21,7 @@ export async function logInService(dni: string, password: string): Promise<{ tok
     const token = jwt.sign(
         { dni: user.dni, email: user.email, role: user.role },
         JWT_SECRET,
-        { expiresIn: "1h" }
+        { expiresIn: "48h" }
     )
 
     return { token: token, user: user };
