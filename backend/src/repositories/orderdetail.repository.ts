@@ -4,6 +4,7 @@ import OrderRepository from "@repositories/order.repository";
 import Item from "@entities/Item";
 import itemRepository from "./item.repository";
 import userRepository from "./user.repository";
+import { sendPurchaseConfirmationEmail } from "@services/nodemailer.services";
 
 async function calculateTotalPrice(items: Item[]): Promise<number> {
     let total = 0;
@@ -40,6 +41,8 @@ const orderDetailRepository = AppDataSource.getRepository(OrderDetail).extend({
 
         const user = await userRepository.readUserByDni(userDni);
         if (!user) throw new Error("not-found");
+
+        sendPurchaseConfirmationEmail(user.email as string);
 
         return result;
     },
