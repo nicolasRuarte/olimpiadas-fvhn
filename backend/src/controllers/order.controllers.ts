@@ -55,6 +55,19 @@ export async function readOrderByIdController(req: Request, res: Response) {
     }
 }
 
+export async function readAllOrdersController(req: Request, res: Response) {
+    try {
+        const orders = await readAllOrdersService();
+
+        console.log("Leyendo todas las órdenes");
+        res.send(orders)
+    } catch (error) {
+        console.error(error);
+        const err = createErrorMessage(error as Error);
+        res.status(err.statusCode).send(err.message);
+    }
+}
+
 
 export async function addItemsControlller(req: Request, res: Response) {
     const serviceId = validateBody(req.body) ? req.body.serviceId : undefined;
