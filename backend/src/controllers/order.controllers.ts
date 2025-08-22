@@ -28,7 +28,8 @@ export async function readOrderByUserDniController(req: Request, res: Response) 
         res.status(200).send(order);
     } catch (error) {
         console.error(error);
-        res.send(createErrorMessage(error as Error));
+        const err = createErrorMessage(error as Error);
+        res.status(err.statusCode).send(err.message);
     }
 }
 
