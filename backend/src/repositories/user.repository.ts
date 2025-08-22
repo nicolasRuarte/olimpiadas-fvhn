@@ -19,7 +19,7 @@ const userRepository = AppDataSource.getRepository(User).extend({
         newUser.orders = [];
         newUser.orders.push(newOrder);
 
-        return await this.save(newUser);
+        return this.readUserByDni(data.dni as string);
     },
 
     async readUserByDni(userDni: string): Promise<Partial<User>> {
