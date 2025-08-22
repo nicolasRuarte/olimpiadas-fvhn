@@ -16,7 +16,7 @@ export const readOrderByIdService = async (id: number): Promise<Order> => {
 }
 
 export async function readOrderByUserDniService(dni: string): Promise<Order> {
-    if (!validateStringId(dni)) throw new Error("invalid-id");
+    if (!validateStringId(dni)) throw new Error("invalid-string-id");
 
     return await OrderRepository.readOrderByUserDni(dni);
 }
