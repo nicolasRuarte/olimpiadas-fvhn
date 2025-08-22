@@ -23,7 +23,7 @@ export async function createUserController(req: Request, res: Response): Promise
     } catch (error) {
         console.error(error);
         const errorData = createErrorMessage(error as Error);
-        res.status(errorData.statusCode).send(errorData.message);
+        res.status(errorData.statusCode).send(errorData);
     }
 }
 
@@ -46,7 +46,7 @@ export async function readUsersController(req: Request, res: Response) {
     } catch (error) {
         console.error(error);
         const err = createErrorMessage(error as Error)
-        res.status(err.statusCode).send(err.message);
+        res.status(err.statusCode).send(err);
     }
 }
 
@@ -64,7 +64,7 @@ export async function updateUserController(req: Request, res: Response) {
     } catch (error) {
         console.error(error);
         const err = createErrorMessage(error as Error);
-        res.status(err.statusCode).send(err.message);
+        res.status(err.statusCode).send(err);
     }
 }
 
@@ -81,6 +81,6 @@ export async function deleteUserController(req: Request, res: Response) {
     } catch (error) {
         console.error(error);
         const err = createErrorMessage(error as Error);
-        res.status(err.statusCode).send(err.message);
+        res.status(err.statusCode).send(err);
     }
 }
