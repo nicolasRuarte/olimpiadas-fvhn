@@ -2,8 +2,6 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import swaggerUi from "swagger-ui-express";
-import swaggerJsdoc from "swagger-jsdoc";
 
 import userRoutes from "@routes/user.routes";
 import serviceRoutes from "@routes/service.routes";
