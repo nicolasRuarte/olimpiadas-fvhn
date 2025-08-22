@@ -55,12 +55,16 @@ const userRepository = AppDataSource.getRepository(User).extend({
         return users;
     },
 
-    async updateUser(dni: string, updatedData: Partial<User>): Promise<UpdateResult> {
-        return await this.update({ dni: dni }, updatedData);
+    async updateUser(dni: string, updatedData: Partial<User>): Promise<Partial<User>> {
+        await this.update({ dni: dni }, updatedData);
+
+        return await this.readUserByDni(dni);
     },
 
-    async deleteUser(dni: string): Promise<DeleteResult> {
-        return await this.delete({ dni: dni });
+    async deleteUser(dni: string): Promise<{ message: string }> {
+        await this.delete({ dni: dni });
+
+        return { message: "El usuario fue borrado con éxito" };
     },
 
     async addRatingToUser(rating: Rating): Promise<void> {

@@ -55,7 +55,7 @@ export async function updateUserController(req: Request, res: Response) {
     const data = validateBody(req.body) ? req.body.data : undefined;
 
     try {
-        if (dni === undefined || data === undefined) throw new Error("empty-body");
+        if (!dni|| !data) throw new Error("empty-body");
 
         const result = await updateUserService(dni, data);
 
@@ -69,5 +69,18 @@ export async function updateUserController(req: Request, res: Response) {
 }
 
 export async function deleteUserController(req: Request, res: Response) {
-    res.send("Usuario borrado");
+    const dni = validateBody(req.body) ? req.body.dni : undefined;
+
+    try {
+        if (!dni) throw new Error("empty-body");
+
+        const deleteMessage = await deleteUserService(dni);
+
+        console.log("Usuario borrado");
+        res.send(deleteMessage);
+    } catch (error) {
+        console.error(error);
+        const err = createErrorMessage(error as Error);
+        res.status(err.statusCode).send(err.message);
+    }
 }
