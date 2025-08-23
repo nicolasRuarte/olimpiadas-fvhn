@@ -49,7 +49,7 @@ const orderDetailRepository = AppDataSource.getRepository(OrderDetail).extend({
 
     async readOrderDetailByOrderNumber(orderNumber: number): Promise<OrderDetail> {
         const orderDetail = await this.findOneBy({order_number: orderNumber});
-        if (orderDetail === null) throw new Error("not-found");
+        if (!orderDetail) throw new Error("not-found");
 
         return orderDetail;
     },
