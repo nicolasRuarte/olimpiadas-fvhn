@@ -68,6 +68,8 @@ const itemRepository = AppDataSource.getRepository(Item).extend({
     },
 
     async addToQuantity(serviceId: number, orderId: number, quantity: number): Promise<void> {
+        if (quantity < 0) throw new Error("No se pueden enviar números negativos en quantity");
+
         const item = await this.readByIds(serviceId, orderId);
         if (!item) throw new Error("not-found");
 
@@ -77,6 +79,8 @@ const itemRepository = AppDataSource.getRepository(Item).extend({
     },
 
     async substractToQuantity(serviceId: number, orderId: number, quantity: number): Promise<void> {
+        if (quantity < 0) throw new Error("No se pueden enviar números negativos en quantity");
+
         const item = await this.readByIds(serviceId, orderId);
         if(!item) throw new Error("not-found");
 
