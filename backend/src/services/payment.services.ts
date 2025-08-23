@@ -42,8 +42,8 @@ export async function createPreference(orderId: number, userDni: string): Promis
         body: {
             items: mercadoPagoItems,
             back_urls: {
-                success: "https://youtube.com",
-                failure: "https://youtube.com/"
+                success: "127.0.0.1:4000/success",
+                failure: "127.0.0.1:4000/failure"
             },
             auto_return: "approved"
         },
