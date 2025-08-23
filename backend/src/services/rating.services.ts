@@ -3,6 +3,8 @@ import RatingRepository from "@repositories/rating.repository";
 import { validateNumberId, validateStringId } from "@functionality/validation";
 
 export const createRatingService = async (data: { userId: string, serviceId: number, rating: number }) => {
+    if (data.rating > 5 || data.rating < 0) throw new Error("El valor del rating se encuentra fuera del intervalo aceptado");
+
     return await RatingRepository.createRating(data);
 }
 
