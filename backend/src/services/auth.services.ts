@@ -5,12 +5,16 @@ import userRepository from "@repositories/user.repository";
 import { JWT_SECRET } from "@root/config";
 import { validateStringId } from "@functionality/validation";
 import { readUserByDniService } from "./user.services";
+import { readOrderByUserDniService } from "./order.services";
 
 export async function logInService(dni: string, password: string): Promise<{ token: string, user: Partial<User>}> {
     if (!validateStringId(dni)) throw new Error("invalid-string-id");
 
     const user = await readUserByDniService(dni);
     const userPassword = await userRepository.readPasswordByDni(dni);
+
+    const order = await readOrderByUserDniService(dni);
+    if(!user) throw new Error("not-found");
 
     if (!user) throw new Error("not-found");
     if (!userPassword) throw new Error("La contraseña no fue encontrada");
@@ -19,7 +23,7 @@ export async function logInService(dni: string, password: string): Promise<{ tok
     if (!passwordIsCorrect) throw new Error("La contraseña ingresada no es correcta");
 
     const token = jwt.sign(
-        { dni: user.dni, email: user.email, role: user.role },
+        { dni: user.dni, orders: user.orders, email: user.email, role: user.role },
         JWT_SECRET,
         { expiresIn: "48h" }
     )
