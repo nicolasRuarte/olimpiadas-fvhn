@@ -20,7 +20,7 @@ export default async function verifyToken(req: Request, res: Response, next: Nex
     } catch (error) {
         console.error(error);
         const errorData = createErrorMessage(error as Error);
-        res.status(errorData.statusCode).send(errorData.message);
+        res.status(errorData.statusCode).send(errorData);
     }
 }
 
@@ -40,7 +40,7 @@ export async function verifyIfUserIsAdmin(req: Request, res: Response, next: Nex
     } catch (error) {
         console.error(error);
         const err = createErrorMessage(error as Error);
-        res.status(err.statusCode).send(err.message);
+        res.status(err.statusCode).send(err);
         
     }
 }
