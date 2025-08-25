@@ -8,6 +8,7 @@ import {
 } from "@services/orderdetail.services";
 import { validateBody } from "@functionality/validation";
 
+// Borrar si es posible
 export async function createOrderDetailController(req: Request, res: Response) {
     const orderId = validateBody(req.body) ? req.body.orderId : undefined;
     const userDni = validateBody(req.body) ? req.body.userDni : undefined;
@@ -15,7 +16,7 @@ export async function createOrderDetailController(req: Request, res: Response) {
     try {
         if (!orderId) throw new Error("empty-body");
 
-        const newOrderDetail = await createOrderDetailService(orderId, userDni);
+        const newOrderDetail = await createOrderDetailService(orderId);
 
         console.log("Detalle de orden creado");
         res.status(201).send(newOrderDetail);
