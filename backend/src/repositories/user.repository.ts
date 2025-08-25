@@ -92,7 +92,7 @@ const userRepository = AppDataSource.getRepository(User).extend({
         await this.save(user);
     },
 
-    async addOrderDetail(userDni: string, orderDetail: OrderDetail): Promise<void> {
+    async addOrderDetailRelation(userDni: string, orderDetail: OrderDetail): Promise<void> {
         const user = await this.readUserByDni(userDni);
         if(!user) throw new Error("not-found");
 
