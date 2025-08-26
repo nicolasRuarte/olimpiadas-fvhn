@@ -2,15 +2,14 @@ import User from "@entities/User";
 import UserRepository from "@repositories/user.repository";
 import bcrypt from "bcrypt";
 import { DeleteResult, UpdateResult } from "typeorm";
-import { validateStringId } from "@functionality/validation";
+import { validateRole, validateStringId, validateUserData } from "@functionality/validation";
 
 export const createUserService = async (data: Partial<User>): Promise<Partial<User>> => {
     if (!validateStringId(data.dni)) throw new Error("invalid-string-id");
-    if (!data.password) throw new Error("Contraseña es obligatoria para crear el usuario");
+    if (!validateRole(data.role)) throw new Error;
+    if (!validateUserData(data)) throw new Error("El esquema de datos enviado es incorrecto");
 
-    if (data.role !== "admin" && data.role !== "client") throw new Error("El rol ingresado no es válido");
-
-    const hashedPassword = await bcrypt.hash(data.password, 10)
+    const hashedPassword = await bcrypt.hash(data.password as string, 10)
 
     return await UserRepository.createUser({ ...data, password: hashedPassword })
 }
