@@ -2,7 +2,7 @@ import * as v from "valibot";
 
 const messages = {
     string: "debe ser un string",
-    stringId: "El ID debe ser de tipo string",
+    stringId: "El DNI debe ser de tipo string",
     nonEmpty: "debe ingresar el dato",
     minLength: "La longitud del id de string debe ser de 8 caracteres exactamente",
     length: "debe tener longitud de 8 caracteres",
@@ -44,6 +44,16 @@ const userLoginSchema = v.object({
 });
 
 
+export function checkIfDniHasNonNumberCharacters(dni: string): boolean {
+    const validCharacters = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+    for (const char of dni) {
+        console.log(typeof char);
+        if (!validCharacters.includes(char)) return false;
+    }
+
+    return true;
+}
 
 export function validateNumberId(id: unknown) {
     const numberIdSchema = v.pipe(v.number(messages.numberId));
@@ -52,7 +62,13 @@ export function validateNumberId(id: unknown) {
 }
 
 export function validateStringId(id: unknown) {
-    const stringIdSchema = v.pipe(v.string(messages.stringId), v.nonEmpty(messages.nonEmpty), v.trim(), v.length(8, messages.length));
+    const stringIdSchema = v.pipe(
+        v.string(messages.stringId),
+        v.nonEmpty(messages.nonEmpty),
+        v.trim(),
+        v.length(8, messages.length),
+        v.check(checkIfDniHasNonNumberCharacters, "El DNI ingresado contiene caracteres que no son números")
+    );
 
     return v.parse(stringIdSchema, id);
 }
