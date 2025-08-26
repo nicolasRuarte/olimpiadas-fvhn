@@ -7,12 +7,32 @@ const messages = {
     minLength: "La longitud del id de string debe ser de 8 caracteres exactamente",
     length: "debe tener longitud de 8 caracteres",
     number: "debe ser un número",
-    numberId: "El ID debe ser de tipo número"
+    numberId: "El ID debe ser de tipo número",
+    integerId: "El ID debe ser un número entero",
+    nonNumberCharacter: "El string enviado solo debe contener números",
+    invalidRole: "El rol ingresado no es válido"
 }
 
 const dniLength = 8;
 const passwordMinLength = 8;
 const phoneNumberLength = 10;
+
+function validateNumberString(dni: string): boolean {
+    const validCharacters = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+    for (const char of dni) {
+        console.log(typeof char);
+        if (!validCharacters.includes(char)) return false;
+    }
+
+    return true;
+}
+
+export function validateRole(role: string | undefined): boolean {
+    if (!role) return true; // Retornamos true porque se asume que sino se manda el rol es porque es un cliente
+
+    return (role === "admin" || role === "client");
+}
 
 const userLoginSchema = v.object({
     dni: v.pipe(
@@ -39,24 +59,13 @@ const userLoginSchema = v.object({
     phone_number: v.pipe(
         v.string(messages.string),
         v.nonEmpty(messages.nonEmpty),
-        v.length(phoneNumberLength, messages.length)
-    )
+        v.length(phoneNumberLength, messages.length),
+        v.check(validateNumberString, messages.nonNumberCharacter)
+    ),
 });
 
-
-export function checkIfDniHasNonNumberCharacters(dni: string): boolean {
-    const validCharacters = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-
-    for (const char of dni) {
-        console.log(typeof char);
-        if (!validCharacters.includes(char)) return false;
-    }
-
-    return true;
-}
-
 export function validateNumberId(id: unknown) {
-    const numberIdSchema = v.pipe(v.number(messages.numberId));
+    const numberIdSchema = v.pipe(v.number(messages.numberId), v.integer(messages.integerId), v.toMinValue(1));
 
     return v.parse(numberIdSchema, id);
 }
@@ -67,7 +76,7 @@ export function validateStringId(id: unknown) {
         v.nonEmpty(messages.nonEmpty),
         v.trim(),
         v.length(8, messages.length),
-        v.check(checkIfDniHasNonNumberCharacters, "El DNI ingresado contiene caracteres que no son números")
+        v.check(validateNumberString, messages.nonNumberCharacter)
     );
 
     return v.parse(stringIdSchema, id);
