@@ -51,6 +51,7 @@ const userRepository = AppDataSource.getRepository(User).extend({
 
     async findAllUsers(): Promise<User[]> {
         const users = await this.find();
+        if (!users || users.length === 0) throw new Error("not-found");
 
         return users;
     },
