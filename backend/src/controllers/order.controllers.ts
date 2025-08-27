@@ -34,7 +34,8 @@ export async function readOrderByUserDniController(req: Request, res: Response) 
 }
 
 export async function readOrderByIdController(req: Request, res: Response) {
-    const selectAllFlag = -1;
+    const selectAllFlag = "all"; // Hacemos el selectAllFlag string porque sino cuando le pasamos id negativo nos tira resultado cuando debería
+                                // tirar error
     const id = validateBody(req.body) ? req.body.id : selectAllFlag;
 
     try {
