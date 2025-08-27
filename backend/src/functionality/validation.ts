@@ -17,7 +17,7 @@ const dniLength = 8;
 const passwordMinLength = 8;
 const phoneNumberLength = 10;
 
-function validateNumberString(dni: string): boolean {
+function validateStringNumber(dni: string): boolean {
     const validCharacters = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
     for (const char of dni) {
@@ -60,12 +60,12 @@ const userLoginSchema = v.object({
         v.string(messages.string),
         v.nonEmpty(messages.nonEmpty),
         v.length(phoneNumberLength, messages.length),
-        v.check(validateNumberString, messages.nonNumberCharacter)
+        v.check(validateStringNumber, messages.nonNumberCharacter)
     ),
 });
 
 export function validateNumberId(id: unknown) {
-    const numberIdSchema = v.pipe(v.number(messages.numberId), v.integer(messages.integerId), v.toMinValue(1));
+    const numberIdSchema = v.pipe(v.number(messages.numberId), v.integer(messages.integerId), v.minValue(1));
 
     return v.parse(numberIdSchema, id);
 }
@@ -76,7 +76,7 @@ export function validateStringId(id: unknown) {
         v.nonEmpty(messages.nonEmpty),
         v.trim(),
         v.length(8, messages.length),
-        v.check(validateNumberString, messages.nonNumberCharacter)
+        v.check(validateStringNumber, messages.nonNumberCharacter)
     );
 
     return v.parse(stringIdSchema, id);
