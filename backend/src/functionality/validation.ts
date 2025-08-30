@@ -18,7 +18,7 @@ const passwordMinLength = 8;
 const phoneNumberLength = 10;
 
 function validateStringNumber(dni: string): boolean {
-    const validCharacters = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    const validCharacters = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 
     for (const char of dni) {
         console.log(typeof char);
