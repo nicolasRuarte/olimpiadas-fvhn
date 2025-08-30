@@ -1,5 +1,5 @@
 import Order from "@entities/Order";
-import { validateNumberId, validateStringId } from "@functionality/validation";
+import { validateItemData, validateNumberId, validateStringId } from "@functionality/validation";
 import OrderRepository from "@repositories/order.repository";
 
 export const readAllOrdersService = async (): Promise<Order[] | undefined> => {
@@ -23,6 +23,7 @@ export async function readOrderByUserDniService(dni: string): Promise<Order> {
 
 export async function addOneItemService(serviceId: number, orderId: number, quantity: number): Promise<Order> {
     if (!validateNumberId(serviceId) || !validateNumberId(orderId)) throw new Error("invalid-id");
+    if (!validateItemData({ serviceId, orderId, quantity })) throw new Error("El esquema de datos enviado es incorrecto");
 
     return await OrderRepository.addOneItem(serviceId, orderId, quantity);
 }
