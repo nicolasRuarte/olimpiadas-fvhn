@@ -6,7 +6,7 @@ import { validateRole, validateStringId, validateUserData } from "@functionality
 
 export const createUserService = async (data: Partial<User>): Promise<Partial<User>> => {
     if (!validateStringId(data.dni)) throw new Error("invalid-string-id");
-    if (!validateRole(data.role)) throw new Error;
+    if (!validateRole(data.role)) throw new Error("El rol enviado no es válido");
     if (!validateUserData(data)) throw new Error("El esquema de datos enviado es incorrecto");
 
     const hashedPassword = await bcrypt.hash(data.password as string, 10)
