@@ -64,6 +64,24 @@ const userLoginSchema = v.object({
     ),
 });
 
+const itemSchema = v.object({
+    orderId: v.pipe(
+        v.number(messages.numberId),
+        v.integer(messages.integerId),
+        v.minValue(1)
+    ),
+    serviceId: v.pipe(
+        v.number(messages.numberId),
+        v.integer(messages.integerId),
+        v.minValue(1)
+    ),
+    quantity: v.pipe(
+        v.number(messages.numberId),
+        v.integer(messages.integerId),
+        v.minValue(1)
+    )
+});
+
 export function validateNumberId(id: unknown) {
     const numberIdSchema = v.pipe(v.number(messages.numberId), v.integer(messages.integerId), v.minValue(1));
 
@@ -86,6 +104,12 @@ export function validateUserData(loginData: unknown) {
     type loginData = v.InferOutput<typeof userLoginSchema>;
 
     return v.parse(userLoginSchema, loginData);
+}
+
+export function validateItemData(itemData: unknown) {
+    type itemData = v.InferOutput<typeof itemSchema>;
+
+    return v.parse(itemSchema, itemData);
 }
 
 export function validateBody(body: object) {
