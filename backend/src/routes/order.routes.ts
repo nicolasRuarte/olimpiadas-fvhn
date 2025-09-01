@@ -3,13 +3,13 @@ import { readOrderByUserDniController, addItemsControlller, removeItemsControlle
 
 const router = Router();
 
-router.post("/order", addItemsControlller); 
+router.post("/order/items", addItemsControlller); 
 
 router.get("/order", readAllOrdersController);
 router.get("/order/dni", readOrderByUserDniController);
 router.get("/order/id", readOrderByIdController);
 
-router.delete("/order", removeItemsController); 
+router.delete("/order/items", removeItemsController); 
 
 
 export default router;
