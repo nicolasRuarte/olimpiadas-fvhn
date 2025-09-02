@@ -28,7 +28,7 @@ export async function createOrderDetailController(req: Request, res: Response) {
 
 export async function readOrderDetailController(req: Request, res: Response) {
     const selectAllFlag = -1;
-    const id = validateBody(req.body) ? req.body.id : selectAllFlag;
+    const id = validateBody(req.body) ? req.body.orderNumber : selectAllFlag;
 
     try {
         let orderDetail;

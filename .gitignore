@@ -5,14 +5,12 @@ archivos/estructura-pagina.svg
 node_modules/
 *.env
 *config.*
-<<<<<<< HEAD
-<<<<<<< HEAD
 *dbconfig.*
 archivos/paquetes.docx
 sample*.json
-*dist/
+backend/dist/*
+*.js
 *paquetes*.docx
 codigo-clase/
 pensando.md
 }
-pensando.md

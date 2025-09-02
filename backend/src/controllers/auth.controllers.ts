@@ -6,8 +6,6 @@ import { validateBody } from "@functionality/validation";
 import { createErrorMessage } from "@functionality/errorMessages";
 
 export async function logInController(req: Request, res: Response) {
-    if (req.cookies.access_token) throw new Error("La sesión ya está iniciada")
-
     const dni = validateBody(req.body) ? req.body.dni : null;
     const password = validateBody(req.body) ? req.body.password : null;
 

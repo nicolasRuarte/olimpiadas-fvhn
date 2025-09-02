@@ -4,6 +4,7 @@ import OrderRepository from "@repositories/order.repository";
 import Item from "@entities/Item";
 import itemRepository from "./item.repository";
 import userRepository from "./user.repository";
+import { sendPurchaseConfirmationEmail } from "@services/nodemailer.services";
 
 async function calculateTotalPrice(items: Item[]): Promise<number> {
     let total = 0;
@@ -41,12 +42,14 @@ const orderDetailRepository = AppDataSource.getRepository(OrderDetail).extend({
         const user = await userRepository.readUserByDni(userDni);
         if (!user) throw new Error("not-found");
 
+        sendPurchaseConfirmationEmail(user.email as string);
+
         return result;
     },
 
     async readOrderDetailByOrderNumber(orderNumber: number): Promise<OrderDetail> {
         const orderDetail = await this.findOneBy({order_number: orderNumber});
-        if (orderDetail === null) throw new Error("not-found");
+        if (!orderDetail) throw new Error("not-found");
 
         return orderDetail;
     },

@@ -25,13 +25,13 @@ export const readUserByDniService = async (dni: string): Promise<Partial<User>> 
     return await UserRepository.readUserByDni(dni)
 }
 
-export const updateUserService = async (dni: string, data: Partial<User>): Promise<UpdateResult> => {
+export const updateUserService = async (dni: string, data: Partial<User>): Promise<Partial<User>> => {
     if (!validateStringId(dni)) throw new Error("invalid-id");
 
     return await UserRepository.updateUser(dni, data)
 }
 
-export const deleteUserService = async (dni: string): Promise<DeleteResult> => {
+export const deleteUserService = async (dni: string): Promise<{ message: string }> => {
     if (!validateStringId(dni)) throw new Error("invalid-id");
 
     return await UserRepository.deleteUser(dni);

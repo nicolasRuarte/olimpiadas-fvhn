@@ -28,7 +28,8 @@ export async function readOrderByUserDniController(req: Request, res: Response) 
         res.status(200).send(order);
     } catch (error) {
         console.error(error);
-        res.send(createErrorMessage(error as Error));
+        const err = createErrorMessage(error as Error);
+        res.status(err.statusCode).send(err);
     }
 }
 
@@ -50,7 +51,20 @@ export async function readOrderByIdController(req: Request, res: Response) {
     } catch (error) {
         console.error(error);
         const err = createErrorMessage(error as Error);
-        res.status(err.statusCode).send(err.message);
+        res.status(err.statusCode).send(err);
+    }
+}
+
+export async function readAllOrdersController(req: Request, res: Response) {
+    try {
+        const orders = await readAllOrdersService();
+
+        console.log("Leyendo todas las órdenes");
+        res.send(orders)
+    } catch (error) {
+        console.error(error);
+        const err = createErrorMessage(error as Error);
+        res.status(err.statusCode).send(err);
     }
 }
 
@@ -70,7 +84,7 @@ export async function addItemsControlller(req: Request, res: Response) {
     } catch (error) {
         console.error(error);
         const errorData = createErrorMessage(error as Error);
-        res.status(errorData.statusCode).send(errorData.message);
+        res.status(errorData.statusCode).send(errorData);
     }
 }
 
@@ -86,9 +100,10 @@ export async function removeItemsController(req: Request, res: Response) {
         console.log("ORDER IN CONTROLLER", order)
  
         console.log("Borrado elemento de orden");
-        res.status(201).send(order);
+        res.status(200).send(order);
      } catch (error) {
          console.error(error);
-         res.status(400).send(createErrorMessage(error as Error));
+         const err = createErrorMessage(error as Error);
+         res.status(err.statusCode).send(err);
      }
 }
