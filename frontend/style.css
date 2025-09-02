@@ -27,12 +27,14 @@
 }
      
 footer{
-    background-color: hsl(207, 93%, 40%) !important;
+    background-color: hsl(207, 93%, 11%) !important;
+    
     height: 10%;
    
     
 
 }
+
 
 .bi {
     font-size: 2rem;
