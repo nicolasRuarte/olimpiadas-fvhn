@@ -5,7 +5,7 @@ import OrderDetail from "@entities/OrderDetail";
 import Rating from "@entities/Rating";
 import Service from "@entities/Service";
 import Item from "@entities/Item";
-import { DB_NAME, DB_PORT, DB_URL, DB_HOST, DB_PASSWORD, DB_USERNAME } from "@root/dbconfig";
+import { DB_NAME, DB_PORT, DB_URL, DB_HOST, DB_PASSWORD, DB_USERNAME } from "./dbconfig";
 
 export const AppDataSource = new DataSource({
     type: "postgres",

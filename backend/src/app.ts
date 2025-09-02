@@ -2,8 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import swaggerUi from "swagger-ui-express";
-import swaggerJsdoc from "swagger-jsdoc";
+
 
 import userRoutes from "@routes/user.routes";
 import serviceRoutes from "@routes/service.routes";
@@ -14,8 +13,15 @@ import adminRoutes from "@routes/admin.routes";
 import paymentRoutes from "@routes/payment.routes";
 import authRoutes from "@routes/auth.routes";
 
+import swaggerUi from 'swagger-ui-express';
+import swaggerJsdoc from 'swagger-jsdoc';
+import { swaggerOptions } from './docs/swaggerConfig';
+
+
 const app = express();
 
+const specs = swaggerJsdoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());

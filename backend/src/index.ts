@@ -2,7 +2,7 @@ import "reflect-metadata";
 import "module-alias/register";
 import { AppDataSource } from "@root/db";
 import app from "@root/app";
-import { PORT } from "@root/config";
+import { PORT } from "./config";
 
 
 async function main(){
