@@ -1,6 +1,6 @@
 ﻿# MyFlight – Un sistema de reserva de vuelos web
 
-![Banner](frontend/logocompletoMF.kra)
+![Banner](frontend/logocompletoMF.jpg)
 
 
 MyFlight es una página web que permite a los usuarios registrarse, buscar y reservar vuelos. También, podrán visualizar el precio total y recibir una confirmación inmediata por correo electrónico con todos los detalles del viaje.
