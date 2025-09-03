@@ -52,7 +52,7 @@ export async function updateServiceController(req: Request, res: Response) {
         const updatedData = validateBody(req.body) ? req.body.updatedData : null;
         const id = validateNumberId(req.body.id) ? req.body.id : null
 
-        if (updatedData === null) throw new Error("empty-body");
+        if (!updatedData) throw new Error("empty-body");
 
         const updatedService = await updateServiceService(id, updatedData);
 
