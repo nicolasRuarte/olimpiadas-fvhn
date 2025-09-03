@@ -21,6 +21,7 @@ export const readServiceByIdService = async (id: number): Promise<Service> => {
 
 export const updateServiceService = async (id: number, data: Partial<Service>): Promise<Service | null> => {
     if (!validateNumberId(id)) throw new Error("invalid-id");
+    if(!validateServiceData(data)) throw new Error;
 
     return await ServiceRepository.updateService(id, data);
 }
