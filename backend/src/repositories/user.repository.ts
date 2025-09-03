@@ -44,8 +44,6 @@ const userRepository = AppDataSource.getRepository(User).extend({
 
         if (!user) throw new Error("not-found");
 
-        console.log(user);
-
         return user.password;
     },
 
