@@ -1,8 +1,7 @@
 import { Column, 
     Entity, BaseEntity, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, 
     OneToMany,
-    OneToOne,
-    JoinColumn} from "typeorm";
+} from "typeorm";
 import User from "./User";
 import Item from "@entities/Item";
 import {
