@@ -3,8 +3,9 @@ import * as v from "valibot";
 const messages = {
     string: "debe ser un string",
     stringId: "El DNI debe ser de tipo string",
-    nonEmpty: "debe ingresar el dato",
+    nonEmpty: "Uno o más campos no están definidos",
     minLength: "La longitud del id de string debe ser de 8 caracteres exactamente",
+    minNumberLength: "El número ingresado no debe ser menor a 0",
     length: "debe tener longitud de 8 caracteres",
     number: "debe ser un número",
     numberId: "El ID debe ser de tipo número",
@@ -78,12 +79,29 @@ const itemSchema = v.object({
     quantity: v.pipe(
         v.number(messages.numberId),
         v.integer(messages.integerId),
-        v.minValue(1)
+        v.minValue(1, messages.minNumberLength)
     )
 });
 
+const serviceSchema = v.object({
+    name: v.pipe(
+        v.string(messages.string),
+        v.nonEmpty(messages.nonEmpty),
+        v.minLength(1)
+    ),
+    description: v.pipe(
+        v.string(messages.string),
+        v.nonEmpty(messages.nonEmpty),
+        v.minLength(1)
+    ),
+    price: v.pipe(
+        v.number(),
+        v.minValue(0.00, messages.minNumberLength)
+    )
+})
+
 export function validateNumberId(id: unknown) {
-    const numberIdSchema = v.pipe(v.number(messages.numberId), v.integer(messages.integerId), v.minValue(1));
+    const numberIdSchema = v.pipe(v.number(messages.numberId), v.integer(messages.integerId), v.minValue(1, messages.minNumberLength));
 
     return v.parse(numberIdSchema, id);
 }
@@ -116,4 +134,10 @@ export function validateBody(body: object) {
     if (body === undefined || body === null || Object.keys(body).length === 0) return false;
 
     return true;
+}
+
+export function validateServiceData(serviceData: unknown) {
+    type serviceData = v.InferOutput<typeof serviceSchema>;
+
+    return v.parse(serviceSchema, serviceData);
 }
