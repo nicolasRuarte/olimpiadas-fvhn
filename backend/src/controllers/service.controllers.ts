@@ -11,6 +11,8 @@ import {
 
 export async function createServiceController(req: Request, res: Response) {
     try {
+        if (!validateBody(req.body)) throw new Error("empty-body");
+
         const newService = await createServiceService(req.body);
 
         console.log("Creando servicio");
