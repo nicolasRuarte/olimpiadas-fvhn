@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { createErrorMessage } from "@functionality/errorMessages";
-import { validateBody, validateNumberId, validateStringId } from "@functionality/validation";
+import { validateBody, validateNumberId } from "@functionality/validation";
 import {
     createServiceService,
     readAllServicesService,
@@ -17,15 +17,15 @@ export async function createServiceController(req: Request, res: Response) {
         res.status(201).send(newService);
     } catch (error) {
         console.error(error);
-        res.send(createErrorMessage(error as Error));
+        const err = createErrorMessage(error as Error);
+        res.status(err.statusCode).send(err);
     }
 }
 
 
 export async function readServiceControlller(req: Request, res: Response) {
-    const selectAllFlag = -1;
+    const selectAllFlag = "all";
     const id = validateBody(req.body) ? req.body.id : selectAllFlag;
-    console.log("BODY: ", req.body)
 
     try {
         let services;
@@ -39,7 +39,8 @@ export async function readServiceControlller(req: Request, res: Response) {
         res.status(200).send(services);
     } catch (error) {
         console.error(error);
-        res.status(400).send(createErrorMessage(error as Error));
+        const err = createErrorMessage(error as Error);
+        res.status(err.statusCode).send(err);
     }
 }
 
@@ -57,7 +58,8 @@ export async function updateServiceController(req: Request, res: Response) {
         res.status(200).send(updatedService);
     } catch (error) {
         console.error(error);
-        res.status(400).send(error as Error);
+        const err = createErrorMessage(error as Error);
+        res.status(err.statusCode).send(err);
     }
 }
 
@@ -74,6 +76,7 @@ export async function deleteServiceController(req: Request, res: Response) {
         res.status(200).send(deleteResult);
     } catch (error) {
         console.error(error);
-        res.status(400).send(createErrorMessage(error as Error));
+        const err = createErrorMessage(error as Error);
+        res.status(err.statusCode).send(err);
     }
 }
