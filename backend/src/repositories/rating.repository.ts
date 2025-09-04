@@ -42,7 +42,10 @@ const ratingRepository = AppDataSource.getRepository(Rating).extend({
         return this.find();
     },
 
-    async updateRating(updatedRating: { userId: string, serviceId: number, rating: number }): Promise<void> {
+    async updateRating(userDni: string, serviceId: number, rating: number): Promise<Rating> {
+        await ratingRepository.update({user: { dni: userDni }, service: { id: serviceId }}, { rating: rating })
+
+        return ratingRepository.readRatingByIds({ userId: userDni, serviceId: serviceId });
     },
 
     async deleteRating(ids: { userId: string, serviceId: number }): Promise<{ message: string, statusCode: number }> {

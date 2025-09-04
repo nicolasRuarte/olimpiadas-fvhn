@@ -21,9 +21,12 @@ export const readRatingByIdsService = async (ids: { userId: string, serviceId: n
     return await RatingRepository.readRatingByIds(ids);
 }
 
-export const updateRatingService = async (ids: Partial<Rating>): Promise<void> => {
-    if (!validateStringId(ids.user)) throw new Error("invalid-string-id");
-    if (!validateNumberId(ids.service)) throw new Error("invalid-number-id");
+export const updateRatingService = async (userDni: string, serviceId: number, rating: number): Promise<Rating> => {
+    if (!validateStringId(userDni)) throw new Error("invalid-string-id");
+    if (!validateNumberId(serviceId)) throw new Error("invalid-number-id");
+    if (!validateRatingValue(rating)) throw new Error("El rating enviado es inválido");
+
+    return await RatingRepository.updateRating(userDni, serviceId, rating);
 }
 
 export const deleteRatingService = async (ids: { userId: string, serviceId: number }): Promise<{ message: string, statusCode: number }> => {
