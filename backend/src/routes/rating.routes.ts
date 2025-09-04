@@ -3,7 +3,6 @@ import { createRatingController, readRatingsController, updateRatingController, 
 
 const router = Router()
 
-// URL para hacer rating es /rating?uId=(id de usuario)&sId=(id de servicio)&r=(rating)
 router.post("/rating", createRatingController);
 router.get("/rating", readRatingsController);
 router.put("/rating", updateRatingController);

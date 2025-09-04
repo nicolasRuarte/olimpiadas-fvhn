@@ -1,7 +1,6 @@
 import { AppDataSource } from "@root/db";
 import User from "@entities/User";
 import Rating from "@entities/Rating";
-import { DeleteResult, UpdateResult } from "typeorm";
 import orderRepository from "./order.repository";
 import OrderDetail from "@entities/OrderDetail";
 

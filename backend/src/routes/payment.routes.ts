@@ -1,4 +1,3 @@
-// Rutas para MP
 import { Router } from "express";
 import { createPreferenceController, failureMessageController, successMessageController } from "@controllers/payment.controllers"
 import verifyToken from "@middlewares/auth.middleware";

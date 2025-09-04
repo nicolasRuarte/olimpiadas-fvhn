@@ -1,7 +1,6 @@
 import User from "@entities/User";
 import UserRepository from "@repositories/user.repository";
 import bcrypt from "bcrypt";
-import { DeleteResult, UpdateResult } from "typeorm";
 import { validateRole, validateStringId, validateUserData } from "@functionality/validation";
 
 export const createUserService = async (data: Partial<User>): Promise<Partial<User>> => {

@@ -10,7 +10,6 @@ export default async function verifyToken(req: Request, res: Response, next: Nex
         if (!token) throw new Error("access-denied");
 
         const decoded = jwt.verify(token, JWT_SECRET);
-        console.log("Token plano: ", decoded); // Borrar en producción
 
         // req as any es un truco para que TypeScript no llore y nos deje meterle un atributo más a req
         // Probablemente haya una manera más correcta de hacerlo

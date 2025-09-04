@@ -1,6 +1,6 @@
 import OrderDetail from "@entities/OrderDetail";
 import OrderDetailRepository from "@repositories/orderdetail.repository";
-import { validateNumberId, validateStringId } from "@functionality/validation";
+import { validateNumberId } from "@functionality/validation";
 
 export const createOrderDetailService = async (orderId: number): Promise<OrderDetail> => {
     if (!validateNumberId(orderId)) throw new Error("invalid-number-id");

@@ -9,8 +9,6 @@ import {
 } from "@services/order.services";
 import { validateBody } from "@functionality/validation";
 
-
-
 export async function readOrderByUserDniController(req: Request, res: Response) {
     const selectAllFlag = -1;
     const dni = validateBody(req.body) ? req.body.dni : selectAllFlag;
@@ -34,8 +32,7 @@ export async function readOrderByUserDniController(req: Request, res: Response) 
 }
 
 export async function readOrderByIdController(req: Request, res: Response) {
-    const selectAllFlag = "all"; // Hacemos el selectAllFlag string porque sino cuando le pasamos id negativo nos tira resultado cuando debería
-                                // tirar error
+    const selectAllFlag = "all"; 
     const id = validateBody(req.body) ? req.body.id : selectAllFlag;
 
     try {

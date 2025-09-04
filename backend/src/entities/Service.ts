@@ -1,6 +1,5 @@
-import { Column, BaseEntity, Entity, OneToMany, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, BaseEntity, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import Rating from "@entities/Rating";
-import OrderDetail from "@entities/OrderDetail";
 import {
     IsInt,
     IsString,

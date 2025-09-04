@@ -10,7 +10,6 @@ import { readServiceByIdService } from "./service.services";
 const client = new MercadoPagoConfig({ accessToken: MERCADOPAGO_ACCESS_TOKEN });
 
 
-// Retorna tanto el ID de la preferencia como la URL para realizar el pago
 // DELEGAMOS VALIDACIÓN DE LOS IDs AL SERVICIO ORDERDETAIL
 export async function makePayment(userDni: string): Promise<OrderDetail> {
     const order = await readOrderByUserDniService(userDni);

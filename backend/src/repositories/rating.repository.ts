@@ -6,8 +6,6 @@ import serviceRepository from "./service.repository";
 
 const ratingRepository = AppDataSource.getRepository(Rating).extend({
     async createRating(data: { userId: string, serviceId: number, rating: number }): Promise<Rating> {
-        //const user = userdni
-        //if user.items !includes service with service id
         const user = await userRepository.findOneBy({ dni: data.userId });
         if (!user) throw new Error("not-found");
         const service = await readServiceByIdService(data.serviceId as number);

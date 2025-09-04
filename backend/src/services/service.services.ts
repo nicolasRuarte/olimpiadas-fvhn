@@ -1,6 +1,6 @@
 import Service from "@entities/Service";
 import ServiceRepository from "@repositories/service.repository";
-import { DeleteResult, UpdateResult } from "typeorm";
+import { DeleteResult } from "typeorm";
 import { validateNumberId, validateServiceData } from "@functionality/validation";
 
 export const createServiceService = async (data: Partial<Service>): Promise<Service> => {
