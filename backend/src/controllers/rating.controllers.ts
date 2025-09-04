@@ -23,7 +23,7 @@ export async function createRatingController(req: Request, res: Response) {
     } catch (error) {
         console.error(error);
         const errorData = createErrorMessage(error as Error);
-        res.status(errorData.statusCode).send(error);
+        res.status(errorData.statusCode).send(errorData);
     }
 }
 
