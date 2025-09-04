@@ -56,10 +56,12 @@ export async function readRatingsController(req: Request, res: Response) {
 export async function updateRatingController(req: Request, res: Response) {
     const userDni = validateBody(req.body) ? req.body.userDni : undefined
     const serviceId = validateBody(req.body) ? req.body.serviceId : undefined
+    const rating = validateBody(req.body) ? req.body.rating : undefined;
 
     try {
-        if (!userDni || !serviceId) throw new Error("invalid-id");
-        const result = await updateRatingService(req.body);
+        if (!userDni || !serviceId || !rating) throw new Error("empty-body");
+
+        const result = await updateRatingService(userDni, serviceId, rating);
 
         console.log("Actualizando rating");
         res.send(result);
