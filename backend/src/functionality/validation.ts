@@ -7,18 +7,19 @@ const messages = {
     minLength: "La longitud del id de string debe ser de 8 caracteres exactamente",
     minNumberLength: "El número ingresado no debe ser menor a 0",
     length: "debe tener longitud de 8 caracteres",
-    number: "debe ser un número",
+    number: "Dato inválido: debe ser un número",
+    integer: "Dato inválido: debe ser un número entero",
     numberId: "El ID debe ser de tipo número",
     integerId: "El ID debe ser un número entero",
     nonNumberCharacter: "El string enviado solo debe contener números",
-    invalidRole: "El rol ingresado no es válido"
+    invalidRole: "El rol ingresado no es válido",
+    maxRatingExceeded: "El valor de rating no debe ser mayor a 5"
 }
 
 function validateStringNumber(dni: string): boolean {
     const validCharacters = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 
     for (const char of dni) {
-        console.log(typeof char);
         if (!validCharacters.includes(char)) return false;
     }
 
@@ -63,8 +64,6 @@ const userLoginSchema = v.object({
         v.check(validateStringNumber, messages.nonNumberCharacter)
     ),
 });
-
-
 
 export function validateNumberId(id: unknown) {
     const numberIdSchema = v.pipe(v.number(messages.numberId), v.integer(messages.integerId), v.minValue(1, messages.minNumberLength));
@@ -141,4 +140,15 @@ export function validateServiceData(serviceData: unknown) {
     type serviceData = v.InferOutput<typeof serviceSchema>;
 
     return v.parse(serviceSchema, serviceData);
+}
+
+export function validateRatingValue(rating: number) {
+    const ratingValueSchema = v.pipe(
+        v.number(messages.number),
+        v.integer(messages.integer),
+        v.minValue(0, messages.minNumberLength),
+        v.maxValue(5, messages.maxRatingExceeded)
+    );
+
+    return v.parse(ratingValueSchema, rating);
 }
