@@ -43,6 +43,7 @@ export const deleteOrderService = async (id: number): Promise<void> => {
 export async function removeOneItemService(serviceId: number, orderId: number, quantity: number): Promise<Order> {
     if (!validateNumberId(orderId)) throw new Error("invalid-id");
     if (!validateNumberId(serviceId)) throw new Error("invalid-id");
+    if (!validateNumberId(quantity)) throw new Error("Dato inválido: propiedad quantity no puede ser un número negativo");
 
     return await OrderRepository.removeOneItem(serviceId, orderId, quantity);
 }
