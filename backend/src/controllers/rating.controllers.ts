@@ -48,7 +48,7 @@ export async function readRatingsController(req: Request, res: Response) {
     } catch (error) {
         console.error(error);
         const errorData = createErrorMessage(error as Error);
-        res.status(errorData.statusCode).send(error);
+        res.status(errorData.statusCode).send(errorData);
 
     }
 }
@@ -83,6 +83,6 @@ export async function deleteRating(req: Request, res: Response) {
     } catch (error) {
         console.error(error);
         const errorData = createErrorMessage(error as Error);
-        res.status(errorData.statusCode).send(error);
+        res.status(errorData.statusCode).send(errorData);
     }
 }
