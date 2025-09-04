@@ -6,8 +6,6 @@ import serviceRepository from "./service.repository";
 
 const ratingRepository = AppDataSource.getRepository(Rating).extend({
     async createRating(data: { userId: string, serviceId: number, rating: number }): Promise<Rating> {
-        //const user = userdni
-        //if user.items !includes service with service id
         const user = await userRepository.findOneBy({ dni: data.userId });
         if (!user) throw new Error("not-found");
         const service = await readServiceByIdService(data.serviceId as number);
@@ -42,7 +40,10 @@ const ratingRepository = AppDataSource.getRepository(Rating).extend({
         return this.find();
     },
 
-    async updateRating(updatedRating: { userId: string, serviceId: number, rating: number }): Promise<void> {
+    async updateRating(userDni: string, serviceId: number, rating: number): Promise<Rating> {
+        await ratingRepository.update({user: { dni: userDni }, service: { id: serviceId }}, { rating: rating })
+
+        return ratingRepository.readRatingByIds({ userId: userDni, serviceId: serviceId });
     },
 
     async deleteRating(ids: { userId: string, serviceId: number }): Promise<{ message: string, statusCode: number }> {

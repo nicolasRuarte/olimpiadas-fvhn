@@ -1,9 +1,15 @@
 import Rating from "@entities/Rating";
 import RatingRepository from "@repositories/rating.repository";
-import { validateNumberId, validateStringId } from "@functionality/validation";
+import { validateNumberId, validateRatingValue, validateStringId } from "@functionality/validation";
 
 export const createRatingService = async (data: { userId: string, serviceId: number, rating: number }) => {
+<<<<<<< HEAD
     if (data.rating > 5 || data.rating < 0) throw new Error("El valor del rating se encuentra fuera del intervalo aceptado");
+=======
+    if (!validateStringId(data.userId)) throw new Error("invalid-string-id");
+    if (!validateNumberId(data.serviceId)) throw new Error("invalid-number-id");
+    if (!validateRatingValue(data.rating)) throw new Error("El rating envíado es inválido");
+>>>>>>> final-testings
 
     return await RatingRepository.createRating(data);
 }
@@ -19,9 +25,17 @@ export const readRatingByIdsService = async (ids: { userId: string, serviceId: n
     return await RatingRepository.readRatingByIds(ids);
 }
 
-export const updateRatingService = async (ids: Partial<Rating>): Promise<void> => {
+export const updateRatingService = async (userDni: string, serviceId: number, rating: number): Promise<Rating> => {
+    if (!validateStringId(userDni)) throw new Error("invalid-string-id");
+    if (!validateNumberId(serviceId)) throw new Error("invalid-number-id");
+    if (!validateRatingValue(rating)) throw new Error("El rating enviado es inválido");
+
+    return await RatingRepository.updateRating(userDni, serviceId, rating);
 }
 
 export const deleteRatingService = async (ids: { userId: string, serviceId: number }): Promise<{ message: string, statusCode: number }> => {
+    if (!validateStringId(ids.userId)) throw new Error("invalid-string-id");
+    if (!validateNumberId(ids.serviceId)) throw new Error("invalid-number-id");
+
     return await RatingRepository.deleteRating(ids);
 }

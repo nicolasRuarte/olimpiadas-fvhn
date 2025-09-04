@@ -1,30 +1,11 @@
 import { Request, Response } from "express";
 import { createErrorMessage } from "@functionality/errorMessages";
 import {
-    createOrderDetailService,
     readAllOrderDetailsService,
     readOrderDetailByOrderNumberService,
     updateOrderDetailStatusService
 } from "@services/orderdetail.services";
 import { validateBody } from "@functionality/validation";
-
-export async function createOrderDetailController(req: Request, res: Response) {
-    const orderId = validateBody(req.body) ? req.body.orderId : undefined;
-    const userDni = validateBody(req.body) ? req.body.userDni : undefined;
-
-    try {
-        if (!orderId) throw new Error("empty-body");
-
-        const newOrderDetail = await createOrderDetailService(orderId, userDni);
-
-        console.log("Detalle de orden creado");
-        res.status(201).send(newOrderDetail);
-    } catch (error) {
-        console.error(error);
-        const errorData = createErrorMessage(error as Error);
-        res.status(errorData.statusCode as number).send(errorData.message);
-    }
-}
 
 export async function readOrderDetailController(req: Request, res: Response) {
     const selectAllFlag = -1;

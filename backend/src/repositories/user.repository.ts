@@ -1,7 +1,6 @@
 import { AppDataSource } from "@root/db";
 import User from "@entities/User";
 import Rating from "@entities/Rating";
-import { DeleteResult, UpdateResult } from "typeorm";
 import orderRepository from "./order.repository";
 import OrderDetail from "@entities/OrderDetail";
 
@@ -44,13 +43,12 @@ const userRepository = AppDataSource.getRepository(User).extend({
 
         if (!user) throw new Error("not-found");
 
-        console.log(user);
-
         return user.password;
     },
 
     async findAllUsers(): Promise<User[]> {
         const users = await this.find();
+        if (!users || users.length === 0) throw new Error("not-found");
 
         return users;
     },
@@ -92,7 +90,7 @@ const userRepository = AppDataSource.getRepository(User).extend({
         await this.save(user);
     },
 
-    async addOrderDetail(userDni: string, orderDetail: OrderDetail): Promise<void> {
+    async addOrderDetailRelation(userDni: string, orderDetail: OrderDetail): Promise<void> {
         const user = await this.readUserByDni(userDni);
         if(!user) throw new Error("not-found");
 

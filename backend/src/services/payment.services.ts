@@ -1,31 +1,32 @@
 import { MercadoPagoConfig, Preference } from "mercadopago";
 import { MERCADOPAGO_ACCESS_TOKEN } from "@root/config";
 import { Items } from "mercadopago/dist/clients/commonTypes";
+import OrderDetail from "@entities/OrderDetail";
 import { PreferenceResponse } from "mercadopago/dist/clients/preference/commonTypes";
-import { readOrderByIdService } from "@services/order.services";
+import { readOrderByUserDniService } from "@services/order.services";
 import { createOrderDetailService } from "./orderdetail.services";
-import itemRepository from "@repositories/item.repository";
 import { readServiceByIdService } from "./service.services";
 
 const client = new MercadoPagoConfig({ accessToken: MERCADOPAGO_ACCESS_TOKEN });
 
 
-// Retorna tanto el ID de la preferencia como la URL para realizar el pago
-export async function makePayment(orderId: number, userDni: string): Promise<void> {
-    // DELEGAMOS VALIDACIÓN DE LOS IDs AL SERVICIO ORDERDETAIL
+// DELEGAMOS VALIDACIÓN DE LOS IDs AL SERVICIO ORDERDETAIL
+export async function makePayment(userDni: string): Promise<OrderDetail> {
+    const order = await readOrderByUserDniService(userDni);
 
-    const orderDetail = createOrderDetailService(orderId, userDni);
+    return await createOrderDetailService(order.id);
 }
 
-export async function createPreference(orderId: number, userDni: string): Promise<Partial<PreferenceResponse>> {
+export async function createPreference(userDni: string): Promise<Partial<PreferenceResponse>> {
     const preference = new Preference(client);
 
-    const order = await readOrderByIdService(orderId);
+    const order = await readOrderByUserDniService(userDni);
     if (order.isBought) throw new Error("La orden ya fue comprada");
 
     let mercadoPagoItems: Items[] = [];
     for (const item of order.items) {
-        const service = await readServiceByIdService(item.service as unknown as number); // Chanchada para sacar el id de service en lugar del objeto
+        const serviceId = item.service as unknown as number; // Chanchada para sacar el id de service en lugar del objeto
+        const service = await readServiceByIdService(serviceId); 
 
         mercadoPagoItems.push({
             id: service.id.toString(), 
@@ -42,14 +43,12 @@ export async function createPreference(orderId: number, userDni: string): Promis
         body: {
             items: mercadoPagoItems,
             back_urls: {
-                success: "https://youtube.com",
-                failure: "https://youtube.com/"
+                success: "127.0.0.1:4000/success",
+                failure: "127.0.0.1:4000/failure"
             },
             auto_return: "approved"
         },
     });
-
-    makePayment(orderId, userDni);
 
     const { id, init_point } = result;
 

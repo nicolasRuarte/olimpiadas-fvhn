@@ -1,5 +1,5 @@
 import Order from "@entities/Order";
-import { validateNumberId, validateStringId } from "@functionality/validation";
+import { validateItemData, validateNumberId, validateStringId } from "@functionality/validation";
 import OrderRepository from "@repositories/order.repository";
 
 export const readAllOrdersService = async (): Promise<Order[] | undefined> => {
@@ -10,7 +10,7 @@ export const readOrderByIdService = async (id: number): Promise<Order> => {
     if (!validateNumberId(id)) throw new Error("invalid-number-id");
 
     const order = await OrderRepository.readById(id)
-    if (order === null) throw new Error("not-found");
+    if (!order) throw new Error("not-found");
 
     return order;
 }
@@ -23,6 +23,7 @@ export async function readOrderByUserDniService(dni: string): Promise<Order> {
 
 export async function addOneItemService(serviceId: number, orderId: number, quantity: number): Promise<Order> {
     if (!validateNumberId(serviceId) || !validateNumberId(orderId)) throw new Error("invalid-id");
+    if (!validateItemData({ serviceId, orderId, quantity })) throw new Error("El esquema de datos enviado es incorrecto");
 
     return await OrderRepository.addOneItem(serviceId, orderId, quantity);
 }
@@ -42,6 +43,7 @@ export const deleteOrderService = async (id: number): Promise<void> => {
 export async function removeOneItemService(serviceId: number, orderId: number, quantity: number): Promise<Order> {
     if (!validateNumberId(orderId)) throw new Error("invalid-id");
     if (!validateNumberId(serviceId)) throw new Error("invalid-id");
+    if (!validateNumberId(quantity)) throw new Error("Dato inválido: propiedad quantity no puede ser un número negativo");
 
     return await OrderRepository.removeOneItem(serviceId, orderId, quantity);
 }

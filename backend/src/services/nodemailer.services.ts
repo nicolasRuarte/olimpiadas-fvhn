@@ -1,4 +1,4 @@
-import nodemailer, { Transporter } from "nodemailer";
+import nodemailer from "nodemailer";
 import { MAIL_USER, MAIL_PASSWORD } from "@root/config";
 
 const transporter = nodemailer.createTransport({

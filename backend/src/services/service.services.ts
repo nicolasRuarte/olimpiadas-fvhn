@@ -1,9 +1,11 @@
 import Service from "@entities/Service";
 import ServiceRepository from "@repositories/service.repository";
-import { DeleteResult, UpdateResult } from "typeorm";
-import { validateNumberId } from "@functionality/validation";
+import { DeleteResult } from "typeorm";
+import { validateNumberId, validateServiceData } from "@functionality/validation";
 
 export const createServiceService = async (data: Partial<Service>): Promise<Service> => {
+    if (!validateServiceData(data)) throw new Error("Alguno de los datos enviados es inválido");
+
     return await ServiceRepository.createService(data);
 }
 
@@ -19,6 +21,7 @@ export const readServiceByIdService = async (id: number): Promise<Service> => {
 
 export const updateServiceService = async (id: number, data: Partial<Service>): Promise<Service | null> => {
     if (!validateNumberId(id)) throw new Error("invalid-id");
+    if(!validateServiceData(data)) throw new Error;
 
     return await ServiceRepository.updateService(id, data);
 }

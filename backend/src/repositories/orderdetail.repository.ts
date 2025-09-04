@@ -17,8 +17,7 @@ async function calculateTotalPrice(items: Item[]): Promise<number> {
 }
 
 const orderDetailRepository = AppDataSource.getRepository(OrderDetail).extend({
-    // Le pasamos el dni del usuario por conveniencia para realizar las direcciones bidireccionales entre User y Order y User y OrderDetail
-    async createOrderDetail(orderId: number, userDni: string): Promise<OrderDetail> {
+    async createOrderDetail(orderId: number): Promise<OrderDetail> {
         const order = await OrderRepository.readOrderItemsById(orderId);
         if (!order) throw new Error("not-found");
 
@@ -33,11 +32,13 @@ const orderDetailRepository = AppDataSource.getRepository(OrderDetail).extend({
         await OrderRepository.markAsBought(order.id);
 
         // Bidireccionalidad y funciones extras para que las entidades Item y Usuario funcionen bien
+        const userDni = order.user as unknown as string;
+
         await itemRepository.assignOrderDetailRelation(result.order_number, orderId);
 
-        await userRepository.asignNewOrder(userDni);
+        await userRepository.asignNewOrder(order.user as unknown as string); //Cambiar, por favor
 
-        await userRepository.addOrderDetail(userDni, newOrderDetail);
+        await userRepository.addOrderDetailRelation(userDni, newOrderDetail);
 
         const user = await userRepository.readUserByDni(userDni);
         if (!user) throw new Error("not-found");

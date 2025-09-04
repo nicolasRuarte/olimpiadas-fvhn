@@ -6,7 +6,6 @@ const router = Router();
 
 router.get("/admin", verifyIfUserIsAdmin, readAdmin);
 router.get("/admin/sells", verifyIfUserIsAdmin, getAllSales);
-// Estatus pueden cambiar de pending a accepted o anulated
 router.patch("/admin/change-order-status", verifyIfUserIsAdmin, changeOrderDetailStatus);
 router.get("/admin/orders", verifyIfUserIsAdmin, getAllOrders);
 
