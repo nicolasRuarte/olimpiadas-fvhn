@@ -3,13 +3,9 @@ import RatingRepository from "@repositories/rating.repository";
 import { validateNumberId, validateRatingValue, validateStringId } from "@functionality/validation";
 
 export const createRatingService = async (data: { userId: string, serviceId: number, rating: number }) => {
-<<<<<<< HEAD
-    if (data.rating > 5 || data.rating < 0) throw new Error("El valor del rating se encuentra fuera del intervalo aceptado");
-=======
     if (!validateStringId(data.userId)) throw new Error("invalid-string-id");
     if (!validateNumberId(data.serviceId)) throw new Error("invalid-number-id");
     if (!validateRatingValue(data.rating)) throw new Error("El rating envíado es inválido");
->>>>>>> final-testings
 
     return await RatingRepository.createRating(data);
 }
