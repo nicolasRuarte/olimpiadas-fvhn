@@ -6,7 +6,6 @@ import {
     IsString,
     MinLength,
     IsEmail,
-    Length
 } from "class-validator";
 
 @Entity()
@@ -34,7 +33,6 @@ export default class User extends BaseEntity {
 
     @Column()
     @IsString()
-    @Length(8)
     phone_number: string;
 
     @Column({ default: "client" })
